@@ -3,4 +3,6 @@ project(MyCProject C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(MyCExecutable main.c)
+add_executable(MyCExecutable main.c
+    Tetris/Tetris.c
+    )
