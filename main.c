@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <gtk/gtk.h>
 #include "Tetris/Tetris.h"
 #include "2048/2048.h"
 #include "BrickBreaker/BrickBreaker.h"
