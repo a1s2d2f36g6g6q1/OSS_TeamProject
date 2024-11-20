@@ -14,7 +14,7 @@ add_definitions(${GTK3_CFLAGS_OTHER})
 add_executable(MyCExecutable main.c
     Tetris/Tetris.c
     2048/2048.c
-    BrickBreaker/Brickbreaker.c
+    #BrickBreaker/Brickbreaker.c
     MineSweeper/Minesweeper.c
     )
 

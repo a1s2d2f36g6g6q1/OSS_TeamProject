@@ -2,8 +2,8 @@
 #include <gtk/gtk.h>
 #include "Tetris/Tetris.h"
 #include "2048/2048.h"
-#include "BrickBreaker/BrickBreaker.h"
-#include "Minesweeper/MineSweeper.h"
+//#include "BrickBreaker/BrickBreaker.h"
+#include "MineSweeper/Minesweeper.h"
 
 void displayMenu() {
     printf("Select a game to play:\n");
@@ -14,7 +14,7 @@ void displayMenu() {
     printf("0. Exit\n");
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     int choice;
     do {
         displayMenu();
@@ -24,19 +24,19 @@ int main() {
         switch (choice) {
         case 1:
             printf("Starting Tetris...\n");
-            startTetris();
+            startTetris(argc, argv);
             break;
         case 2:
             printf("Starting 2048...\n");
-            start2048();
+            start2048(argc, argv);
             break;
         case 3:
             printf("Starting Brick Breaker...\n");
-            startBrickbreaker();
+            //startBrickbreaker(argc, argv);
             break;
         case 4:
             printf("Starting Minesweeper...\n");
-            startMinesweeper();
+            startMinesweeper(argc, argv);
             break;
         case 0:
             printf("Exiting the game selection.\n");
