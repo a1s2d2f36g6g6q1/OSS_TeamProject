@@ -12,10 +12,10 @@ link_directories(${GTK3_LIBRARY_DIRS})
 add_definitions(${GTK3_CFLAGS_OTHER})
 
 add_executable(MyCExecutable main.c
-    Tetris/Tetris.c
-    2048/2048.c
-    #BrickBreaker/Brickbreaker.c
-    MineSweeper/Minesweeper.c
+    Tetris.c
+    2048.c
+    Brickbreaker.c
+    Minesweeper.c
     )
 
 target_link_libraries(MyCExecutable ${GTK3_LIBRARIES} ${CAIRO_LIBRARIES})
