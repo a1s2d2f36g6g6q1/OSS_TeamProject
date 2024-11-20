@@ -70,7 +70,13 @@ void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) 
     int x = coords[0];
     int y = coords[1];
 
-    reveal_cell(x, y);
+    if (event->button == GDK_BUTTON_PRIMARY) {  
+        reveal_cell(x, y);
+    }
+    else if (event->button == GDK_BUTTON_SECONDARY) {
+        set_button_label(GTK_BUTTON(buttons[x][y]), "F");
+    }
+
 }
 
 void start_minesweeper_game() {
