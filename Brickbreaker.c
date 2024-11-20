@@ -1,3 +1,6 @@
+#include <gtk/gtk.h>
+
+/*
 #include "Brickbreaker.h"
 
 // 메인 함수
@@ -210,4 +213,17 @@ static void on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data) {
         paused = FALSE;     // 게임 일시 정지 상태 해제
         init_game();        // 게임 초기화
     }
+}
+*/
+
+
+void start_breakout_game_BP() {
+    GtkWidget *window;
+    gtk_init(NULL, NULL);
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window), "Tetris Game");
+    gtk_window_set_default_size(GTK_WINDOW(window), 300, 600);
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_widget_show_all(window);
+    gtk_main();
 }
