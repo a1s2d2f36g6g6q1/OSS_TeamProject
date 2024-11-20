@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "Tetris.h"
 
 #define ROWS 20
 #define COLS 10
