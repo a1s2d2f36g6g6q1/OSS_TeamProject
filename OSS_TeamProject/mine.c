@@ -102,6 +102,7 @@ void start_minesweeper_game() {
             coords[1] = j;
 
             buttons[i][j] = gtk_button_new();
+            gtk_widget_set_size_request(buttons[i][j], 50, 50);
             gtk_grid_attach(GTK_GRID(grid), buttons[i][j], j, i, 1, 1);
             g_signal_connect(buttons[i][j], "button-press-event", G_CALLBACK(on_button_clicked), coords);
         }
