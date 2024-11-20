@@ -7,6 +7,8 @@
 #define MINE -1
 #define TOTAL_MINES 40
 
+int mines_left = TOTAL_MINES;
+
 int field[FIELD_SIZE][FIELD_SIZE];
 bool revealed[FIELD_SIZE][FIELD_SIZE];
 bool flagged[FIELD_SIZE][FIELD_SIZE];
@@ -56,6 +58,21 @@ void initialize_field() {
     }
 }
 
+void reveal_cell(int x, int y) { 
+    char buffer[2];
+    snprintf(buffer, sizeof(buffer), "%d", field[x][y]);   
+    set_button_label(GTK_BUTTON(buttons[x][y]), buffer);
+}
+
+void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) {
+  
+    int* coords = (int*)data;
+    int x = coords[0];
+    int y = coords[1];
+
+    reveal_cell(x, y);
+}
+
 void start_minesweeper_game() {
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "Minesweeper");
@@ -80,6 +97,7 @@ void start_minesweeper_game() {
 
             buttons[i][j] = gtk_button_new();
             gtk_grid_attach(GTK_GRID(grid), buttons[i][j], j, i, 1, 1);
+            g_signal_connect(buttons[i][j], "button-press-event", G_CALLBACK(on_button_clicked), coords);
         }
     }
 
