@@ -14,6 +14,7 @@ GtkWidget* drawing_area;
 int** grid;
 int grid_size = 4;
 int score = 0;
+
 // 타일 그리기
 gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
     
