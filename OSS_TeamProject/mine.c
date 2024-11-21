@@ -128,11 +128,14 @@ void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) 
         if (!flagged[x][y] && !revealed[x][y]) {
             set_button_label(GTK_BUTTON(buttons[x][y]), "F");
             flagged[x][y] = true;
+            mines_left--;
         }
         else if (flagged[x][y]) {
             set_button_label(GTK_BUTTON(buttons[x][y]), "");
             flagged[x][y] = false;
+            mines_left++;
         }
+        update_mine_counter();
     }
 }
 
