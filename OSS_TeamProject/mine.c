@@ -2,7 +2,6 @@
 #include <gtk/gtk.h>
 #include <time.h>
 #include <stdbool.h>
-#include "games.h"
 
 #define FIELD_SIZE 16
 #define MINE -1
@@ -93,19 +92,19 @@ void reveal_neighbors(int x, int y) {
     }
 }
 
-void reveal_cell(int x, int y) { 
+void reveal_cell(int x, int y) {
     if (revealed[x][y] || flagged[x][y])  return;
 
     revealed[x][y] = true;
-    gtk_widget_set_sensitive(buttons[x][y], FALSE); 
+    gtk_widget_set_sensitive(buttons[x][y], FALSE);
 
     if (field[x][y] == MINE) {
-        set_button_label(GTK_BUTTON(buttons[x][y]), "B"); 
+        set_button_label(GTK_BUTTON(buttons[x][y]), "B");
         g_print("Game Over! You hit a mine at (%d, %d).\n", x, y);
         return;
     }
 
-    if (field[x][y] > 0) { 
+    if (field[x][y] > 0) {
         char buffer[2];
         snprintf(buffer, sizeof(buffer), "%d", field[x][y]);
         set_button_label(GTK_BUTTON(buttons[x][y]), buffer);
@@ -117,7 +116,7 @@ void reveal_cell(int x, int y) {
 }
 
 void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) {
-  
+
     int* coords = (int*)data;
     int x = coords[0];
     int y = coords[1];
@@ -148,7 +147,7 @@ void win() {
 
 }
 
-void start_minesweeper_game(GtkStack* stack) {
+void start_minesweeper_game() {
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "Minesweeper");
     gtk_window_set_default_size(GTK_WINDOW(window), 600, 600);
@@ -185,6 +184,6 @@ void start_minesweeper_game(GtkStack* stack) {
 
     update_mine_counter();
     timer_id = g_timeout_add(1000, update_timer, NULL);
-    g_signal_connect(window, "destroy", G_CALLBACK(switch_to_main_menu), stack);
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_widget_show_all(window);
 }
