@@ -66,24 +66,23 @@ void reveal_neighbors(int x, int y) {
 void reveal_cell(int x, int y) { 
 
     revealed[x][y] = true;
-    gtk_widget_set_sensitive(buttons[x][y], FALSE);
-   
+    gtk_widget_set_sensitive(buttons[x][y], FALSE); 
+
     if (field[x][y] == MINE) {
-        set_button_label(GTK_BUTTON(buttons[x][y]), "B");
-        g_print("Game Over\n");
-       
+        set_button_label(GTK_BUTTON(buttons[x][y]), "B"); 
+        g_print("Game Over! You hit a mine at (%d, %d).\n", x, y);
+        return;
     }
 
-    if (field[x][y] > 0) {
+    if (field[x][y] > 0) { 
         char buffer[2];
         snprintf(buffer, sizeof(buffer), "%d", field[x][y]);
         set_button_label(GTK_BUTTON(buttons[x][y]), buffer);
     }
     else {
         set_button_label(GTK_BUTTON(buttons[x][y]), "");
-       // reveal_neighbors(x, y);
+        reveal_neighbors(x, y);
     }
-
 }
 
 void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) {
