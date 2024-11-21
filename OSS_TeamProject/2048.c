@@ -16,7 +16,13 @@ int grid_size = 4;
 int score = 0;
 
 void initialize_grid(int size){
-    grid = 
+    grid = (int**)malloc(size * sizeof(int*));
+    for (int i = 0; i < size; i++) {
+        grid[i] = (int*)malloc(size * sizeof(int));
+        for (int j = 0; j < size; j++) {
+            grid[i][j] = 0;  // 초기화
+        }
+    }
 }
 
 void start_2048_game() {
