@@ -58,10 +58,28 @@ void initialize_field() {
     }
 }
 
+void reveal_neighbors(int x, int y) {
+
+}
+
 void reveal_cell(int x, int y) { 
-    char buffer[2];
-    snprintf(buffer, sizeof(buffer), "%d", field[x][y]);   
-    set_button_label(GTK_BUTTON(buttons[x][y]), buffer);
+
+    revealed[x][y] = true;
+    gtk_widget_set_sensitive(buttons[x][y], FALSE);
+   
+    if (field[x][y] == MINE) {
+        set_button_label(GTK_BUTTON(buttons[x][y]), "B");
+    }
+
+    if (field[x][y] > 0) {
+        char buffer[2];
+        snprintf(buffer, sizeof(buffer), "%d", field[x][y]);
+        set_button_label(GTK_BUTTON(buttons[x][y]), buffer);
+    }
+    else {
+        set_button_label(GTK_BUTTON(buttons[x][y]), "");
+        //reveal_neighbors(x, y);
+    }
 }
 
 void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) {
@@ -70,12 +88,26 @@ void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) 
     int x = coords[0];
     int y = coords[1];
 
-    if (event->button == GDK_BUTTON_PRIMARY) {  
+    if (event->button == GDK_BUTTON_PRIMARY && !flagged[x][y]) {
         reveal_cell(x, y);
     }
     else if (event->button == GDK_BUTTON_SECONDARY) {
-        set_button_label(GTK_BUTTON(buttons[x][y]), "F");
+        if (!flagged[x][y] && !revealed[x][y]) {
+            set_button_label(GTK_BUTTON(buttons[x][y]), "F");
+            flagged[x][y] = true;
+        }
+        else if (flagged[x][y]) {
+            set_button_label(GTK_BUTTON(buttons[x][y]), "");
+            flagged[x][y] = false;
+        }
     }
+}
+
+void lose() {
+
+}
+
+void win() {
 
 }
 
