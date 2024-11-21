@@ -59,11 +59,23 @@ void initialize_field() {
     }
 }
 
+void reveal_cell(int x, int y);
 void reveal_neighbors(int x, int y) {
+    for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+            int nx = x + dx;
+            int ny = y + dy;
 
+            if (nx >= 0 && nx < FIELD_SIZE && ny >= 0 && ny < FIELD_SIZE &&
+                !revealed[nx][ny] && !flagged[nx][ny] && field[nx][ny] != MINE) {
+                reveal_cell(nx, ny);
+            }
+        }
+    }
 }
 
 void reveal_cell(int x, int y) { 
+    if (revealed[x][y] || flagged[x][y])  return;
 
     revealed[x][y] = true;
     gtk_widget_set_sensitive(buttons[x][y], FALSE); 
