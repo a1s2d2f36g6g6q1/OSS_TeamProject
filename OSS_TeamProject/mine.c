@@ -36,6 +36,7 @@ void initialize_field() {
         if (field[x][y] != MINE) {
             field[x][y] = MINE;
             mines--;
+            g_print("Mine placed at (%d, %d)\n", x, y);
         }
     }
 
@@ -69,6 +70,8 @@ void reveal_cell(int x, int y) {
    
     if (field[x][y] == MINE) {
         set_button_label(GTK_BUTTON(buttons[x][y]), "B");
+        g_print("Game Over\n");
+       
     }
 
     if (field[x][y] > 0) {
@@ -78,8 +81,9 @@ void reveal_cell(int x, int y) {
     }
     else {
         set_button_label(GTK_BUTTON(buttons[x][y]), "");
-        //reveal_neighbors(x, y);
+       // reveal_neighbors(x, y);
     }
+
 }
 
 void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) {
