@@ -2,6 +2,7 @@
 #include <gtk/gtk.h>
 #include <time.h>
 #include <stdbool.h>
+#include "games.h"
 
 #define FIELD_SIZE 16
 #define MINE -1
@@ -147,7 +148,7 @@ void win() {
 
 }
 
-void start_minesweeper_game() {
+void start_minesweeper_game(GtkStack* stack) {
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "Minesweeper");
     gtk_window_set_default_size(GTK_WINDOW(window), 600, 600);
@@ -184,6 +185,6 @@ void start_minesweeper_game() {
 
     update_mine_counter();
     timer_id = g_timeout_add(1000, update_timer, NULL);
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(window, "destroy", G_CALLBACK(switch_to_main_menu), stack);
     gtk_widget_show_all(window);
 }
