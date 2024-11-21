@@ -16,6 +16,24 @@ bool flagged[FIELD_SIZE][FIELD_SIZE];
 GtkWidget* mine_label, * timer_label;
 GtkWidget* buttons[FIELD_SIZE][FIELD_SIZE];
 
+int elapsed_time = 0;
+guint timer_id;
+
+gboolean update_timer(gpointer data) {
+    elapsed_time++;
+    char buffer[16];
+    snprintf(buffer, sizeof(buffer), "Time: %d", elapsed_time);
+    gtk_label_set_text(GTK_LABEL(timer_label), buffer);
+
+    return TRUE;
+}
+
+void update_mine_counter() {
+    char buffer[16];
+    snprintf(buffer, sizeof(buffer), "Mines: %d", mines_left);
+    gtk_label_set_text(GTK_LABEL(mine_label), buffer);
+}
+
 void set_button_label(GtkButton* button, const char* label) {
     gtk_button_set_label(button, label);
 }
@@ -140,6 +158,12 @@ void start_minesweeper_game() {
     GtkWidget* grid = gtk_grid_new();
     gtk_box_pack_start(GTK_BOX(vbox), grid, TRUE, TRUE, 5);
 
+    mine_label = gtk_label_new(NULL);
+    gtk_box_pack_start(GTK_BOX(hbox), mine_label, FALSE, FALSE, 5);
+
+    timer_label = gtk_label_new(NULL);
+    gtk_box_pack_end(GTK_BOX(hbox), timer_label, FALSE, FALSE, 5);
+
     initialize_field();
 
     for (int i = 0; i < FIELD_SIZE; i++) {
@@ -155,6 +179,8 @@ void start_minesweeper_game() {
         }
     }
 
+    update_mine_counter();
+    timer_id = g_timeout_add(1000, update_timer, NULL);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_widget_show_all(window);
 }
