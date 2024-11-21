@@ -20,6 +20,7 @@ gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
     
     
 }
+
 // 키보드 입력 처리
 gboolean on_key_press(GtkWidget* widget, GdkEventKey* event, gpointer data) {
     
