@@ -15,18 +15,9 @@ int** grid;
 int grid_size = 4;
 int score = 0;
 
-// 타일 그리기
-gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
-    
-    
+void initialize_grid(int size){
+    grid = 
 }
-
-// 키보드 입력 처리
-gboolean on_key_press(GtkWidget* widget, GdkEventKey* event, gpointer data) {
-    
-}
-
-
 
 void start_2048_game() {
     GtkWidget *window;
