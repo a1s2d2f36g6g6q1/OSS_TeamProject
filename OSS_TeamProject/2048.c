@@ -56,6 +56,37 @@ free(empty_tiles);
 //타일 이동 및 합치기 함수
 int move_tiles(int dx, int dy){
     int moved = 0;
+    for (int i = 0; i < grid_size; i++) {
+    for (int j = 0; j < grid_size; j++) {
+        int x = (dx == 1) ? (grid_size - 1 - i) : i;
+        int y = (dy == 1) ? (grid_size - 1 - j) : j;
+
+        if (grid[x][y] != 0) {
+            int nx, ny;  // 의도적으로 초기화 누락
+            while (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
+                   grid[nx + dx][ny + dy] == 0) {  // nx와 ny가 초기화되지 않아 문제가 됨
+                nx += dx;
+                ny += dy;
+            }
+
+            if (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
+                grid[nx + dx][ny + dy] == grid[x][y]) {
+                grid[nx + dx][ny + dy] *= 2;
+                score += grid[nx + dx][ny + dy];
+                grid[x][y] = 0;
+                moved = 1;
+            }
+            else if (nx != x || ny != y) {
+                grid[nx][ny] = grid[x][y];
+                grid[x][y] = 0;
+                moved = 1;
+            }
+        }
+    }
+}
+
+return moved;
+
 }
 
 void start_2048_game() {
