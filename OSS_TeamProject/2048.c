@@ -15,6 +15,7 @@ int** grid;
 int grid_size = 4;
 int score = 0;
 
+//그리드 초기화 함수
 void initialize_grid(int size){
     grid = (int**)malloc(size * sizeof(int*));
     for (int i = 0; i < size; i++) {
@@ -52,6 +53,10 @@ for (int i = 0; i < empty_count; i++) {
 free(empty_tiles);
 }
 
+//타일 이동 및 합치기 함수
+int move_tiles(int dx, int dy){
+    int moved = 0;
+}
 
 void start_2048_game() {
     GtkWidget *window;
