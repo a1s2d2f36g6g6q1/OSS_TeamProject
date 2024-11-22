@@ -62,9 +62,9 @@ int move_tiles(int dx, int dy){
         int y = (dy == 1) ? (grid_size - 1 - j) : j;
 
         if (grid[x][y] != 0) {
-            int nx, ny;  // 의도적으로 초기화 누락
+            int nx, ny;  
             while (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
-                   grid[nx + dx][ny + dy] == 0) {  // nx와 ny가 초기화되지 않아 문제가 됨
+                   grid[nx + dx][ny + dy] == 0) {  
                 nx += dx;
                 ny += dy;
             }
