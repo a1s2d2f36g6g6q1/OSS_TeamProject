@@ -27,7 +27,7 @@ void initialize_grid(int size){
 }
 
 // 새로운 타일 생성
-void add_random_title(){
+void add_random_tile(){
     int** empty_tiles = (int**)malloc((grid_size * grid_size) * sizeof(int*));
 int empty_count = 0;
 
