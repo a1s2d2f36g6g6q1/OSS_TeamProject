@@ -93,7 +93,26 @@ void reveal_neighbors(int x, int y) {
 }
 
 void lose() {
+    g_print("Game Over! You hit a mine.\n");
+    gtk_label_set_text(GTK_LABEL(timer_label), "Game Over!");
+}
 
+
+void check_win_condition() {
+    int unopened_cells = 0;
+    for (int i = 0; i < FIELD_SIZE; i++) {
+        for (int j = 0; j < FIELD_SIZE; j++) {
+            if (!revealed[i][j] && field[i][j] != MINE) {
+                unopened_cells++;
+            }
+        }
+    }
+
+    if (unopened_cells == 0) {
+        g_print("You Win! Time: %d seconds\n", elapsed_time);
+        gtk_label_set_text(GTK_LABEL(timer_label), "You Win!");
+        g_source_remove(timer_id);
+    }
 }
 
 void reveal_cell(int x, int y) {
@@ -116,6 +135,8 @@ void reveal_cell(int x, int y) {
         set_button_label(GTK_BUTTON(buttons[x][y]), "");
         reveal_neighbors(x, y);
     }
+    check_win_condition();
+
 }
 
 void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) {
