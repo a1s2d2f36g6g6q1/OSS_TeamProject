@@ -5,7 +5,7 @@
 
 #define FIELD_SIZE 16
 #define MINE -1
-#define TOTAL_MINES 40
+#define TOTAL_MINES 40 //40
 
 int mines_left = TOTAL_MINES;
 
@@ -92,9 +92,23 @@ void reveal_neighbors(int x, int y) {
     }
 }
 
+void reveal_all_mines() {
+    for (int i = 0; i < FIELD_SIZE; i++) {
+        for (int j = 0; j < FIELD_SIZE; j++) {
+            if (field[i][j] == MINE) {
+                set_button_label(GTK_BUTTON(buttons[i][j]), "B");
+                gtk_widget_set_sensitive(buttons[i][j], FALSE);
+            }
+        }
+    }
+}
+
+
 void lose() {
+    reveal_all_mines();
     g_print("Game Over! You hit a mine.\n");
     gtk_label_set_text(GTK_LABEL(timer_label), "Game Over!");
+    g_source_remove(timer_id);
 }
 
 
@@ -161,13 +175,6 @@ void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) 
         }
         update_mine_counter();
     }
-}
-
-
-
-
-void win() {
-
 }
 
 void on_game_window_destroy(GtkWidget* widget, gpointer data) {
