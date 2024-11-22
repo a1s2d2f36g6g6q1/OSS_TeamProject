@@ -15,6 +15,7 @@ int** grid;
 int grid_size = 4;
 int score = 0;
 
+//그리드 초기화 함수
 void initialize_grid(int size){
     grid = (int**)malloc(size * sizeof(int*));
     for (int i = 0; i < size; i++) {
@@ -25,7 +26,8 @@ void initialize_grid(int size){
     }
 }
 
-void add_random_tile(){
+// 새로운 타일 생성
+void add_random_title(){
     int** empty_tiles = (int**)malloc((grid_size * grid_size) * sizeof(int*));
 int empty_count = 0;
 
@@ -44,6 +46,16 @@ if (empty_count > 0) {
     int* tile = empty_tiles[rand() % empty_count];
     grid[tile[0]][tile[1]] = (rand() % 2 + 1) * 2;  // 2 또는 4 추가
 }
+    // 동적 메모리 해제
+for (int i = 0; i < empty_count; i++) {
+    free(empty_tiles[i]);
+}
+free(empty_tiles);
+}
+
+//타일 이동 및 합치기 함수
+int move_tiles(int dx, int dy){
+    int moved = 0;
 }
 
 void start_2048_game() {
