@@ -92,15 +92,18 @@ void reveal_neighbors(int x, int y) {
     }
 }
 
+void lose() {
+
+}
+
 void reveal_cell(int x, int y) {
-    if (revealed[x][y] || flagged[x][y])  return;
+    if (revealed[x][y] || flagged[x][y]) return;
 
     revealed[x][y] = true;
     gtk_widget_set_sensitive(buttons[x][y], FALSE);
 
     if (field[x][y] == MINE) {
-        set_button_label(GTK_BUTTON(buttons[x][y]), "B");
-        g_print("Game Over! You hit a mine at (%d, %d).\n", x, y);
+        lose();
         return;
     }
 
@@ -139,12 +142,15 @@ void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) 
     }
 }
 
-void lose() {
 
-}
+
 
 void win() {
 
+}
+
+void on_game_window_destroy(GtkWidget* widget, gpointer data) {
+    g_source_remove(timer_id);
 }
 
 void start_minesweeper_game() {
@@ -184,6 +190,8 @@ void start_minesweeper_game() {
 
     update_mine_counter();
     timer_id = g_timeout_add(1000, update_timer, NULL);
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
+    g_signal_connect(window, "destroy", G_CALLBACK(on_game_window_destroy), NULL);
+
     gtk_widget_show_all(window);
 }
