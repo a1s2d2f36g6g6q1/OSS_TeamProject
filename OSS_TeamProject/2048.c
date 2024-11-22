@@ -25,7 +25,7 @@ void initialize_grid(int size){
     }
 }
 
-void add_random_title(){
+void add_random_tile(){
     int** empty_tiles = (int**)malloc((grid_size * grid_size) * sizeof(int*));
 int empty_count = 0;
 
@@ -45,9 +45,13 @@ if (empty_count > 0) {
     grid[tile[0]][tile[1]] = (rand() % 2 + 1) * 2;  // 2 또는 4 추가
 }
 }
-}
 
 void start_2048_game() {
+
+    initialize_grid(grid_size);
+    add_random_tile();
+    add_random_tile();
+
     GtkWidget *window;
     gtk_init(NULL, NULL);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
