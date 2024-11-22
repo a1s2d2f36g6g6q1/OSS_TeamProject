@@ -25,6 +25,7 @@ void initialize_grid(int size){
     }
 }
 
+// 새로운 타일 생성
 void add_random_title(){
     int** empty_tiles = (int**)malloc((grid_size * grid_size) * sizeof(int*));
 int empty_count = 0;
@@ -44,8 +45,13 @@ if (empty_count > 0) {
     int* tile = empty_tiles[rand() % empty_count];
     grid[tile[0]][tile[1]] = (rand() % 2 + 1) * 2;  // 2 또는 4 추가
 }
+    // 동적 메모리 해제
+for (int i = 0; i < empty_count; i++) {
+    free(empty_tiles[i]);
 }
+free(empty_tiles);
 }
+
 
 void start_2048_game() {
     GtkWidget *window;
