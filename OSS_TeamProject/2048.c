@@ -62,7 +62,7 @@ int move_tiles(int dx, int dy){
         int y = (dy == 1) ? (grid_size - 1 - j) : j;
 
         if (grid[x][y] != 0) {
-            int nx, ny;  
+            int nx = x, ny = y;  
             while (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
                    grid[nx + dx][ny + dy] == 0) {  
                 nx += dx;
