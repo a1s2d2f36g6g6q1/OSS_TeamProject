@@ -8,11 +8,11 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/2048/2048.c" "CMakeFiles/MyCExecutable.dir/2048/2048.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/2048/2048.c.o.d"
-  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/BrickBreaker/Brickbreaker.c" "CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o.d"
-  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/MineSweeper/Minesweeper.c" "CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o.d"
-  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/Tetris/Tetris.c" "CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o.d"
-  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/main.c" "CMakeFiles/MyCExecutable.dir/main.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/main.c.o.d"
+  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/2048.c" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o.d"
+  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/BP.c" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o.d"
+  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/Tetris.c" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o.d"
+  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/main.c" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o.d"
+  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/mine.c" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -26,6 +26,14 @@ void initialize_grid(int size){
     }
 }
 
+//동적 그리드 메모리 해제
+void free_grid(int size) {
+    for (int i = 0; i < size; i++) {
+        free(grid[i]);
+    }
+    free(grid);
+}
+
 // 새로운 타일 생성
 void add_random_tile(){
     int** empty_tiles = (int**)malloc((grid_size * grid_size) * sizeof(int*));
@@ -51,6 +59,10 @@ for (int i = 0; i < empty_count; i++) {
     free(empty_tiles[i]);
 }
 free(empty_tiles);
+}
+
+void set_title_color(cario_t* cr, int value){
+    
 }
 
 //타일 이동 및 합치기 함수
