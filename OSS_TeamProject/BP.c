@@ -1,7 +1,6 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <time.h>
-#include "games.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -125,36 +124,41 @@ void apply_item_effect(ItemType type);
 void update_items();
 void draw_items(cairo_t *cr);
 
-void start_breakout_game_BP(GtkWidget* widget, gpointer data) {
-    GtkStack* stack = GTK_STACK(data);
-    gtk_stack_set_visible_child_name(stack, "brickbreaker_screen");
-}
-
 // 메인 함수
-GtkWidget* create_brickbreaker_screen(GtkStack* stack) {
-    GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+void start_breakout_game_BP()
+{
+    // GTK UI 초기화
+    GtkWidget *window;
+    GtkWidget *drawing_area;
 
-    GtkWidget* drawing_area = gtk_drawing_area_new();
-    gtk_widget_set_size_request(drawing_area, WINDOW_WIDTH, WINDOW_HEIGHT);
-    gtk_box_pack_start(GTK_BOX(vbox), drawing_area, TRUE, TRUE, 5);
-    g_signal_connect(drawing_area, "draw", G_CALLBACK(on_draw_event), NULL); // on_draw_event 연결
+    // GTK 라이브러리 초기화
+    gtk_init(NULL, NULL);
 
-    // 키보드 이벤트 처리
-    g_signal_connect(gtk_widget_get_toplevel(drawing_area), "key-press-event", G_CALLBACK(on_key_press), NULL);
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);                                 // 창 생성
+    gtk_window_set_title(GTK_WINDOW(window), "Breakout Game");                    // 창 제목 설정
+    gtk_window_set_default_size(GTK_WINDOW(window), WINDOW_WIDTH, WINDOW_HEIGHT); // 창 크기 설정
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);         // 창 닫기 버튼을 누르면 프로그램 종료
 
-    GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
-    gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 5);
-    g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
+    drawing_area = gtk_drawing_area_new();                                   // 그리기 영역 생성
+    gtk_container_add(GTK_CONTAINER(window), drawing_area);                  // 창에 그리기 영역 추가
+    g_signal_connect(drawing_area, "draw", G_CALLBACK(on_draw_event), NULL); // 그리기 이벤트 처리
 
-    init_game(); // 벽돌깨기 초기화
+    g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), NULL); // 키보드 입력 이벤트 처리
 
-    // 타이머 설정
-    TimerData* timer_data = g_new(TimerData, 1);
+    init_game(); // 게임 초기화
+
+    // TimerData 구조체 초기화
+    TimerData *timer_data = g_new(TimerData, 1);
     timer_data->drawing_area = drawing_area;
     timer_data->valid = TRUE;
+
+    // 타이머 설정 (게임 루프)
     g_timeout_add_full(G_PRIORITY_DEFAULT, 16, on_timeout, timer_data, (GDestroyNotify)g_free);
 
-    return vbox;
+    gtk_widget_show_all(window); // 모든 위젯을 표시
+    gtk_main();                  // GTK 메인 루프 시작
+
+    return 0;
 }
 
 // 게임 초기화 함수

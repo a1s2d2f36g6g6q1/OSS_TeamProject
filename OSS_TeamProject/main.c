@@ -81,7 +81,7 @@ GtkWidget* create_main_menu(GtkStack* stack) {
 
     GtkWidget* BP_button = gtk_button_new_with_label("Play BrickBreak");
     gtk_box_pack_start(GTK_BOX(vbox), BP_button, FALSE, FALSE, 5);
-    g_signal_connect(BP_button, "clicked", G_CALLBACK(start_breakout_game_BP), stack);
+    g_signal_connect(BP_button, "clicked", G_CALLBACK(start_breakout_game_BP), NULL);
 
     GtkWidget* minesweeper_button = gtk_button_new_with_label("Play Minesweeper");
     gtk_box_pack_start(GTK_BOX(vbox), minesweeper_button, FALSE, FALSE, 5);
@@ -109,14 +109,10 @@ int main(int argc, char* argv[]) {
     GtkWidget* login_screen = create_login_screen(stack);
     GtkWidget* main_menu = create_main_menu(stack);
     GtkWidget* minesweeper_screen = create_minesweeper_screen(stack);
-    GtkWidget* brickbreaker_screen = create_brickbreaker_screen(stack);
-
 
     gtk_stack_add_named(stack, login_screen, "login_screen");
     gtk_stack_add_named(stack, main_menu, "main_menu");
     gtk_stack_add_named(stack, minesweeper_screen, "minesweeper_screen");
-    gtk_stack_add_named(stack, brickbreaker_screen, "brickbreaker_screen");
-    
 
     gtk_stack_set_visible_child_name(stack, "login_screen");
 
