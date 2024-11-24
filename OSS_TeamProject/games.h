@@ -8,4 +8,12 @@ void start_minesweeper_game();
 
 void switch_to_main_menu(GtkWidget* widget, gpointer data);
 GtkWidget* create_minesweeper_screen(GtkStack* stack);
+
+extern char username[50];
+
+struct Memory {
+    char* response;
+    size_t size;
+};
+
 #endif
