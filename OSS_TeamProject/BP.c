@@ -28,6 +28,8 @@ typedef struct
 {
     float x, y;         // 벽돌의 위치
     gboolean destroyed; // 벽돌이 파괴됐는지 여부
+    int durability;     // 벽돌의 내구도
+    int points;         // 벽돌의 점수
 } Brick;
 
 // 타이머 콜백을 위한 구조체 정의
@@ -44,6 +46,8 @@ Brick bricks[NUM_BRICKS];
 static gboolean is_fullscreen = FALSE;
 static int score = 0;
 static int lives = 3;
+static float speed_multiplier = 1.0;
+static time_t game_start_time;
 
 // 함수 선언
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer data);
@@ -105,8 +109,8 @@ void init_game()
     // 공 초기화
     ball.x = WINDOW_WIDTH / 2;
     ball.y = WINDOW_HEIGHT - 100;
-    ball.dx = 6;
-    ball.dy = -6;
+    ball.dx = 6 * speed_multiplier;
+    ball.dy = -6 * speed_multiplier;
 
     // 패들 초기화
     paddle.x = (WINDOW_WIDTH - PADDLE_WIDTH) / 2;
@@ -116,10 +120,26 @@ void init_game()
     // 벽돌 초기화
     for (int i = 0; i < NUM_BRICKS; i++)
     {
-        bricks[i].x = (i % 8) * (BRICK_WIDTH + 10) + 50; // x 위치 계산
-        bricks[i].y = (i / 8) * (BRICK_HEIGHT + 5) + 50; // y 위치 계산
-        bricks[i].destroyed = FALSE;                     // 벽돌 파괴 여부 초기화
+        bricks[i].x = (i % 8) * (BRICK_WIDTH + 10) + 50;
+        bricks[i].y = (i / 8) * (BRICK_HEIGHT + 5) + 50;
+        bricks[i].destroyed = FALSE;
+
+        // 랜덤하게 강화 벽돌 생성 (20% 확률)
+        if (rand() % 5 == 0)
+        {
+            bricks[i].durability = 2 + rand() % 2;        // 2-3의 내구도
+            bricks[i].points = 20 * bricks[i].durability; // 내구도에 따른 점수
+        }
+        else
+        {
+            bricks[i].durability = 1; // 일반 벽돌
+            bricks[i].points = 10;    // 기본 점수
+        }
     }
+
+    // 게임 시작 시간 초기화
+    game_start_time = time(NULL);
+    speed_multiplier = 1.0;
 }
 
 // 게임 시작 화면 그리기
@@ -189,11 +209,23 @@ void draw_paddle(cairo_t *cr)
 // 벽돌 그리기 함수
 void draw_bricks(cairo_t *cr)
 {
-    cairo_set_source_rgb(cr, 0, 1, 0); // 벽돌 색 초록색
     for (int i = 0; i < NUM_BRICKS; i++)
     {
         if (!bricks[i].destroyed)
         {
+            // 내구도에 따른 벽돌 색상 설정
+            switch (bricks[i].durability)
+            {
+            case 3:
+                cairo_set_source_rgb(cr, 1, 0, 0); // 빨강 (가장 강한 벽돌)
+                break;
+            case 2:
+                cairo_set_source_rgb(cr, 1, 0.5, 0); // 주황
+                break;
+            default:
+                cairo_set_source_rgb(cr, 0, 1, 0); // 초록 (일반 벽돌)
+            }
+
             cairo_rectangle(cr, bricks[i].x, bricks[i].y, BRICK_WIDTH, BRICK_HEIGHT);
             cairo_fill(cr);
         }
@@ -223,8 +255,17 @@ static gboolean on_timeout(gpointer user_data)
 // 공 이동 함수
 void move_ball()
 {
-    ball.x += ball.dx;
-    ball.y += ball.dy;
+    // 시간에 따른 속도 증가
+    time_t current_time = time(NULL);
+    float elapsed_time = difftime(current_time, game_start_time);
+    speed_multiplier = 1.0 + (elapsed_time / 30.0) * 0.5; // 30초마다 50%씩 속도 증가
+
+    // 속도에 multiplier 적용
+    float current_dx = ball.dx > 0 ? 6 * speed_multiplier : -6 * speed_multiplier;
+    float current_dy = ball.dy > 0 ? 6 * speed_multiplier : -6 * speed_multiplier;
+
+    ball.x += current_dx;
+    ball.y += current_dy;
 
     // 벽에 부딪히면 반사
     if (ball.x - BALL_RADIUS < 0 || ball.x + BALL_RADIUS > WINDOW_WIDTH)
@@ -279,9 +320,20 @@ void check_collisions()
                 ball.y - BALL_RADIUS < bricks[i].y + BRICK_HEIGHT &&
                 ball.y + BALL_RADIUS > bricks[i].y)
             {
-                bricks[i].destroyed = TRUE;
-                ball.dy = -ball.dy;
-                score += 10; // 벽돌 파괴 시 점수 추가
+
+                bricks[i].durability--;
+
+                if (bricks[i].durability <= 0)
+                {
+                    bricks[i].destroyed = TRUE;
+                    score += bricks[i].points; // 점수 추가
+                }
+
+                ball.dy = -ball.dy; // 공 반사
+
+                // 벽돌 파괴 시 속도 약간 증가 (추가 난이도)
+                speed_multiplier += 0.05;
+                break; // 한 번에 하나의 벽돌만 처리
             }
         }
     }
@@ -301,8 +353,8 @@ void reset_ball()
     {
         ball.x = WINDOW_WIDTH / 2;
         ball.y = WINDOW_HEIGHT - 100;
-        ball.dx = 6;
-        ball.dy = -6;
+        ball.dx = 6 * speed_multiplier; // 현재 속도 유지
+        ball.dy = -6 * speed_multiplier;
     }
 }
 
