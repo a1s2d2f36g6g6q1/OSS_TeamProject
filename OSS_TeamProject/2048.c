@@ -26,6 +26,14 @@ void initialize_grid(int size){
     }
 }
 
+//동적 그리드 메모리 해제
+void free_grid(int size) {
+    for (int i = 0; i < size; i++) {
+        free(grid[i]);
+    }
+    free(grid);
+}
+
 // 새로운 타일 생성
 void add_random_tile(){
     int** empty_tiles = (int**)malloc((grid_size * grid_size) * sizeof(int*));
@@ -51,6 +59,10 @@ for (int i = 0; i < empty_count; i++) {
     free(empty_tiles[i]);
 }
 free(empty_tiles);
+}
+
+void set_title_color(cairo_t* cr, int value){
+    
 }
 
 //타일 이동 및 합치기 함수
@@ -87,6 +99,24 @@ int move_tiles(int dx, int dy){
 
 return moved;
 
+}
+// 게임 오버 상태 체크 함수
+bool is_game_over() {
+    // 빈 칸 확인
+    for (int i = 0; i < grid_size; i++) {
+        for (int j = 0; j < grid_size; j++) {
+            if (grid[i][j] == 0) {
+                return false; // 빈 칸 존재
+            }
+
+            // 인접 타일 합칠 수 있는지 확인
+            if (i > 0 && grid[i][j] == grid[i - 1][j]) return false; // 위
+            if (i < grid_size - 1 && grid[i][j] == grid[i + 1][j]) return false; // 아래
+            if (j > 0 && grid[i][j] == grid[i][j - 1]) return false; // 왼쪽
+            if (j < grid_size - 1 && grid[i][j] == grid[i][j + 1]) return false; // 오른쪽
+        }
+    }
+    return true; // 더 이상 움직일 수 없음
 }
 
 void start_2048_game() {
