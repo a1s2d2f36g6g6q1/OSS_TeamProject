@@ -14,8 +14,9 @@ add_definitions(${GTK3_CFLAGS_OTHER})
 add_executable(MyCExecutable main.c
     Tetris.c
     2048.c
-    Brickbreaker.c
-    Minesweeper.c
-    )
+    mine.c
+    BP.c
+        OSS_TeamProject/Tetris.c
+)
 
 target_link_libraries(MyCExecutable ${GTK3_LIBRARIES} ${CAIRO_LIBRARIES})
