@@ -61,7 +61,7 @@ for (int i = 0; i < empty_count; i++) {
 free(empty_tiles);
 }
 
-void set_title_color(cario_t* cr, int value){
+void set_title_color(cairo_t* cr, int value){
     
 }
 
