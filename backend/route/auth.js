@@ -34,5 +34,26 @@ router.post('/login', (req, res) => {
     });
 });
 
+router.post('/save-score', (req, res) => {
+    const { username, game, score } = req.body;
+
+    const query = `
+        INSERT INTO scores (user_id, username, game, high_score)
+        VALUES (
+            (SELECT id FROM users WHERE username = ?),
+            ?, ?, ?
+        )
+        ON DUPLICATE KEY UPDATE high_score = GREATEST(high_score, ?);
+    `;
+
+    db.query(query, [username, username, game, score, score], (err) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ success: false, message: 'Database error' });
+        }
+        res.json({ success: true, message: 'Score updated successfully' });
+    });
+});
+
 // 라우터 객체 내보내기
 module.exports = router;
