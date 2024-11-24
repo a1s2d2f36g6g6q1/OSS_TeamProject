@@ -30,6 +30,13 @@ typedef struct
     gboolean destroyed; // 벽돌이 파괴됐는지 여부
 } Brick;
 
+// 타이머 콜백을 위한 구조체 정의
+typedef struct
+{
+    GtkWidget *drawing_area;
+    gboolean valid;
+} TimerData;
+
 // 전역 변수 선언
 Ball ball;
 Paddle paddle;
@@ -37,7 +44,7 @@ Brick bricks[NUM_BRICKS];
 
 // 함수 선언
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer data);
-static gboolean on_timeout(gpointer data);
+static gboolean on_timeout(gpointer user_data);
 static void on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data);
 static gboolean game_started = FALSE; // 게임 시작 여부
 static gboolean paused = FALSE;       // 게임 일시 정지 상태
@@ -73,8 +80,13 @@ void start_breakout_game_BP()
 
     init_game(); // 게임 초기화
 
+    // TimerData 구조체 초기화
+    TimerData *timer_data = g_new(TimerData, 1);
+    timer_data->drawing_area = drawing_area;
+    timer_data->valid = TRUE;
+
     // 타이머 설정 (게임 루프)
-    g_timeout_add(16, on_timeout, drawing_area); // 약 60 FPS
+    g_timeout_add_full(G_PRIORITY_DEFAULT, 16, on_timeout, timer_data, (GDestroyNotify)g_free);
 
     gtk_widget_show_all(window); // 모든 위젯을 표시
     gtk_main();                  // GTK 메인 루프 시작
@@ -189,14 +201,21 @@ void draw_bricks(cairo_t *cr)
 }
 
 // 게임 루프 (타이머 설정)
-static gboolean on_timeout(gpointer data)
+static gboolean on_timeout(gpointer user_data)
 {
+    TimerData *data = (TimerData *)user_data;
+
+    if (!data || !data->valid || !GTK_IS_WIDGET(data->drawing_area))
+    {
+        return FALSE; // 타이머 중지
+    }
+
     if (!paused)
     {
-        move_ball();                             // 공 이동
-        move_paddle();                           // 패들 이동
-        check_collisions();                      // 충돌 검사
-        gtk_widget_queue_draw(GTK_WIDGET(data)); // 화면 업데이트
+        move_ball();
+        move_paddle();
+        check_collisions();
+        gtk_widget_queue_draw(data->drawing_area);
     }
     return TRUE;
 }
