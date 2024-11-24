@@ -61,6 +61,10 @@ for (int i = 0; i < empty_count; i++) {
 free(empty_tiles);
 }
 
+void set_title_color(cario_t* cr, int value){
+    
+}
+
 //타일 이동 및 합치기 함수
 int move_tiles(int dx, int dy){
     int moved = 0;
