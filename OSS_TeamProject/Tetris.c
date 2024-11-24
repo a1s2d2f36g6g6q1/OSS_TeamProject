@@ -11,6 +11,7 @@ int grid[GRID_HEIGHT][GRID_WIDTH] = {0}; // 게임판 데이터
 int current_tetromino[4][4];            // 현재 도형
 int current_x = GRID_WIDTH / 2 - 2;     // 도형의 X 위치
 int current_y = 0;                      // 도형의 Y 위치
+int game_speed = 500;
 
 // 테트리스 도형 정의
 int tetrominos[7][4][4] = {
@@ -111,54 +112,127 @@ gboolean draw_game_board(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 // 게임 루프
 gboolean game_loop(GtkWidget *widget) {
-    current_y++;
+    static int tick_counter = 0; // 호출 카운터 (속도 제어)
 
-    // 충돌 검사
-    for (int y = 0; y < 4; y++) {
-        for (int x = 0; x < 4; x++) {
-            if (current_tetromino[y][x] == 1) {
-                int new_y = current_y + y;
-                int new_x = current_x + x;
+    // 호출 빈도에 따라 동작 (tick_counter로 속도 조절)
+    if (tick_counter % (500 / game_speed) == 0) {
+        gboolean can_move = TRUE;
 
-                if (new_y >= GRID_HEIGHT || (new_y >= 0 && grid[new_y][new_x] != 0)) {
-                    current_y--; // 충돌 시 원래 위치로 되돌림
+        // 1. 충돌 여부 검사
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 4; x++) {
+                if (current_tetromino[y][x] == 1) {
+                    int new_y = current_y + y + 1;
+                    int new_x = current_x + x;
 
-                    // 현재 도형을 게임판에 고정
-                    for (int i = 0; i < 4; i++) {
-                        for (int j = 0; j < 4; j++) {
-                            if (current_tetromino[i][j] == 1) {
-                                grid[current_y + i][current_x + j] = 1;
-                            }
-                        }
+                    if (new_y >= GRID_HEIGHT || grid[new_y][new_x] != 0) {
+                        can_move = FALSE;
+                        break;
                     }
-
-                    // 새로운 도형 생성
-                    spawn_new_tetromino();
-                    return TRUE;
                 }
             }
+            if (!can_move) break;
         }
+
+        // 2. 도형 이동 또는 고정
+        if (can_move) {
+            current_y++; // 아래로 이동
+        } else {
+            // 도형을 게임판에 고정
+            for (int y = 0; y < 4; y++) {
+                for (int x = 0; x < 4; x++) {
+                    if (current_tetromino[y][x] == 1) {
+                        grid[current_y + y][current_x + x] = 1; // 게임판에 블록 추가
+                    }
+                }
+            }
+            spawn_new_tetromino(); // 새로운 도형 생성
+        }
+
+        gtk_widget_queue_draw(widget); // 화면 갱신 요청
     }
 
-    gtk_widget_queue_draw(widget);
-    return TRUE;
+    tick_counter++;
+    return TRUE; // 루프 유지
 }
 
 // 키 입력 처리
 gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data) {
-    switch (event->keyval) {
+    switch (event->keyval)
+    {
     case GDK_KEY_Left: // 왼쪽 이동
-        current_x = (current_x > 0) ? current_x - 1 : current_x;
+        {
+            gboolean can_move = TRUE;
+            for (int y = 0; y < 4; y++) {
+                for (int x = 0; x < 4; x++) {
+                    if (current_tetromino[y][x] == 1) {
+                        int new_x = current_x + x - 1; // 한 칸 왼쪽으로 이동
+                        int new_y = current_y + y;
+
+                        if (new_x < 0 || grid[new_y][new_x] != 0) { // 벽 또는 블록과 충돌
+                            can_move = FALSE;
+                            break;
+                        }
+                    }
+                }
+                if (!can_move) break;
+            }
+            if (can_move) {
+                current_x--; // 왼쪽으로 이동
+            }
+        }
         break;
     case GDK_KEY_Right: // 오른쪽 이동
-        current_x = (current_x < GRID_WIDTH - 4) ? current_x + 1 : current_x;
+        {
+            gboolean can_move = TRUE;
+            for (int y = 0; y < 4; y++) {
+                for (int x = 0; x < 4; x++) {
+                    if (current_tetromino[y][x] == 1) {
+                        int new_x = current_x + x + 1;
+                        if (new_x >= GRID_WIDTH || grid[current_y + y][new_x] != 0) {
+                            can_move = FALSE;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (can_move) {
+                current_x++;
+            }
+        }
         break;
     case GDK_KEY_Down: // 아래로 빠르게
-        current_y++;
+        {
+            gboolean can_move = TRUE;
+            for (int y = 0; y < 4; y++) {
+                for (int x = 0; x < 4; x++) {
+                    if (current_tetromino[y][x] == 1) {
+                        int new_y = current_y + y + 1;
+                        if (new_y >= GRID_HEIGHT || grid[new_y][current_x + x] != 0) {
+                            can_move = FALSE;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (can_move) {
+                current_y++;
+            } else {
+                // 충돌 시 도형 고정 및 새 도형 생성
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        if (current_tetromino[i][j] == 1) {
+                            grid[current_y + i][current_x + j] = 1;
+                        }
+                    }
+                }
+                spawn_new_tetromino();
+            }
+        }
         break;
+        gtk_widget_queue_draw(widget);
+        return TRUE;
     }
-    gtk_widget_queue_draw(widget);
-    return TRUE;
 }
 
 // 테트리스 게임 시작
