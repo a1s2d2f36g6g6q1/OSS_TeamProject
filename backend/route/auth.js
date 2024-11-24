@@ -55,5 +55,25 @@ router.post('/save-score', (req, res) => {
     });
 });
 
+router.get('/get-high-score', (req, res) => {
+    const { username, game } = req.query;
+
+    if (!username || !game) {
+        return res.status(400).json({ success: false, message: 'Username and game are required' });
+    }
+
+    const query = 'SELECT high_score FROM scores WHERE username = ? AND game = ?';
+
+    db.query(query, [username, game], (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ success: false, message: 'Database error' });
+        }
+
+        const highScore = results.length > 0 ? results[0].high_score : 0;
+        res.json({ success: true, highScore });
+    });
+});
+
 // 라우터 객체 내보내기
 module.exports = router;
