@@ -129,125 +129,125 @@ MyCExecutable/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/build
 .PHONY : MyCExecutable/fast
 
-2048/2048.o: 2048/2048.c.o
-.PHONY : 2048/2048.o
+OSS_TeamProject/2048.o: OSS_TeamProject/2048.c.o
+.PHONY : OSS_TeamProject/2048.o
 
 # target to build an object file
-2048/2048.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/2048/2048.c.o
-.PHONY : 2048/2048.c.o
+OSS_TeamProject/2048.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o
+.PHONY : OSS_TeamProject/2048.c.o
 
-2048/2048.i: 2048/2048.c.i
-.PHONY : 2048/2048.i
+OSS_TeamProject/2048.i: OSS_TeamProject/2048.c.i
+.PHONY : OSS_TeamProject/2048.i
 
 # target to preprocess a source file
-2048/2048.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/2048/2048.c.i
-.PHONY : 2048/2048.c.i
+OSS_TeamProject/2048.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.i
+.PHONY : OSS_TeamProject/2048.c.i
 
-2048/2048.s: 2048/2048.c.s
-.PHONY : 2048/2048.s
+OSS_TeamProject/2048.s: OSS_TeamProject/2048.c.s
+.PHONY : OSS_TeamProject/2048.s
 
 # target to generate assembly for a file
-2048/2048.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/2048/2048.c.s
-.PHONY : 2048/2048.c.s
+OSS_TeamProject/2048.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.s
+.PHONY : OSS_TeamProject/2048.c.s
 
-BrickBreaker/Brickbreaker.o: BrickBreaker/Brickbreaker.c.o
-.PHONY : BrickBreaker/Brickbreaker.o
+OSS_TeamProject/BP.o: OSS_TeamProject/BP.c.o
+.PHONY : OSS_TeamProject/BP.o
 
 # target to build an object file
-BrickBreaker/Brickbreaker.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o
-.PHONY : BrickBreaker/Brickbreaker.c.o
+OSS_TeamProject/BP.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o
+.PHONY : OSS_TeamProject/BP.c.o
 
-BrickBreaker/Brickbreaker.i: BrickBreaker/Brickbreaker.c.i
-.PHONY : BrickBreaker/Brickbreaker.i
+OSS_TeamProject/BP.i: OSS_TeamProject/BP.c.i
+.PHONY : OSS_TeamProject/BP.i
 
 # target to preprocess a source file
-BrickBreaker/Brickbreaker.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.i
-.PHONY : BrickBreaker/Brickbreaker.c.i
+OSS_TeamProject/BP.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.i
+.PHONY : OSS_TeamProject/BP.c.i
 
-BrickBreaker/Brickbreaker.s: BrickBreaker/Brickbreaker.c.s
-.PHONY : BrickBreaker/Brickbreaker.s
+OSS_TeamProject/BP.s: OSS_TeamProject/BP.c.s
+.PHONY : OSS_TeamProject/BP.s
 
 # target to generate assembly for a file
-BrickBreaker/Brickbreaker.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.s
-.PHONY : BrickBreaker/Brickbreaker.c.s
+OSS_TeamProject/BP.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.s
+.PHONY : OSS_TeamProject/BP.c.s
 
-MineSweeper/Minesweeper.o: MineSweeper/Minesweeper.c.o
-.PHONY : MineSweeper/Minesweeper.o
+OSS_TeamProject/Tetris.o: OSS_TeamProject/Tetris.c.o
+.PHONY : OSS_TeamProject/Tetris.o
 
 # target to build an object file
-MineSweeper/Minesweeper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o
-.PHONY : MineSweeper/Minesweeper.c.o
+OSS_TeamProject/Tetris.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o
+.PHONY : OSS_TeamProject/Tetris.c.o
 
-MineSweeper/Minesweeper.i: MineSweeper/Minesweeper.c.i
-.PHONY : MineSweeper/Minesweeper.i
+OSS_TeamProject/Tetris.i: OSS_TeamProject/Tetris.c.i
+.PHONY : OSS_TeamProject/Tetris.i
 
 # target to preprocess a source file
-MineSweeper/Minesweeper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.i
-.PHONY : MineSweeper/Minesweeper.c.i
+OSS_TeamProject/Tetris.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.i
+.PHONY : OSS_TeamProject/Tetris.c.i
 
-MineSweeper/Minesweeper.s: MineSweeper/Minesweeper.c.s
-.PHONY : MineSweeper/Minesweeper.s
+OSS_TeamProject/Tetris.s: OSS_TeamProject/Tetris.c.s
+.PHONY : OSS_TeamProject/Tetris.s
 
 # target to generate assembly for a file
-MineSweeper/Minesweeper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.s
-.PHONY : MineSweeper/Minesweeper.c.s
+OSS_TeamProject/Tetris.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.s
+.PHONY : OSS_TeamProject/Tetris.c.s
 
-Tetris/Tetris.o: Tetris/Tetris.c.o
-.PHONY : Tetris/Tetris.o
+OSS_TeamProject/main.o: OSS_TeamProject/main.c.o
+.PHONY : OSS_TeamProject/main.o
 
 # target to build an object file
-Tetris/Tetris.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o
-.PHONY : Tetris/Tetris.c.o
+OSS_TeamProject/main.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o
+.PHONY : OSS_TeamProject/main.c.o
 
-Tetris/Tetris.i: Tetris/Tetris.c.i
-.PHONY : Tetris/Tetris.i
+OSS_TeamProject/main.i: OSS_TeamProject/main.c.i
+.PHONY : OSS_TeamProject/main.i
 
 # target to preprocess a source file
-Tetris/Tetris.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.i
-.PHONY : Tetris/Tetris.c.i
+OSS_TeamProject/main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.i
+.PHONY : OSS_TeamProject/main.c.i
 
-Tetris/Tetris.s: Tetris/Tetris.c.s
-.PHONY : Tetris/Tetris.s
+OSS_TeamProject/main.s: OSS_TeamProject/main.c.s
+.PHONY : OSS_TeamProject/main.s
 
 # target to generate assembly for a file
-Tetris/Tetris.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.s
-.PHONY : Tetris/Tetris.c.s
+OSS_TeamProject/main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.s
+.PHONY : OSS_TeamProject/main.c.s
 
-main.o: main.c.o
-.PHONY : main.o
+OSS_TeamProject/mine.o: OSS_TeamProject/mine.c.o
+.PHONY : OSS_TeamProject/mine.o
 
 # target to build an object file
-main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/main.c.o
-.PHONY : main.c.o
+OSS_TeamProject/mine.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o
+.PHONY : OSS_TeamProject/mine.c.o
 
-main.i: main.c.i
-.PHONY : main.i
+OSS_TeamProject/mine.i: OSS_TeamProject/mine.c.i
+.PHONY : OSS_TeamProject/mine.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/main.c.i
-.PHONY : main.c.i
+OSS_TeamProject/mine.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.i
+.PHONY : OSS_TeamProject/mine.c.i
 
-main.s: main.c.s
-.PHONY : main.s
+OSS_TeamProject/mine.s: OSS_TeamProject/mine.c.s
+.PHONY : OSS_TeamProject/mine.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/main.c.s
-.PHONY : main.c.s
+OSS_TeamProject/mine.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.s
+.PHONY : OSS_TeamProject/mine.c.s
 
 # Help Target
 help:
@@ -258,21 +258,21 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... MyCExecutable"
-	@echo "... 2048/2048.o"
-	@echo "... 2048/2048.i"
-	@echo "... 2048/2048.s"
-	@echo "... BrickBreaker/Brickbreaker.o"
-	@echo "... BrickBreaker/Brickbreaker.i"
-	@echo "... BrickBreaker/Brickbreaker.s"
-	@echo "... MineSweeper/Minesweeper.o"
-	@echo "... MineSweeper/Minesweeper.i"
-	@echo "... MineSweeper/Minesweeper.s"
-	@echo "... Tetris/Tetris.o"
-	@echo "... Tetris/Tetris.i"
-	@echo "... Tetris/Tetris.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... OSS_TeamProject/2048.o"
+	@echo "... OSS_TeamProject/2048.i"
+	@echo "... OSS_TeamProject/2048.s"
+	@echo "... OSS_TeamProject/BP.o"
+	@echo "... OSS_TeamProject/BP.i"
+	@echo "... OSS_TeamProject/BP.s"
+	@echo "... OSS_TeamProject/Tetris.o"
+	@echo "... OSS_TeamProject/Tetris.i"
+	@echo "... OSS_TeamProject/Tetris.s"
+	@echo "... OSS_TeamProject/main.o"
+	@echo "... OSS_TeamProject/main.i"
+	@echo "... OSS_TeamProject/main.s"
+	@echo "... OSS_TeamProject/mine.o"
+	@echo "... OSS_TeamProject/mine.i"
+	@echo "... OSS_TeamProject/mine.s"
 .PHONY : help
 
 

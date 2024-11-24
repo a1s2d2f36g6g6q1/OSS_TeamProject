@@ -72,92 +72,92 @@ include CMakeFiles/MyCExecutable.dir/flags.make
 CMakeFiles/MyCExecutable.dir/codegen:
 .PHONY : CMakeFiles/MyCExecutable.dir/codegen
 
-CMakeFiles/MyCExecutable.dir/main.c.o: CMakeFiles/MyCExecutable.dir/flags.make
-CMakeFiles/MyCExecutable.dir/main.c.o: main.c
-CMakeFiles/MyCExecutable.dir/main.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/MyCExecutable.dir/main.c.o"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/main.c.o -MF CMakeFiles/MyCExecutable.dir/main.c.o.d -o CMakeFiles/MyCExecutable.dir/main.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/main.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o: CMakeFiles/MyCExecutable.dir/flags.make
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o: OSS_TeamProject/main.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o -MF CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o.d -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/main.c
 
-CMakeFiles/MyCExecutable.dir/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/main.c.i"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/main.c > CMakeFiles/MyCExecutable.dir/main.c.i
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/main.c > CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.i
 
-CMakeFiles/MyCExecutable.dir/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/main.c.s"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/main.c -o CMakeFiles/MyCExecutable.dir/main.c.s
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/main.c -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.s
 
-CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o: CMakeFiles/MyCExecutable.dir/flags.make
-CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o: Tetris/Tetris.c
-CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o -MF CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o.d -o CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/Tetris/Tetris.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o: CMakeFiles/MyCExecutable.dir/flags.make
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o: OSS_TeamProject/Tetris.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o -MF CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o.d -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/Tetris.c
 
-CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.i"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/Tetris/Tetris.c > CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.i
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/Tetris.c > CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.i
 
-CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.s"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/Tetris/Tetris.c -o CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.s
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/Tetris.c -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.s
 
-CMakeFiles/MyCExecutable.dir/2048/2048.c.o: CMakeFiles/MyCExecutable.dir/flags.make
-CMakeFiles/MyCExecutable.dir/2048/2048.c.o: 2048/2048.c
-CMakeFiles/MyCExecutable.dir/2048/2048.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/MyCExecutable.dir/2048/2048.c.o"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/2048/2048.c.o -MF CMakeFiles/MyCExecutable.dir/2048/2048.c.o.d -o CMakeFiles/MyCExecutable.dir/2048/2048.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/2048/2048.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o: CMakeFiles/MyCExecutable.dir/flags.make
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o: OSS_TeamProject/2048.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o -MF CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o.d -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/2048.c
 
-CMakeFiles/MyCExecutable.dir/2048/2048.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/2048/2048.c.i"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/2048/2048.c > CMakeFiles/MyCExecutable.dir/2048/2048.c.i
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/2048.c > CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.i
 
-CMakeFiles/MyCExecutable.dir/2048/2048.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/2048/2048.c.s"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/2048/2048.c -o CMakeFiles/MyCExecutable.dir/2048/2048.c.s
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/2048.c -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.s
 
-CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o: CMakeFiles/MyCExecutable.dir/flags.make
-CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o: BrickBreaker/Brickbreaker.c
-CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o -MF CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o.d -o CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/BrickBreaker/Brickbreaker.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o: CMakeFiles/MyCExecutable.dir/flags.make
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o: OSS_TeamProject/BP.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o -MF CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o.d -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/BP.c
 
-CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.i"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/BrickBreaker/Brickbreaker.c > CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.i
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/BP.c > CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.i
 
-CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.s"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/BrickBreaker/Brickbreaker.c -o CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.s
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/BP.c -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.s
 
-CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o: CMakeFiles/MyCExecutable.dir/flags.make
-CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o: MineSweeper/Minesweeper.c
-CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o -MF CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o.d -o CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/MineSweeper/Minesweeper.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o: CMakeFiles/MyCExecutable.dir/flags.make
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o: OSS_TeamProject/mine.c
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o: CMakeFiles/MyCExecutable.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o -MF CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o.d -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o -c /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/mine.c
 
-CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.i"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/MineSweeper/Minesweeper.c > CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.i
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/mine.c > CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.i
 
-CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.s"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/MineSweeper/Minesweeper.c -o CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.s
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/mine.c -o CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.s
 
 # Object files for target MyCExecutable
 MyCExecutable_OBJECTS = \
-"CMakeFiles/MyCExecutable.dir/main.c.o" \
-"CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o" \
-"CMakeFiles/MyCExecutable.dir/2048/2048.c.o" \
-"CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o" \
-"CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o"
+"CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o" \
+"CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o" \
+"CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o" \
+"CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o" \
+"CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o"
 
 # External object files for target MyCExecutable
 MyCExecutable_EXTERNAL_OBJECTS =
 
-MyCExecutable: CMakeFiles/MyCExecutable.dir/main.c.o
-MyCExecutable: CMakeFiles/MyCExecutable.dir/Tetris/Tetris.c.o
-MyCExecutable: CMakeFiles/MyCExecutable.dir/2048/2048.c.o
-MyCExecutable: CMakeFiles/MyCExecutable.dir/BrickBreaker/Brickbreaker.c.o
-MyCExecutable: CMakeFiles/MyCExecutable.dir/MineSweeper/Minesweeper.c.o
+MyCExecutable: CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o
+MyCExecutable: CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o
+MyCExecutable: CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o
+MyCExecutable: CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o
+MyCExecutable: CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o
 MyCExecutable: CMakeFiles/MyCExecutable.dir/build.make
 MyCExecutable: CMakeFiles/MyCExecutable.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable MyCExecutable"

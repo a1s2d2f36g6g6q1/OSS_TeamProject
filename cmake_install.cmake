@@ -1,3 +1,4 @@
+# Install script for directory: /Users/u4bi_/_Mac/Study/OSS_TeamProject
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
