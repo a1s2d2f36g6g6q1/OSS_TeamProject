@@ -7,4 +7,4 @@
 *.log
 *.recipe
 /OSS_TeamProject/x64/Debug
-/x64/Debug/OSS_TeamProject.exe
+*.exe
