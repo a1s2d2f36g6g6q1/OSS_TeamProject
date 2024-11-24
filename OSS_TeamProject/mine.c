@@ -111,7 +111,6 @@ void lose() {
     g_source_remove(timer_id);
 }
 
-
 void check_win_condition() {
     int unopened_cells = 0;
     for (int i = 0; i < FIELD_SIZE; i++) {
@@ -175,7 +174,6 @@ void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) 
         update_mine_counter();
     }
 }
-
 
 void on_game_window_destroy(GtkWidget* widget, gpointer data) {
     g_source_remove(timer_id); // 타이머 제거

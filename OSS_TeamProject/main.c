@@ -73,9 +73,15 @@ GtkWidget* create_main_menu(GtkStack* stack) {
 
     GtkWidget* tetris_button = gtk_button_new_with_label("Play Tetris");
     gtk_box_pack_start(GTK_BOX(vbox), tetris_button, FALSE, FALSE, 5);
+    g_signal_connect(tetris_button, "clicked", G_CALLBACK(start_tetris_game), NULL);
 
     GtkWidget* game2048_button = gtk_button_new_with_label("Play 2048");
     gtk_box_pack_start(GTK_BOX(vbox), game2048_button, FALSE, FALSE, 5);
+    g_signal_connect(game2048_button, "clicked", G_CALLBACK(start_2048_game), NULL);
+
+    GtkWidget* BP_button = gtk_button_new_with_label("Play BrickBreak");
+    gtk_box_pack_start(GTK_BOX(vbox), BP_button, FALSE, FALSE, 5);
+    g_signal_connect(BP_button, "clicked", G_CALLBACK(start_breakout_game_BP), NULL);
 
     GtkWidget* minesweeper_button = gtk_button_new_with_label("Play Minesweeper");
     gtk_box_pack_start(GTK_BOX(vbox), minesweeper_button, FALSE, FALSE, 5);
