@@ -2,6 +2,7 @@
 #include <gtk/gtk.h>
 #include <time.h>
 #include <stdbool.h>
+#include "games.h"
 
 #define FIELD_SIZE 16
 #define MINE -1
@@ -177,16 +178,11 @@ void on_button_clicked(GtkWidget* widget, GdkEventButton* event, gpointer data) 
 
 
 void on_game_window_destroy(GtkWidget* widget, gpointer data) {
-    g_source_remove(timer_id);
+    g_source_remove(timer_id); // 타이머 제거
 }
 
-void start_minesweeper_game() {
-    GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Minesweeper");
-    gtk_window_set_default_size(GTK_WINDOW(window), 600, 600);
-
+GtkWidget* create_minesweeper_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-    gtk_container_add(GTK_CONTAINER(window), vbox);
 
     GtkWidget* hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
     gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 5);
@@ -194,13 +190,11 @@ void start_minesweeper_game() {
     GtkWidget* grid = gtk_grid_new();
     gtk_box_pack_start(GTK_BOX(vbox), grid, TRUE, TRUE, 5);
 
-    mine_label = gtk_label_new(NULL);
+    mine_label = gtk_label_new("Mines: 40"); 
     gtk_box_pack_start(GTK_BOX(hbox), mine_label, FALSE, FALSE, 5);
 
-    timer_label = gtk_label_new(NULL);
+    timer_label = gtk_label_new("Time: 0"); 
     gtk_box_pack_end(GTK_BOX(hbox), timer_label, FALSE, FALSE, 5);
-
-    initialize_field();
 
     for (int i = 0; i < FIELD_SIZE; i++) {
         for (int j = 0; j < FIELD_SIZE; j++) {
@@ -212,13 +206,40 @@ void start_minesweeper_game() {
             gtk_widget_set_size_request(buttons[i][j], 50, 50);
             gtk_grid_attach(GTK_GRID(grid), buttons[i][j], j, i, 1, 1);
             g_signal_connect(buttons[i][j], "button-press-event", G_CALLBACK(on_button_clicked), coords);
+            gtk_widget_set_sensitive(buttons[i][j], FALSE);
         }
     }
 
-    update_mine_counter();
+    GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
+    gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 5);
+    g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
+
+    return vbox;
+}
+
+void start_minesweeper_game(GtkWidget* widget, gpointer data) {
+    GtkStack* stack = GTK_STACK(data);
+
+    initialize_field();
+    mines_left = TOTAL_MINES;
+    elapsed_time = 0;
+
+    for (int i = 0; i < FIELD_SIZE; i++) {
+        for (int j = 0; j < FIELD_SIZE; j++) {
+            revealed[i][j] = false;
+            flagged[i][j] = false;
+            gtk_button_set_label(GTK_BUTTON(buttons[i][j]), "");
+            gtk_widget_set_sensitive(buttons[i][j], TRUE); 
+        }
+    }
+
+    gtk_label_set_text(GTK_LABEL(mine_label), "Mines: 40");
+    gtk_label_set_text(GTK_LABEL(timer_label), "Time: 0");
+
+    if (timer_id > 0) {
+        g_source_remove(timer_id); 
+    }
     timer_id = g_timeout_add(1000, update_timer, NULL);
 
-    g_signal_connect(window, "destroy", G_CALLBACK(on_game_window_destroy), NULL);
-
-    gtk_widget_show_all(window);
+    gtk_stack_set_visible_child_name(stack, "minesweeper_screen");
 }
