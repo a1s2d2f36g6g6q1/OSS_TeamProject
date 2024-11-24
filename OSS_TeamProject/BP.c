@@ -41,6 +41,9 @@ typedef struct
 Ball ball;
 Paddle paddle;
 Brick bricks[NUM_BRICKS];
+static gboolean is_fullscreen = FALSE;
+static int score = 0;
+static int lives = 3;
 
 // 함수 선언
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer data);
@@ -56,6 +59,8 @@ void reset_ball();
 void draw_bricks(cairo_t *cr);
 void draw_paddle(cairo_t *cr);
 void draw_ball(cairo_t *cr);
+void draw_game_status(cairo_t *cr);
+void draw_game_over(cairo_t *cr);
 
 // 메인 함수
 void start_breakout_game_BP()
@@ -68,7 +73,7 @@ void start_breakout_game_BP()
     gtk_init(NULL, NULL);
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);                                 // 창 생성
-    gtk_window_set_title(GTK_WINDOW(window), "벽돌깨기 게임");                    // 창 제목 설정
+    gtk_window_set_title(GTK_WINDOW(window), "Breakout Game");                    // 창 제목 설정
     gtk_window_set_default_size(GTK_WINDOW(window), WINDOW_WIDTH, WINDOW_HEIGHT); // 창 크기 설정
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);         // 창 닫기 버튼을 누르면 프로그램 종료
 
@@ -145,26 +150,21 @@ static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer data)
     }
     else
     {
-        cairo_set_source_rgb(cr, 0, 0, 0); // 배경색 검정
+        // 배경 그리기
+        cairo_set_source_rgb(cr, 0, 0, 0);
         cairo_paint(cr);
 
-        draw_ball(cr);   // 공 그리기
-        draw_paddle(cr); // 패들 그리기
-        draw_bricks(cr); // 벽돌 그리기
+        // 게임 상태 표시
+        draw_game_status(cr);
 
-        // 게임 오버 메시지
+        // 게임 요소 그리기
+        draw_ball(cr);
+        draw_paddle(cr);
+        draw_bricks(cr);
+
         if (game_over)
         {
-            cairo_set_source_rgb(cr, 1, 0, 0); // 빨간색 텍스트
-            cairo_select_font_face(cr, "Arial", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
-            cairo_set_font_size(cr, 50);
-            cairo_move_to(cr, WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2);
-            cairo_show_text(cr, "GAME OVER!");
-
-            // 게임 재시작 메시지
-            cairo_set_font_size(cr, 30);
-            cairo_move_to(cr, WINDOW_WIDTH / 2 - 125, WINDOW_HEIGHT / 2 + 60);
-            cairo_show_text(cr, "Press 'R' to restart");
+            draw_game_over(cr);
         }
     }
     return FALSE;
@@ -261,8 +261,10 @@ void move_paddle()
 void check_collisions()
 {
     // 공과 패들 충돌 검사
-    if (ball.y + BALL_RADIUS > paddle.y && ball.y - BALL_RADIUS < paddle.y + PADDLE_HEIGHT &&
-        ball.x > paddle.x && ball.x < paddle.x + PADDLE_WIDTH)
+    if (ball.y + BALL_RADIUS > paddle.y &&
+        ball.y - BALL_RADIUS < paddle.y + PADDLE_HEIGHT &&
+        ball.x > paddle.x &&
+        ball.x < paddle.x + PADDLE_WIDTH)
     {
         ball.dy = -ball.dy;
     }
@@ -272,11 +274,14 @@ void check_collisions()
     {
         if (!bricks[i].destroyed)
         {
-            if (ball.x > bricks[i].x && ball.x < bricks[i].x + BRICK_WIDTH &&
-                ball.y - BALL_RADIUS < bricks[i].y + BRICK_HEIGHT && ball.y + BALL_RADIUS > bricks[i].y)
+            if (ball.x > bricks[i].x &&
+                ball.x < bricks[i].x + BRICK_WIDTH &&
+                ball.y - BALL_RADIUS < bricks[i].y + BRICK_HEIGHT &&
+                ball.y + BALL_RADIUS > bricks[i].y)
             {
-                bricks[i].destroyed = TRUE; // 벽돌 파괴
-                ball.dy = -ball.dy;         // 공 반사
+                bricks[i].destroyed = TRUE;
+                ball.dy = -ball.dy;
+                score += 10; // 벽돌 파괴 시 점수 추가
             }
         }
     }
@@ -285,35 +290,98 @@ void check_collisions()
 // 공 초기화 함수
 void reset_ball()
 {
-    game_over = TRUE; // 게임 오버 상태로 변경
-    paused = TRUE;    // 게임 일시 정지 상태로 변경
+    lives--;
+
+    if (lives <= 0)
+    {
+        game_over = TRUE;
+        paused = TRUE;
+    }
+    else
+    {
+        ball.x = WINDOW_WIDTH / 2;
+        ball.y = WINDOW_HEIGHT - 100;
+        ball.dx = 6;
+        ball.dy = -6;
+    }
 }
 
 // 키보드 입력 이벤트 처리 함수
 static void on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
-    // 키보드 입력 처리 (왼쪽, 오른쪽 방향키)
-    if (event->keyval == GDK_KEY_Left)
-    {
-        paddle.dx = -7; // 왼쪽으로 이동
-    }
-    else if (event->keyval == GDK_KEY_Right)
-    {
-        paddle.dx = 7; // 오른쪽으로 이동
-    }
+    GtkWindow *window = GTK_WINDOW(widget);
 
-    // Enter 키로 게임 시작
-    if (!game_started && event->keyval == GDK_KEY_Return)
+    switch (event->keyval)
     {
-        game_started = TRUE; // 게임 시작
-        init_game();         // 게임 초기화
+    case GDK_KEY_Left:
+        paddle.dx = -7;
+        break;
+    case GDK_KEY_Right:
+        paddle.dx = 7;
+        break;
+    case GDK_KEY_F11: // F11 키로 전체화면 전환
+        is_fullscreen = !is_fullscreen;
+        if (is_fullscreen)
+        {
+            gtk_window_fullscreen(window);
+        }
+        else
+        {
+            gtk_window_unfullscreen(window);
+        }
+        break;
+    case GDK_KEY_Return:
+        if (!game_started)
+        {
+            game_started = TRUE;
+            init_game();
+        }
+        break;
+    case GDK_KEY_r:
+    case GDK_KEY_R:
+        if (game_over)
+        {
+            game_over = FALSE;
+            paused = FALSE;
+            score = 0;
+            lives = 3;
+            init_game();
+        }
+        break;
     }
+}
 
-    // 게임 오버 상태에서 R키를 누르면 게임 재시작
-    if (game_over && event->keyval == GDK_KEY_R || event->keyval == GDK_KEY_r)
-    {
-        game_over = FALSE; // 게임 오버 상태 해제
-        paused = FALSE;    // 게임 일시 정지 상태 해제
-        init_game();       // 게임 초기화
-    }
+// 게임 상태 표시 함수 수정
+void draw_game_status(cairo_t *cr)
+{
+    char score_text[32];
+    char lives_text[32];
+
+    // 점수 표시
+    snprintf(score_text, sizeof(score_text), "Score: %d", score); // 한글 제거
+    cairo_set_source_rgb(cr, 1, 1, 1);
+    cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+    cairo_set_font_size(cr, 20);
+    cairo_move_to(cr, 10, 30);
+    cairo_show_text(cr, score_text);
+
+    // 생명 표시
+    snprintf(lives_text, sizeof(lives_text), "Lives: %d", lives); // 한글 제거
+    cairo_move_to(cr, WINDOW_WIDTH - 100, 30);
+    cairo_show_text(cr, lives_text);
+}
+
+// 게임 오버 화면 그리기 함수 추가
+void draw_game_over(cairo_t *cr)
+{
+    cairo_set_source_rgb(cr, 1, 0, 0); // 빨간색 텍스트
+    cairo_select_font_face(cr, "Arial", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+    cairo_set_font_size(cr, 50);
+    cairo_move_to(cr, WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2);
+    cairo_show_text(cr, "GAME OVER!");
+
+    // 게임 재시작 메시지
+    cairo_set_font_size(cr, 30);
+    cairo_move_to(cr, WINDOW_WIDTH / 2 - 125, WINDOW_HEIGHT / 2 + 60);
+    cairo_show_text(cr, "Press 'R' to restart");
 }
