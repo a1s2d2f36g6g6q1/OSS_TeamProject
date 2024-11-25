@@ -125,6 +125,7 @@ void check_win_condition() {
         g_print("You Win! Time: %d seconds\n", elapsed_time);
         gtk_label_set_text(GTK_LABEL(timer_label), "You Win!");
         g_source_remove(timer_id);
+        send_game_score(username, "mine", elapsed_time);
     }
 }
 

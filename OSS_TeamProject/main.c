@@ -208,7 +208,46 @@ GtkWidget* create_main_menu(GtkStack* stack) {
     return vbox;
 }
 
+void send_game_score(const char* username, const char* game, int score) {
+    if (is_guest_mode) {
+        printf("Guest mode: Score not sent to server. Username: %s, Game: %s, Score: %d\n", username, game, score);
+        return; // 서버와 통신하지 않음
+    }
 
+    CURL* curl;
+    CURLcode res;
+    struct curl_slist* headers = NULL;
+    struct Memory chunk = { NULL, 0 };
+
+    curl = curl_easy_init();
+    if (curl) {
+        struct json_object* json_data = json_object_new_object();
+        json_object_object_add(json_data, "username", json_object_new_string(username));
+        json_object_object_add(json_data, "game", json_object_new_string(game));
+        json_object_object_add(json_data, "score", json_object_new_int(score));
+        const char* json_string = json_object_to_json_string(json_data);
+
+        headers = curl_slist_append(headers, "Content-Type: application/json");
+        curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.137.1:5000/auth/save-score");
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_string);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &chunk);
+
+        res = curl_easy_perform(curl);
+        if (res != CURLE_OK) {
+            printf("Failed to send score to server!\n");
+        }
+        else {
+            printf("Score sent to server successfully. Response: %s\n", chunk.response);
+        }
+
+        json_object_put(json_data);
+        curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
+        free(chunk.response);
+    }
+}
 
 int main(int argc, char* argv[]) {
     gtk_init(&argc, &argv);
