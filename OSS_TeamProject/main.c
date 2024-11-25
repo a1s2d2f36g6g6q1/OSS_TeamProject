@@ -1,12 +1,13 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <gtk/gtk.h>
-#include <stdlib.h>
-#include <time.h>
 #include <curl.h>
+#include <gtk/gtk.h>
 #include <json.h>
 #include <math.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
 #include "games.h"
 
 void switch_to_main_menu(GtkWidget* widget, gpointer data) {
@@ -15,28 +16,68 @@ void switch_to_main_menu(GtkWidget* widget, gpointer data) {
 }
 
 GtkWidget* create_main_menu(GtkStack* stack) {
-    GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
+    gtk_widget_set_margin_start(vbox, 40);
+    gtk_widget_set_margin_end(vbox, 40);
+    gtk_widget_set_margin_top(vbox, 20);
+    gtk_widget_set_margin_bottom(vbox, 20);
 
-    GtkWidget* tetris_button = gtk_button_new_with_label("Play Tetris");
-    gtk_box_pack_start(GTK_BOX(vbox), tetris_button, FALSE, FALSE, 5);
-    g_signal_connect(tetris_button, "clicked", G_CALLBACK(start_tetris_game), NULL);
+    GtkWidget* title = gtk_label_new("Retro Game");
+    PangoAttrList* attr_list = pango_attr_list_new();
+    pango_attr_list_insert(attr_list, pango_attr_weight_new(PANGO_WEIGHT_BOLD));
+    pango_attr_list_insert(attr_list, pango_attr_scale_new(2.0));
+    gtk_label_set_attributes(GTK_LABEL(title), attr_list);
+    gtk_box_pack_start(GTK_BOX(vbox), title, FALSE, FALSE, 10);
 
-    GtkWidget* game2048_button = gtk_button_new_with_label("Play 2048");
-    gtk_box_pack_start(GTK_BOX(vbox), game2048_button, FALSE, FALSE, 5);
-    g_signal_connect(game2048_button, "clicked", G_CALLBACK(start_2048_game), NULL);
+    GtkWidget* grid_center = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    GtkWidget* grid = gtk_grid_new();
+    gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
+    gtk_grid_set_row_spacing(GTK_GRID(grid), 20);
+    gtk_grid_set_column_spacing(GTK_GRID(grid), 20);
+    gtk_box_pack_start(GTK_BOX(grid_center), grid, TRUE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), grid_center, TRUE, TRUE, 0);
 
-    GtkWidget* BP_button = gtk_button_new_with_label("Play BrickBreak");
-    gtk_box_pack_start(GTK_BOX(vbox), BP_button, FALSE, FALSE, 5);
-    g_signal_connect(BP_button, "clicked", G_CALLBACK(start_breakout_game_BP), NULL);
+    struct GameButton {
+        const char* label;
+        const char* image_path;
+        GCallback callback;
+    } games[] = {
+        {"Tetris", "images/tetris.png", G_CALLBACK(start_tetris_game)},
+        {"2048", "images/2048.png", G_CALLBACK(start_2048_game)},
+        {"Break out", "images/breakout.png", G_CALLBACK(start_breakout_game_BP)},
+        {"Minesweeper", "images/minesweeper.png", G_CALLBACK(start_minesweeper_game)},
+        {"Ranking", "images/ranking.png", NULL},
+        {"Setting", "images/setting.png", NULL}};
 
-    GtkWidget* minesweeper_button = gtk_button_new_with_label("Play Minesweeper");
-    gtk_box_pack_start(GTK_BOX(vbox), minesweeper_button, FALSE, FALSE, 5);
-    g_signal_connect(minesweeper_button, "clicked", G_CALLBACK(start_minesweeper_game), stack);
+    for (int i = 0; i < 6; i++) {
+        GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+        GtkWidget* button = gtk_button_new();
+
+        gtk_widget_set_size_request(button, 150, 150);
+        gtk_style_context_add_class(gtk_widget_get_style_context(button), "game-button");
+
+        GtkWidget* image = gtk_image_new_from_file(games[i].image_path);
+        gtk_image_set_pixel_size(GTK_IMAGE(image), 64);
+
+        GtkWidget* label = gtk_label_new(games[i].label);
+
+        gtk_box_pack_start(GTK_BOX(button_box), image, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(button_box), label, FALSE, FALSE, 0);
+
+        gtk_container_add(GTK_CONTAINER(button), button_box);
+
+        if (games[i].callback) {
+            g_signal_connect(button, "clicked", games[i].callback, stack);
+        }
+
+        gtk_grid_attach(GTK_GRID(grid), button, i % 2, i / 2, 1, 1);
+    }
 
     GtkWidget* logout_button = gtk_button_new_with_label("Logout");
-    gtk_box_pack_start(GTK_BOX(vbox), logout_button, FALSE, FALSE, 5);
+    gtk_widget_set_size_request(logout_button, 320, 50);
     g_signal_connect(logout_button, "clicked", G_CALLBACK(switch_to_login), stack);
-
+    gtk_box_pack_start(GTK_BOX(vbox), logout_button, FALSE, FALSE, 20);
 
     return vbox;
 }
@@ -44,13 +85,13 @@ GtkWidget* create_main_menu(GtkStack* stack) {
 void send_game_score(const char* username, const char* game, int score) {
     if (is_guest_mode) {
         printf("Guest mode: Score not sent to server. Username: %s, Game: %s, Score: %d\n", username, game, score);
-        return; // 서버와 통신하지 않음
+        return;  //
     }
 
     CURL* curl;
     CURLcode res;
     struct curl_slist* headers = NULL;
-    struct Memory chunk = { NULL, 0 };
+    struct Memory chunk = {NULL, 0};
 
     curl = curl_easy_init();
     if (curl) {
@@ -70,8 +111,7 @@ void send_game_score(const char* username, const char* game, int score) {
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             printf("Failed to send score to server!\n");
-        }
-        else {
+        } else {
             printf("Score sent to server successfully. Response: %s\n", chunk.response);
         }
 
@@ -84,6 +124,23 @@ void send_game_score(const char* username, const char* game, int score) {
 
 int main(int argc, char* argv[]) {
     gtk_init(&argc, &argv);
+
+    GtkCssProvider* provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider,
+                                    ".game-button { "
+                                    "    border-radius: 10px;"
+                                    "    background: linear-gradient(to bottom, #ffffff, #f0f0f0);"
+                                    "    border: 1px solid #cccccc;"
+                                    "    padding: 10px;"
+                                    "}"
+                                    ".game-button:hover {"
+                                    "    background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);"
+                                    "}",
+                                    -1, NULL);
+
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                              GTK_STYLE_PROVIDER(provider),
+                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "Retro");
