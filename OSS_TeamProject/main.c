@@ -9,6 +9,7 @@
 #include <string.h>
 #include "games.h"
 
+bool is_guest_mode = false;
 char username[50];
 
 void switch_to_main_menu(GtkWidget* widget, gpointer data) {
@@ -27,6 +28,15 @@ void handle_login_success(GtkStack* stack) {
 
 void on_guest_button_clicked(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
+
+    // 게스트 모드 활성화
+    is_guest_mode = true;
+    strncpy(username, "Guest", sizeof(username) - 1); // 게스트 유저 이름 설정
+    username[sizeof(username) - 1] = '\0'; // Null-terminate
+
+    printf("Guest mode activated. Username: %s\n", username);
+
+    // 메인 메뉴로 전환
     gtk_stack_set_visible_child_name(stack, "main_menu");
 }
 
@@ -197,6 +207,8 @@ GtkWidget* create_main_menu(GtkStack* stack) {
 
     return vbox;
 }
+
+
 
 int main(int argc, char* argv[]) {
     gtk_init(&argc, &argv);

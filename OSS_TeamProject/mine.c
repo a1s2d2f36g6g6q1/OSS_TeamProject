@@ -241,3 +241,4 @@ void start_minesweeper_game(GtkWidget* widget, gpointer data) {
 
     gtk_stack_set_visible_child_name(stack, "minesweeper_screen");
 }
+
