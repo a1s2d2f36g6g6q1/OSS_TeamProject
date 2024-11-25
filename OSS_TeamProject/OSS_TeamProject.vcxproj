@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="2048.c" />
     <ClCompile Include="BP.c" />
+    <ClCompile Include="login.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mine.c" />
     <ClCompile Include="tetris.c" />

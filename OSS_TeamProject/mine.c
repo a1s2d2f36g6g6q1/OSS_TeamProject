@@ -6,7 +6,7 @@
 
 #define FIELD_SIZE 16
 #define MINE -1
-#define TOTAL_MINES 40
+#define TOTAL_MINES 3
 
 int mines_left = TOTAL_MINES;
 

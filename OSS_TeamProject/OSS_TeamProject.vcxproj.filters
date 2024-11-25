@@ -30,6 +30,9 @@
     <ClCompile Include="mine.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="login.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="games.h">
