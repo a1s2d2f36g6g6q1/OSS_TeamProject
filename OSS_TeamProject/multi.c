@@ -30,7 +30,33 @@ void receive_response(SOCKET s, char* response, size_t response_size) {
 }
 
 SOCKET initialize_socket(const char* server_ip, int server_port) {
-  
+    WSADATA wsa;
+    SOCKET s;
+    struct sockaddr_in server;
+
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
+        printf("WSAStartup failed. Error Code: %d\n", WSAGetLastError());
+        return INVALID_SOCKET;
+    }
+
+    s = socket(AF_INET, SOCK_STREAM, 0);
+    if (s == INVALID_SOCKET) {
+        printf("Socket creation failed. Error Code: %d\n", WSAGetLastError());
+        return INVALID_SOCKET;
+    }
+
+    server.sin_addr.s_addr = inet_addr(server_ip);
+    server.sin_family = AF_INET;
+    server.sin_port = htons(server_port);
+
+    if (connect(s, (struct sockaddr*)&server, sizeof(server)) < 0) {
+        printf("Connection failed. Error Code: %d\n", WSAGetLastError());
+        closesocket(s);
+        return INVALID_SOCKET;
+    }
+
+    printf("Socket initialized and connected successfully.\n");
+    return s;
 }
 
 
