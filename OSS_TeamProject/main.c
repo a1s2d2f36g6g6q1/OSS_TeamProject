@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <curl.h>
 #include <gtk/gtk.h>
 #include <json.h>
@@ -7,8 +8,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
+#include <WinSock2.h>
 #include "games.h"
+
+#pragma comment(lib, "ws2_32.lib")
+
+void switch_to_mult(GtkWidget* widget, gpointer data) {
+    GtkStack* stack = GTK_STACK(data);
+    gtk_stack_set_visible_child_name(stack, "multi");
+}
 
 void switch_to_main_menu(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
@@ -16,6 +24,7 @@ void switch_to_main_menu(GtkWidget* widget, gpointer data) {
 }
 
 GtkWidget* create_main_menu(GtkStack* stack) {
+
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
     gtk_widget_set_margin_start(vbox, 40);
     gtk_widget_set_margin_end(vbox, 40);
@@ -48,7 +57,7 @@ GtkWidget* create_main_menu(GtkStack* stack) {
         {"Break out", "images/breakout.png", G_CALLBACK(start_breakout_game_BP)},
         {"Minesweeper", "images/minesweeper.png", G_CALLBACK(start_minesweeper_game)},
         {"Ranking", "images/ranking.png", NULL},
-        {"Setting", "images/setting.png", NULL}};
+        {"Setting", "images/setting.png", switch_to_mult}};
 
     for (int i = 0; i < 6; i++) {
         GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
@@ -102,7 +111,7 @@ void send_game_score(const char* username, const char* game, int score) {
         const char* json_string = json_object_to_json_string(json_data);
 
         headers = curl_slist_append(headers, "Content-Type: application/json");
-        curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.1.103:5000/auth/save-score");
+        curl_easy_setopt(curl, CURLOPT_URL, "http://172.30.152.50:5000/auth/save-score");
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_string);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
@@ -153,10 +162,12 @@ int main(int argc, char* argv[]) {
     GtkWidget* login_screen = create_login_screen(stack);
     GtkWidget* main_menu = create_main_menu(stack);
     GtkWidget* minesweeper_screen = create_minesweeper_screen(stack);
+    GtkWidget* multi_screen = create_multi_screen(stack);
 
     gtk_stack_add_named(stack, login_screen, "login_screen");
     gtk_stack_add_named(stack, main_menu, "main_menu");
     gtk_stack_add_named(stack, minesweeper_screen, "minesweeper_screen");
+    gtk_stack_add_named(stack, multi_screen, "multi");
 
     gtk_stack_set_visible_child_name(stack, "login_screen");
 

@@ -68,7 +68,7 @@ void send_login_request(const char* input_username, const char* password, GtkWid
         printf("JSON Sent: %s\n", json_string); // 디버깅: 전송되는 JSON 출력
 
         headers = curl_slist_append(headers, "Content-Type: application/json");
-        curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.1.103:5000/auth/login");
+        curl_easy_setopt(curl, CURLOPT_URL, "http://172.30.152.50:5000/auth/login");
         // 경로 확인
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_string);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);

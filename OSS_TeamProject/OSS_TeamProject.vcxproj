@@ -135,6 +135,7 @@
     <ClCompile Include="login.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mine.c" />
+    <ClCompile Include="multi.c" />
     <ClCompile Include="tetris.c" />
   </ItemGroup>
   <ItemGroup>
