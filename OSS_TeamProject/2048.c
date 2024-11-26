@@ -61,6 +61,7 @@ for (int i = 0; i < empty_count; i++) {
 free(empty_tiles);
 }
 
+// 타일 색 설정
 void set_tile_color(cairo_t* cr, int value){
     switch (value) {
 case 2: cairo_set_source_rgb(cr, 0.93, 0.89, 0.85); break;
