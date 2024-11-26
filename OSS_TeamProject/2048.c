@@ -61,8 +61,48 @@ for (int i = 0; i < empty_count; i++) {
 free(empty_tiles);
 }
 
-void set_title_color(cairo_t* cr, int value){
-    
+void set_tile_color(cairo_t* cr, int value){
+    switch (value) {
+case 2: cairo_set_source_rgb(cr, 0.93, 0.89, 0.85); break;
+case 4: cairo_set_source_rgb(cr, 0.93, 0.87, 0.78); break;
+case 8: cairo_set_source_rgb(cr, 0.96, 0.64, 0.38); break;
+case 16: cairo_set_source_rgb(cr, 0.96, 0.58, 0.38); break;
+case 32: cairo_set_source_rgb(cr, 0.96, 0.48, 0.38); break;
+case 64: cairo_set_source_rgb(cr, 0.96, 0.38, 0.28); break;
+case 128: cairo_set_source_rgb(cr, 0.93, 0.81, 0.45); break;
+case 256: cairo_set_source_rgb(cr, 0.93, 0.80, 0.38); break;
+case 512: cairo_set_source_rgb(cr, 0.93, 0.78, 0.28); break;
+case 1024: cairo_set_source_rgb(cr, 0.93, 0.76, 0.18); break;
+case 2048: cairo_set_source_rgb(cr, 0.93, 0.75, 0.08); break;
+default: cairo_set_source_rgb(cr, 0.8, 0.8, 0.8); break;
+    }
+}
+// 타일 그리기
+gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
+    cairo_set_source_rgb(cr, 0.8, 0.8, 0.8);  // 배경색
+    cairo_paint(cr);
+
+    // 타일 그리기
+    for (int i = 0; i < grid_size; i++) {
+        for (int j = 0; j < grid_size; j++) {
+            int value = grid[i][j];
+            set_tile_color(cr, value);
+
+            cairo_rectangle(cr, TILE_MARGIN + j * (TILE_SIZE + TILE_MARGIN),
+                TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN),
+                TILE_SIZE, TILE_SIZE);
+            cairo_fill(cr);
+
+            if (value != 0) {
+                cairo_set_source_rgb(cr, 0, 0, 0);  // 글자 색상 (검정색)
+                cairo_set_font_size(cr, 24);
+                cairo_move_to(cr, TILE_MARGIN + j * (TILE_SIZE + TILE_MARGIN) + TILE_SIZE / 3,
+                    TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN) + TILE_SIZE / 1.5);
+                cairo_show_text(cr, g_strdup_printf("%d", value));
+            }
+        }
+    }
+    return FALSE;
 }
 
 //타일 이동 및 합치기 함수
