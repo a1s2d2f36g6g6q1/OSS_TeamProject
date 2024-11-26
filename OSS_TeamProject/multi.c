@@ -22,11 +22,42 @@ SOCKET global_socket;
 GtkWidget* response_label;
 
 int send_json_request(SOCKET s, const char* endpoint, const char* json_data) {
-  
+    char request[2048];
+    snprintf(request, sizeof(request),
+        "POST %s HTTP/1.1\r\n"
+        "Host: 127.0.0.1\r\n"
+        "Content-Type: application/json\r\n"
+        "Content-Length: %d\r\n"
+        "\r\n"
+        "%s",
+        endpoint, strlen(json_data), json_data);
+
+    return send(s, request, strlen(request), 0);
 }
 
 void receive_response(SOCKET s, char* response, size_t response_size) {
-   
+    if (s == INVALID_SOCKET) {
+        printf("Socket is not valid. Please reinitialize the socket.\n");
+        return;
+    }
+
+    int recv_size = recv(s, response, response_size - 1, 0);
+    if (recv_size == 0) {
+        printf("Server closed the connection.\n");
+        return;
+    }
+    else if (recv_size == SOCKET_ERROR) {
+        int error_code = WSAGetLastError();
+        printf("Receive failed. Error Code: %d\n", error_code);
+
+        if (error_code == WSAENOTSOCK) {
+            printf("Socket is not a valid socket. Please check initialization.\n");
+        }
+        return;
+    }
+
+    response[recv_size] = '\0';
+    printf("Server response: %s\n", response);
 }
 
 SOCKET initialize_socket(const char* server_ip, int server_port) {
@@ -62,7 +93,18 @@ SOCKET initialize_socket(const char* server_ip, int server_port) {
 
 
 void on_create_room(GtkWidget* widget, gpointer data) {
-   
+    char response[4096];
+
+    struct json_object* json = json_object_new_object();
+    json_object_object_add(json, "action", json_object_new_string("create"));
+    json_object_object_add(json, "name", json_object_new_string("My Room"));
+
+    const char* json_str = json_object_to_json_string(json);
+    send_json_request(global_socket, "/game/create", json_str);
+
+    receive_response(global_socket, response, sizeof(response));
+    gtk_label_set_text(GTK_LABEL(response_label), response);
+    json_object_put(json);
 }
 
 
