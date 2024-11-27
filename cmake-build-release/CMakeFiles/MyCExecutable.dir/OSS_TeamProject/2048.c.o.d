@@ -1,5 +1,5 @@
-CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o: \
-  /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/mine.c \
+CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o: \
+  /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/2048.c \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/_stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/cdefs.h \
@@ -811,5 +811,6 @@ CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o: \
   /opt/homebrew/Cellar/gtk+3/3.24.43/include/gtk-3.0/gtk/deprecated/gtkvscrollbar.h \
   /opt/homebrew/Cellar/gtk+3/3.24.43/include/gtk-3.0/gtk/deprecated/gtkvseparator.h \
   /opt/homebrew/Cellar/gtk+3/3.24.43/include/gtk-3.0/gtk/gtk-autocleanups.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/math.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdbool.h \
   /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/games.h

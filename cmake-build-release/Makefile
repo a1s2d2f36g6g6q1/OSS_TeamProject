@@ -129,6 +129,30 @@ MyCExecutable/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/build
 .PHONY : MyCExecutable/fast
 
+OSS_TeamProject/2048.o: OSS_TeamProject/2048.c.o
+.PHONY : OSS_TeamProject/2048.o
+
+# target to build an object file
+OSS_TeamProject/2048.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o
+.PHONY : OSS_TeamProject/2048.c.o
+
+OSS_TeamProject/2048.i: OSS_TeamProject/2048.c.i
+.PHONY : OSS_TeamProject/2048.i
+
+# target to preprocess a source file
+OSS_TeamProject/2048.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.i
+.PHONY : OSS_TeamProject/2048.c.i
+
+OSS_TeamProject/2048.s: OSS_TeamProject/2048.c.s
+.PHONY : OSS_TeamProject/2048.s
+
+# target to generate assembly for a file
+OSS_TeamProject/2048.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyCExecutable.dir/build.make CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.s
+.PHONY : OSS_TeamProject/2048.c.s
+
 OSS_TeamProject/BP.o: OSS_TeamProject/BP.c.o
 .PHONY : OSS_TeamProject/BP.o
 
@@ -234,6 +258,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... MyCExecutable"
+	@echo "... OSS_TeamProject/2048.o"
+	@echo "... OSS_TeamProject/2048.i"
+	@echo "... OSS_TeamProject/2048.s"
 	@echo "... OSS_TeamProject/BP.o"
 	@echo "... OSS_TeamProject/BP.i"
 	@echo "... OSS_TeamProject/BP.s"

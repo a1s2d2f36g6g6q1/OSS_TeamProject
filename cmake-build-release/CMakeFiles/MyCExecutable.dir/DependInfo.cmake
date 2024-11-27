@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/2048.c" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/2048.c.o.d"
   "/Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/BP.c" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o.d"
   "/Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/Tetris.c" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o.d"
   "/Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/main.c" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o" "gcc" "CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o.d"
