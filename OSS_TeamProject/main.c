@@ -61,7 +61,7 @@ GtkWidget* create_main_menu(GtkStack* stack) {
         {"Break out", "images/breakout.png", G_CALLBACK(start_breakout_game_BP)},
         {"Minesweeper", "images/minesweeper.png", G_CALLBACK(start_minesweeper_game)},
         {"Ranking", "images/ranking.png", NULL},
-        {"Setting", "images/setting.png", switch_to_mult}};
+        {"Setting", "images/setting.png", G_CALLBACK(switch_to_mult)}};
 
     for (int i = 0; i < 6; i++) {
         GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);

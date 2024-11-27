@@ -14,6 +14,7 @@ set(SOURCES
 )
 
 # 실행 파일 생성
+add_compile_options(-Wno-incompatible-function-pointer-types -Wno-deprecated-declarations -Wno-return-type)
 add_executable(MyCExecutable ${SOURCES})
 
 # GTK+3, Cairo, Curl, JSON-C 찾기
@@ -54,3 +55,5 @@ target_link_libraries(MyCExecutable
         gdk_pixbuf-2.0 gio-2.0 gobject-2.0 glib-2.0 intl
         /opt/homebrew/opt/curl/lib/libcurl.dylib # libcurl 수동 링크
 )
+
+

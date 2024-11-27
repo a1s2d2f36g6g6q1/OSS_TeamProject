@@ -1,0 +1,11 @@
+# ninja log v6
+1	331	1732690627582416937	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o	e153f1fd90976b9f
+2	360	1732690627583840366	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o	f63ee2d94ac5a2d6
+2	350	1732690627583712115	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o	2532b41350687cbf
+3	89	1732690749154518673	build.ninja	89288420073f7ea3
+3	357	1732690627583958326	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o	a08a48a82bc34ddd
+4	77	1732690749154518673	build.ninja	89288420073f7ea3
+2	599	1732690749165805025	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/main.c.o	f002c3ac7ffc055b
+3	618	1732690749166287487	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o	f273490a7c5a5df
+3	620	1732690749166462864	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o	72f899fc328c8ada
+3	623	1732690749166639449	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o	3da09ab3493dd897
