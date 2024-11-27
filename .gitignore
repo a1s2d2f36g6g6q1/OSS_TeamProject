@@ -1,0 +1,6 @@
+﻿/out/build/x64-Debug
+*.json
+*.db-wal
+*.db
+*.db-shm
+/.vs
