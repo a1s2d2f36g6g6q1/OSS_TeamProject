@@ -1,0 +1,4 @@
+Cannot generate into /Users/u4bi_/_Mac/Study/OSS_TeamProject/cmake-build-release
+It was created with incompatible generator 'Unix Makefiles'
+
+Please either delete it manually or select another generation directory
