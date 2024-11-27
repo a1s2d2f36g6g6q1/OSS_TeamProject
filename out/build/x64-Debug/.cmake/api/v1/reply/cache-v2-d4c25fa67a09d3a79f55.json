@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "-IC:/msys64/mingw64/include/cairo;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/freetype2;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/libpng16;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/harfbuzz;-IC:/msys64/mingw64/include/glib-2.0;-IC:/msys64/mingw64/lib/glib-2.0/include;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/pixman-1"
+			"value" : "-IC:/msys64/mingw64/bin/../include/cairo;-IC:/msys64/mingw64/bin/../include;-IC:/msys64/mingw64/bin/../include/freetype2;-IC:/msys64/mingw64/bin/../include/libpng16;-IC:/msys64/mingw64/bin/../include/harfbuzz;-IC:/msys64/mingw64/bin/../include/glib-2.0;-IC:/msys64/mingw64/bin/../lib/glib-2.0/include;-IC:/msys64/mingw64/bin/../include/pixman-1"
 		},
 		{
 			"name" : "CAIRO_CFLAGS_I",
@@ -59,7 +59,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/include"
+			"value" : "C:/msys64/mingw64/bin/../include"
 		},
 		{
 			"name" : "CAIRO_INCLUDE_DIRS",
@@ -71,7 +71,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/include/cairo;C:/msys64/mingw64/include;C:/msys64/mingw64/include/freetype2;C:/msys64/mingw64/include;C:/msys64/mingw64/include/libpng16;C:/msys64/mingw64/include;C:/msys64/mingw64/include/harfbuzz;C:/msys64/mingw64/include/glib-2.0;C:/msys64/mingw64/lib/glib-2.0/include;C:/msys64/mingw64/include;C:/msys64/mingw64/include/pixman-1"
+			"value" : "C:/msys64/mingw64/bin/../include/cairo;C:/msys64/mingw64/bin/../include;C:/msys64/mingw64/bin/../include/freetype2;C:/msys64/mingw64/bin/../include/libpng16;C:/msys64/mingw64/bin/../include/harfbuzz;C:/msys64/mingw64/bin/../include/glib-2.0;C:/msys64/mingw64/bin/../lib/glib-2.0/include;C:/msys64/mingw64/bin/../include/pixman-1"
 		},
 		{
 			"name" : "CAIRO_LDFLAGS",
@@ -83,7 +83,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "-LC:/msys64/mingw64/lib;-lcairo"
+			"value" : "-LC:/msys64/mingw64/bin/../lib;-lcairo"
 		},
 		{
 			"name" : "CAIRO_LDFLAGS_OTHER",
@@ -107,7 +107,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/lib"
+			"value" : "C:/msys64/mingw64/bin/../lib"
 		},
 		{
 			"name" : "CAIRO_LIBRARIES",
@@ -131,7 +131,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/lib"
+			"value" : "C:/msys64/mingw64/bin/../lib"
 		},
 		{
 			"name" : "CAIRO_LIBS",
@@ -203,7 +203,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64"
+			"value" : "C:/msys64/mingw64/bin/.."
 		},
 		{
 			"name" : "CAIRO_STATIC_CFLAGS",
@@ -215,7 +215,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "-IC:/msys64/mingw64/include/cairo;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/freetype2;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/libpng16;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/harfbuzz;-IC:/msys64/mingw64/include/glib-2.0;-IC:/msys64/mingw64/lib/glib-2.0/include;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/pixman-1"
+			"value" : "-IC:/msys64/mingw64/bin/../include/cairo;-IC:/msys64/mingw64/bin/../include;-IC:/msys64/mingw64/bin/../include/freetype2;-IC:/msys64/mingw64/bin/../include/libpng16;-IC:/msys64/mingw64/bin/../include/harfbuzz;-IC:/msys64/mingw64/bin/../include/glib-2.0;-IC:/msys64/mingw64/bin/../lib/glib-2.0/include;-IC:/msys64/mingw64/bin/../include/pixman-1;-DXML_STATIC"
 		},
 		{
 			"name" : "CAIRO_STATIC_CFLAGS_I",
@@ -239,7 +239,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : ""
+			"value" : "-DXML_STATIC"
 		},
 		{
 			"name" : "CAIRO_STATIC_INCLUDE_DIRS",
@@ -251,7 +251,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/include/cairo;C:/msys64/mingw64/include;C:/msys64/mingw64/include/freetype2;C:/msys64/mingw64/include;C:/msys64/mingw64/include/libpng16;C:/msys64/mingw64/include;C:/msys64/mingw64/include/harfbuzz;C:/msys64/mingw64/include/glib-2.0;C:/msys64/mingw64/lib/glib-2.0/include;C:/msys64/mingw64/include;C:/msys64/mingw64/include/pixman-1"
+			"value" : "C:/msys64/mingw64/bin/../include/cairo;C:/msys64/mingw64/bin/../include;C:/msys64/mingw64/bin/../include/freetype2;C:/msys64/mingw64/bin/../include/libpng16;C:/msys64/mingw64/bin/../include/harfbuzz;C:/msys64/mingw64/bin/../include/glib-2.0;C:/msys64/mingw64/bin/../lib/glib-2.0/include;C:/msys64/mingw64/bin/../include/pixman-1"
 		},
 		{
 			"name" : "CAIRO_STATIC_LDFLAGS",
@@ -263,7 +263,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "-LC:/msys64/mingw64/lib;-lcairo;-lm;-lgdi32;-lmsimg32;-ldwrite;-ld2d1;-lwindowscodecs;-lfontconfig;-lexpat;-lfreetype;-lbz2;-lpng16;-lz;-lharfbuzz;-lm;-lusp10;-lgdi32;-lrpcrt4;-lglib-2.0;-lintl;-lws2_32;-lole32;-lwinmm;-lshlwapi;-luuid;-latomic;-lm;-lpcre2-8;-lgraphite2;-lbrotlidec;-lbrotlicommon;-lpixman-1;-lm;-pthread"
+			"value" : "-LC:/msys64/mingw64/bin/../lib;-lcairo;-lm;-lgdi32;-lmsimg32;-ldwrite;-ld2d1;-lwindowscodecs;-lfontconfig;-lexpat;-lfreetype;-lbz2;-lpng16;-lz;-lharfbuzz;-lm;-lusp10;-lgdi32;-lrpcrt4;-lglib-2.0;-lintl;-lws2_32;-lole32;-lwinmm;-lshlwapi;-luuid;-latomic;-lm;-lpcre2-8;-lgraphite2;-lbrotlidec;-lbrotlicommon;-lpixman-1;-lm;-pthread"
 		},
 		{
 			"name" : "CAIRO_STATIC_LDFLAGS_OTHER",
@@ -311,7 +311,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/lib"
+			"value" : "C:/msys64/mingw64/bin/../lib"
 		},
 		{
 			"name" : "CAIRO_STATIC_LIBS",
@@ -435,7 +435,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/lib.exe"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.39.33519/bin/Hostx64/x64/lib.exe"
 		},
 		{
 			"name" : "CMAKE_BUILD_TYPE",
@@ -459,7 +459,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/idmoh/Documents/OSS_TeamProject/out/build/x64-Debug"
+			"value" : "c:/Users/jungc/OSS_TeamProject/out/build/x64-Debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -483,7 +483,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "29"
+			"value" : "28"
 		},
 		{
 			"name" : "CMAKE_CACHE_PATCH_VERSION",
@@ -495,7 +495,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "5"
+			"value" : "0"
 		},
 		{
 			"name" : "CMAKE_COMMAND",
@@ -547,7 +547,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.39.33519/bin/Hostx64/x64/cl.exe"
 		},
 		{
 			"name" : "CMAKE_C_FLAGS",
@@ -775,7 +775,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/idmoh/Documents/OSS_TeamProject/out/build/x64-Debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/jungc/OSS_TeamProject/out/build/x64-Debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -835,7 +835,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/idmoh/Documents/OSS_TeamProject"
+			"value" : "C:/Users/jungc/OSS_TeamProject"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -847,7 +847,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Users/idmoh/Documents/OSS_TeamProject/out/install/x64-Debug"
+			"value" : "C:/Users/jungc/OSS_TeamProject/out/install/x64-Debug"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -863,7 +863,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/link.exe"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.39.33519/bin/Hostx64/x64/link.exe"
 		},
 		{
 			"name" : "CMAKE_MAKE_PROGRAM",
@@ -1163,7 +1163,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.29"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.28"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1374,6 +1374,426 @@
 			"value" : "FALSE"
 		},
 		{
+			"name" : "CURL_CFLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-IC:/msys64/mingw64/bin/../include"
+		},
+		{
+			"name" : "CURL_CFLAGS_I",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_CFLAGS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_FOUND",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "CURL_INCLUDEDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../include"
+		},
+		{
+			"name" : "CURL_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../include"
+		},
+		{
+			"name" : "CURL_LDFLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-LC:/msys64/mingw64/bin/../lib;-lcurl"
+		},
+		{
+			"name" : "CURL_LDFLAGS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_LIBDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../lib"
+		},
+		{
+			"name" : "CURL_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "curl"
+		},
+		{
+			"name" : "CURL_LIBRARY_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../lib"
+		},
+		{
+			"name" : "CURL_LIBS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_LIBS_L",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_LIBS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_LIBS_PATHS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_MODULE_NAME",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "libcurl"
+		},
+		{
+			"name" : "CURL_PREFIX",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/.."
+		},
+		{
+			"name" : "CURL_STATIC_CFLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-IC:/msys64/mingw64/bin/../include;-DCURL_STATICLIB;-DNGHTTP2_STATICLIB;-DNGHTTP3_STATICLIB"
+		},
+		{
+			"name" : "CURL_STATIC_CFLAGS_I",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_STATIC_CFLAGS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-DCURL_STATICLIB;-DNGHTTP2_STATICLIB;-DNGHTTP3_STATICLIB"
+		},
+		{
+			"name" : "CURL_STATIC_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../include"
+		},
+		{
+			"name" : "CURL_STATIC_LDFLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-LC:/msys64/mingw64/bin/../lib;-lcurl;-lws2_32;-lbcrypt;-lssl;-lcrypto;-lwldap32;-ladvapi32;-lcrypt32;-lbrotlidec;-lbrotlicommon;-lzstd;-lnghttp2;-lnghttp3;-lpsl;-lunistring;-lws2_32;-liconv;-lidn2;-L/mingw64/lib;-liconv;-L/mingw64/lib;-lunistring;-lssh2;-lws2_32;-L/mingw64/lib;-L/mingw64/lib;-lssl;-lcrypto;-lws2_32;-lgdi32;-lcrypt32;-lz"
+		},
+		{
+			"name" : "CURL_STATIC_LDFLAGS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_STATIC_LIBDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_STATIC_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "curl;ws2_32;bcrypt;ssl;crypto;wldap32;advapi32;crypt32;brotlidec;brotlicommon;zstd;nghttp2;nghttp3;psl;unistring;ws2_32;iconv;idn2;iconv;unistring;ssh2;ws2_32;ssl;crypto;ws2_32;gdi32;crypt32;z"
+		},
+		{
+			"name" : "CURL_STATIC_LIBRARY_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../lib;/mingw64/lib;/mingw64/lib;/mingw64/lib;/mingw64/lib"
+		},
+		{
+			"name" : "CURL_STATIC_LIBS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_STATIC_LIBS_L",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_STATIC_LIBS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_STATIC_LIBS_PATHS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_VERSION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "8.11.0"
+		},
+		{
+			"name" : "CURL_libcurl_INCLUDEDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_libcurl_LIBDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_libcurl_PREFIX",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CURL_libcurl_VERSION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig",
 			"properties" : 
 			[
@@ -1383,7 +1803,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[C:/msys64/mingw64/bin/pkg-config.exe][v0.29.2()]"
+			"value" : "[C:/msys64/mingw64/bin/pkg-config.exe][v2.3.0()]"
 		},
 		{
 			"name" : "GTK3_CFLAGS",
@@ -1395,7 +1815,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "-DLIBDEFLATE_DLL;-IC:/msys64/mingw64/include/gtk-3.0;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/pango-1.0;-IC:/msys64/mingw64/include/harfbuzz;-IC:/msys64/mingw64/include/pango-1.0;-IC:/msys64/mingw64/include/fribidi;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/atk-1.0;-IC:/msys64/mingw64/include/cairo;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/freetype2;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/harfbuzz;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/pixman-1;-IC:/msys64/mingw64/include/gdk-pixbuf-2.0;-IC:/msys64/mingw64/include/libpng16;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/webp;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/glib-2.0;-IC:/msys64/mingw64/lib/glib-2.0/include;-IC:/msys64/mingw64/include"
+			"value" : "-IC:/msys64/mingw64/bin/../include/gtk-3.0;-IC:/msys64/mingw64/bin/../include/pango-1.0;-IC:/msys64/mingw64/bin/../include;-IC:/msys64/mingw64/bin/../include/harfbuzz;-IC:/msys64/mingw64/bin/../include/cairo;-IC:/msys64/mingw64/bin/../include/freetype2;-IC:/msys64/mingw64/bin/../include/pixman-1;-IC:/msys64/mingw64/bin/../include/gdk-pixbuf-2.0;-IC:/msys64/mingw64/bin/../include/libpng16;-IC:/msys64/mingw64/bin/../include/webp;-DLIBDEFLATE_DLL;-IC:/msys64/mingw64/bin/../include/atk-1.0;-IC:/msys64/mingw64/bin/../include/fribidi;-IC:/msys64/mingw64/bin/../include/glib-2.0;-IC:/msys64/mingw64/bin/../lib/glib-2.0/include"
 		},
 		{
 			"name" : "GTK3_CFLAGS_I",
@@ -1443,7 +1863,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/include"
+			"value" : "C:/msys64/mingw64/bin/../include"
 		},
 		{
 			"name" : "GTK3_INCLUDE_DIRS",
@@ -1455,7 +1875,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/include/gtk-3.0;C:/msys64/mingw64/include;C:/msys64/mingw64/include/pango-1.0;C:/msys64/mingw64/include/harfbuzz;C:/msys64/mingw64/include/pango-1.0;C:/msys64/mingw64/include/fribidi;C:/msys64/mingw64/include;C:/msys64/mingw64/include/atk-1.0;C:/msys64/mingw64/include/cairo;C:/msys64/mingw64/include;C:/msys64/mingw64/include/freetype2;C:/msys64/mingw64/include;C:/msys64/mingw64/include/harfbuzz;C:/msys64/mingw64/include;C:/msys64/mingw64/include/pixman-1;C:/msys64/mingw64/include/gdk-pixbuf-2.0;C:/msys64/mingw64/include/libpng16;C:/msys64/mingw64/include;C:/msys64/mingw64/include/webp;C:/msys64/mingw64/include;C:/msys64/mingw64/include/glib-2.0;C:/msys64/mingw64/lib/glib-2.0/include;C:/msys64/mingw64/include"
+			"value" : "C:/msys64/mingw64/bin/../include/gtk-3.0;C:/msys64/mingw64/bin/../include/pango-1.0;C:/msys64/mingw64/bin/../include;C:/msys64/mingw64/bin/../include/harfbuzz;C:/msys64/mingw64/bin/../include/cairo;C:/msys64/mingw64/bin/../include/freetype2;C:/msys64/mingw64/bin/../include/pixman-1;C:/msys64/mingw64/bin/../include/gdk-pixbuf-2.0;C:/msys64/mingw64/bin/../include/libpng16;C:/msys64/mingw64/bin/../include/webp;C:/msys64/mingw64/bin/../include/atk-1.0;C:/msys64/mingw64/bin/../include/fribidi;C:/msys64/mingw64/bin/../include/glib-2.0;C:/msys64/mingw64/bin/../lib/glib-2.0/include"
 		},
 		{
 			"name" : "GTK3_LDFLAGS",
@@ -1467,7 +1887,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "-LC:/msys64/mingw64/lib;-lgtk-3;-lgdk-3;-lz;-lgdi32;-limm32;-lshell32;-lole32;-luuid;-lwinmm;-ldwmapi;-lsetupapi;-lcfgmgr32;-lhid;-lwinspool;-lcomctl32;-lcomdlg32;-lpangowin32-1.0;-lpangocairo-1.0;-lpango-1.0;-lharfbuzz;-latk-1.0;-lcairo-gobject;-lcairo;-lgdk_pixbuf-2.0;-lgio-2.0;-lgobject-2.0;-lglib-2.0;-lintl"
+			"value" : "-LC:/msys64/mingw64/bin/../lib;-lgtk-3;-lgdk-3;-lz;-lgdi32;-limm32;-lshell32;-lole32;-luuid;-lwinmm;-ldwmapi;-lsetupapi;-lcfgmgr32;-lhid;-lwinspool;-lcomctl32;-lcomdlg32;-lpangowin32-1.0;-lpangocairo-1.0;-lpango-1.0;-lharfbuzz;-latk-1.0;-lcairo-gobject;-lcairo;-lgdk_pixbuf-2.0;-lgio-2.0;-lgobject-2.0;-lglib-2.0;-lintl"
 		},
 		{
 			"name" : "GTK3_LDFLAGS_OTHER",
@@ -1491,7 +1911,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/lib"
+			"value" : "C:/msys64/mingw64/bin/../lib"
 		},
 		{
 			"name" : "GTK3_LIBRARIES",
@@ -1515,7 +1935,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/lib"
+			"value" : "C:/msys64/mingw64/bin/../lib"
 		},
 		{
 			"name" : "GTK3_LIBS",
@@ -1587,7 +2007,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64"
+			"value" : "C:/msys64/mingw64/bin/.."
 		},
 		{
 			"name" : "GTK3_STATIC_CFLAGS",
@@ -1599,7 +2019,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "-DLIBDEFLATE_DLL;-IC:/msys64/mingw64/include/gtk-3.0;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/pango-1.0;-IC:/msys64/mingw64/include/harfbuzz;-IC:/msys64/mingw64/include/pango-1.0;-IC:/msys64/mingw64/include/fribidi;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/atk-1.0;-IC:/msys64/mingw64/include/cairo;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/freetype2;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/harfbuzz;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/pixman-1;-IC:/msys64/mingw64/include/gdk-pixbuf-2.0;-IC:/msys64/mingw64/include/libpng16;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/webp;-IC:/msys64/mingw64/include;-IC:/msys64/mingw64/include/glib-2.0;-IC:/msys64/mingw64/lib/glib-2.0/include;-IC:/msys64/mingw64/include"
+			"value" : "-IC:/msys64/mingw64/bin/../include/gtk-3.0;-IC:/msys64/mingw64/bin/../include/pango-1.0;-IC:/msys64/mingw64/bin/../include;-IC:/msys64/mingw64/bin/../include/harfbuzz;-IC:/msys64/mingw64/bin/../include/cairo;-IC:/msys64/mingw64/bin/../include/freetype2;-IC:/msys64/mingw64/bin/../include/pixman-1;-IC:/msys64/mingw64/bin/../include/gdk-pixbuf-2.0;-IC:/msys64/mingw64/bin/../include/libpng16;-IC:/msys64/mingw64/bin/../include/webp;-DLIBDEFLATE_DLL;-IC:/msys64/mingw64/bin/../include/atk-1.0;-IC:/msys64/mingw64/bin/../include/fribidi;-IC:/msys64/mingw64/bin/../include/glib-2.0;-IC:/msys64/mingw64/bin/../lib/glib-2.0/include;-DXML_STATIC;-DLZMA_API_STATIC;-DLERC_STATIC;-ULIBDEFLATE_DLL"
 		},
 		{
 			"name" : "GTK3_STATIC_CFLAGS_I",
@@ -1623,7 +2043,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "-DLIBDEFLATE_DLL"
+			"value" : "-DLIBDEFLATE_DLL;-DXML_STATIC;-DLZMA_API_STATIC;-DLERC_STATIC;-ULIBDEFLATE_DLL"
 		},
 		{
 			"name" : "GTK3_STATIC_INCLUDE_DIRS",
@@ -1635,7 +2055,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/include/gtk-3.0;C:/msys64/mingw64/include;C:/msys64/mingw64/include/pango-1.0;C:/msys64/mingw64/include/harfbuzz;C:/msys64/mingw64/include/pango-1.0;C:/msys64/mingw64/include/fribidi;C:/msys64/mingw64/include;C:/msys64/mingw64/include/atk-1.0;C:/msys64/mingw64/include/cairo;C:/msys64/mingw64/include;C:/msys64/mingw64/include/freetype2;C:/msys64/mingw64/include;C:/msys64/mingw64/include/harfbuzz;C:/msys64/mingw64/include;C:/msys64/mingw64/include/pixman-1;C:/msys64/mingw64/include/gdk-pixbuf-2.0;C:/msys64/mingw64/include/libpng16;C:/msys64/mingw64/include;C:/msys64/mingw64/include/webp;C:/msys64/mingw64/include;C:/msys64/mingw64/include/glib-2.0;C:/msys64/mingw64/lib/glib-2.0/include;C:/msys64/mingw64/include"
+			"value" : "C:/msys64/mingw64/bin/../include/gtk-3.0;C:/msys64/mingw64/bin/../include/pango-1.0;C:/msys64/mingw64/bin/../include;C:/msys64/mingw64/bin/../include/harfbuzz;C:/msys64/mingw64/bin/../include/cairo;C:/msys64/mingw64/bin/../include/freetype2;C:/msys64/mingw64/bin/../include/pixman-1;C:/msys64/mingw64/bin/../include/gdk-pixbuf-2.0;C:/msys64/mingw64/bin/../include/libpng16;C:/msys64/mingw64/bin/../include/webp;C:/msys64/mingw64/bin/../include/atk-1.0;C:/msys64/mingw64/bin/../include/fribidi;C:/msys64/mingw64/bin/../include/glib-2.0;C:/msys64/mingw64/bin/../lib/glib-2.0/include"
 		},
 		{
 			"name" : "GTK3_STATIC_LDFLAGS",
@@ -1647,7 +2067,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "-LC:/msys64/mingw64/lib;-LC:/msys64/mingw64/lib/../lib;-LC:/msys64/mingw64/lib;-lgtk-3;-lgdk-3;-lz;-lgdi32;-limm32;-lshell32;-lole32;-luuid;-lwinmm;-ldwmapi;-lsetupapi;-lcfgmgr32;-lhid;-lwinspool;-lcomctl32;-lcomdlg32;-lgdi32;-lmsimg32;-lepoxy;-lopengl32;-lgdi32;-lpangocairo-1.0;-lm;-lgdi32;-lpangoft2-1.0;-lm;-lpangowin32-1.0;-lm;-lgdi32;-ldwrite;-lharfbuzz-gobject;-lpango-1.0;-lm;-lfribidi;-lthai;-ldatrie;-latk-1.0;-lcairo-gobject;-lm;-lgdi32;-lmsimg32;-ldwrite;-ld2d1;-lwindowscodecs;-lcairo;-lm;-lgdi32;-lmsimg32;-ldwrite;-ld2d1;-lwindowscodecs;-lfontconfig;-lexpat;-lfreetype;-lbz2;-lharfbuzz;-lm;-lusp10;-lgdi32;-lrpcrt4;-lgraphite2;-lbrotlidec;-lbrotlicommon;-lpixman-1;-lm;-pthread;-lgdk_pixbuf-2.0;-lm;-lintl;-lgdiplus;-lole32;-lpng16;-lz;-ltiff;-lwebp;-lzstd;-llzma;-lLerc;-ljbig;-ljpeg;-ldeflate;-lz;-lwebp;-lsharpyuv;-lzstd;-llzma;-lLerc;-ljpeg;-ldeflate;-lgio-2.0;-lintl;-lshlwapi;-ldnsapi;-liphlpapi;-lws2_32;-lgmodule-2.0;-lintl;-lz;-lgobject-2.0;-lintl;-lffi;-lglib-2.0;-lintl;-lws2_32;-lole32;-lwinmm;-lshlwapi;-luuid;-latomic;-lm;-lpcre2-8"
+			"value" : "-LC:/msys64/mingw64/bin/../lib;-lgtk-3;-lgdk-3;-lz;-lgdi32;-limm32;-lshell32;-lole32;-luuid;-lwinmm;-ldwmapi;-lsetupapi;-lcfgmgr32;-lhid;-lwinspool;-lcomctl32;-lcomdlg32;-lpangocairo-1.0;-lm;-lgdi32;-lpangoft2-1.0;-lm;-lpangowin32-1.0;-lm;-ldwrite;-lpango-1.0;-lm;-lthai;-ldatrie;-lharfbuzz-gobject;-lgdi32;-lmsimg32;-lcairo-gobject;-lm;-lgdi32;-lmsimg32;-ldwrite;-ld2d1;-lwindowscodecs;-lcairo;-lm;-lgdi32;-lmsimg32;-ldwrite;-ld2d1;-lwindowscodecs;-lfontconfig;-lexpat;-lfreetype;-lbz2;-lharfbuzz;-lm;-lusp10;-lgdi32;-lrpcrt4;-lgraphite2;-lbrotlidec;-lbrotlicommon;-lpixman-1;-lm;-pthread;-lgdk_pixbuf-2.0;-lm;-lintl;-lgdiplus;-lole32;-lpng16;-lz;-ltiff;-ljbig;-lwebp;-lsharpyuv;-lzstd;-llzma;-lLerc;-ljpeg;-ldeflate;-latk-1.0;-lepoxy;-lopengl32;-lgdi32;-lfribidi;-lgio-2.0;-lintl;-lshlwapi;-ldnsapi;-liphlpapi;-lws2_32;-lgobject-2.0;-lintl;-LC:/msys64/mingw64/bin/../lib/../lib;-lffi;-lgmodule-2.0;-lglib-2.0;-lintl;-lws2_32;-lole32;-lwinmm;-lshlwapi;-luuid;-latomic;-lm;-lpcre2-8;-lz"
 		},
 		{
 			"name" : "GTK3_STATIC_LDFLAGS_OTHER",
@@ -1683,7 +2103,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "gtk-3;gdk-3;z;gdi32;imm32;shell32;ole32;uuid;winmm;dwmapi;setupapi;cfgmgr32;hid;winspool;comctl32;comdlg32;gdi32;msimg32;epoxy;opengl32;gdi32;pangocairo-1.0;m;gdi32;pangoft2-1.0;m;pangowin32-1.0;m;gdi32;dwrite;harfbuzz-gobject;pango-1.0;m;fribidi;thai;datrie;atk-1.0;cairo-gobject;m;gdi32;msimg32;dwrite;d2d1;windowscodecs;cairo;m;gdi32;msimg32;dwrite;d2d1;windowscodecs;fontconfig;expat;freetype;bz2;harfbuzz;m;usp10;gdi32;rpcrt4;graphite2;brotlidec;brotlicommon;pixman-1;m;gdk_pixbuf-2.0;m;intl;gdiplus;ole32;png16;z;tiff;webp;zstd;lzma;Lerc;jbig;jpeg;deflate;z;webp;sharpyuv;zstd;lzma;Lerc;jpeg;deflate;gio-2.0;intl;shlwapi;dnsapi;iphlpapi;ws2_32;gmodule-2.0;intl;z;gobject-2.0;intl;ffi;glib-2.0;intl;ws2_32;ole32;winmm;shlwapi;uuid;atomic;m;pcre2-8"
+			"value" : "gtk-3;gdk-3;z;gdi32;imm32;shell32;ole32;uuid;winmm;dwmapi;setupapi;cfgmgr32;hid;winspool;comctl32;comdlg32;pangocairo-1.0;m;gdi32;pangoft2-1.0;m;pangowin32-1.0;m;dwrite;pango-1.0;m;thai;datrie;harfbuzz-gobject;gdi32;msimg32;cairo-gobject;m;gdi32;msimg32;dwrite;d2d1;windowscodecs;cairo;m;gdi32;msimg32;dwrite;d2d1;windowscodecs;fontconfig;expat;freetype;bz2;harfbuzz;m;usp10;gdi32;rpcrt4;graphite2;brotlidec;brotlicommon;pixman-1;m;gdk_pixbuf-2.0;m;intl;gdiplus;ole32;png16;z;tiff;jbig;webp;sharpyuv;zstd;lzma;Lerc;jpeg;deflate;atk-1.0;epoxy;opengl32;gdi32;fribidi;gio-2.0;intl;shlwapi;dnsapi;iphlpapi;ws2_32;gobject-2.0;intl;ffi;gmodule-2.0;glib-2.0;intl;ws2_32;ole32;winmm;shlwapi;uuid;atomic;m;pcre2-8;z"
 		},
 		{
 			"name" : "GTK3_STATIC_LIBRARY_DIRS",
@@ -1695,7 +2115,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/lib;C:/msys64/mingw64/lib/../lib;C:/msys64/mingw64/lib"
+			"value" : "C:/msys64/mingw64/bin/../lib;C:/msys64/mingw64/bin/../lib/../lib"
 		},
 		{
 			"name" : "GTK3_STATIC_LIBS",
@@ -1806,6 +2226,426 @@
 			"value" : ""
 		},
 		{
+			"name" : "JSONC_CFLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-IC:/msys64/mingw64/bin/../include;-IC:/msys64/mingw64/bin/../include/json-c"
+		},
+		{
+			"name" : "JSONC_CFLAGS_I",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_CFLAGS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_FOUND",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "JSONC_INCLUDEDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../include"
+		},
+		{
+			"name" : "JSONC_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../include;C:/msys64/mingw64/bin/../include/json-c"
+		},
+		{
+			"name" : "JSONC_LDFLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-LC:/msys64/mingw64/bin/../lib;-ljson-c"
+		},
+		{
+			"name" : "JSONC_LDFLAGS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_LIBDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../lib"
+		},
+		{
+			"name" : "JSONC_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "json-c"
+		},
+		{
+			"name" : "JSONC_LIBRARY_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../lib"
+		},
+		{
+			"name" : "JSONC_LIBS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_LIBS_L",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_LIBS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_LIBS_PATHS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_MODULE_NAME",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "json-c"
+		},
+		{
+			"name" : "JSONC_PREFIX",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/.."
+		},
+		{
+			"name" : "JSONC_STATIC_CFLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-IC:/msys64/mingw64/bin/../include;-IC:/msys64/mingw64/bin/../include/json-c"
+		},
+		{
+			"name" : "JSONC_STATIC_CFLAGS_I",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_STATIC_CFLAGS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_STATIC_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../include;C:/msys64/mingw64/bin/../include/json-c"
+		},
+		{
+			"name" : "JSONC_STATIC_LDFLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-LC:/msys64/mingw64/bin/../lib;-ljson-c"
+		},
+		{
+			"name" : "JSONC_STATIC_LDFLAGS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_STATIC_LIBDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_STATIC_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "json-c"
+		},
+		{
+			"name" : "JSONC_STATIC_LIBRARY_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/msys64/mingw64/bin/../lib"
+		},
+		{
+			"name" : "JSONC_STATIC_LIBS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_STATIC_LIBS_L",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_STATIC_LIBS_OTHER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_STATIC_LIBS_PATHS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_VERSION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "0.18"
+		},
+		{
+			"name" : "JSONC_json-c_INCLUDEDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_json-c_LIBDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_json-c_PREFIX",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "JSONC_json-c_VERSION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
 			"name" : "OSS_TeamProject_BINARY_DIR",
 			"properties" : 
 			[
@@ -1815,7 +2655,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/idmoh/Documents/OSS_TeamProject/out/build/x64-Debug"
+			"value" : "C:/Users/jungc/OSS_TeamProject/out/build/x64-Debug"
 		},
 		{
 			"name" : "OSS_TeamProject_IS_TOP_LEVEL",
@@ -1839,7 +2679,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/idmoh/Documents/OSS_TeamProject"
+			"value" : "C:/Users/jungc/OSS_TeamProject"
 		},
 		{
 			"name" : "PKG_CONFIG_ARGN",
@@ -1886,6 +2726,18 @@
 			"value" : "REQUIRED;cairo"
 		},
 		{
+			"name" : "__pkg_config_arguments_CURL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "REQUIRED;libcurl"
+		},
+		{
 			"name" : "__pkg_config_arguments_GTK3",
 			"properties" : 
 			[
@@ -1896,6 +2748,18 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "REQUIRED;gtk+-3.0"
+		},
+		{
+			"name" : "__pkg_config_arguments_JSONC",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "REQUIRED;json-c"
 		},
 		{
 			"name" : "__pkg_config_checked_CAIRO",
@@ -1910,7 +2774,31 @@
 			"value" : "1"
 		},
 		{
+			"name" : "__pkg_config_checked_CURL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
 			"name" : "__pkg_config_checked_GTK3",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "__pkg_config_checked_JSONC",
 			"properties" : 
 			[
 				{
@@ -1935,7 +2823,23 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libcairo.a"
+			"value" : "pkgcfg_lib_CAIRO_cairo-NOTFOUND"
+		},
+		{
+			"name" : "pkgcfg_lib_CURL_curl",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "pkgcfg_lib_CURL_curl-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_atk-1.0",
@@ -1951,7 +2855,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libatk-1.0.a"
+			"value" : "pkgcfg_lib_GTK3_atk-1.0-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_cairo",
@@ -1967,7 +2871,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libcairo.a"
+			"value" : "pkgcfg_lib_GTK3_cairo-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_cairo-gobject",
@@ -1983,7 +2887,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libcairo-gobject.a"
+			"value" : "pkgcfg_lib_GTK3_cairo-gobject-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_cfgmgr32",
@@ -1999,7 +2903,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libcfgmgr32.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/cfgmgr32.lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_comctl32",
@@ -2015,7 +2919,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libcomctl32.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/ComCtl32.Lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_comdlg32",
@@ -2031,7 +2935,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libcomdlg32.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/ComDlg32.Lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_dwmapi",
@@ -2047,7 +2951,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libdwmapi.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/dwmapi.lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_gdi32",
@@ -2063,7 +2967,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libgdi32.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/Gdi32.Lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_gdk-3",
@@ -2079,7 +2983,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libgdk-3.a"
+			"value" : "pkgcfg_lib_GTK3_gdk-3-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_gdk_pixbuf-2.0",
@@ -2095,7 +2999,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libgdk_pixbuf-2.0.a"
+			"value" : "pkgcfg_lib_GTK3_gdk_pixbuf-2.0-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_gio-2.0",
@@ -2111,7 +3015,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libgio-2.0.a"
+			"value" : "pkgcfg_lib_GTK3_gio-2.0-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_glib-2.0",
@@ -2127,7 +3031,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libglib-2.0.a"
+			"value" : "pkgcfg_lib_GTK3_glib-2.0-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_gobject-2.0",
@@ -2143,7 +3047,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libgobject-2.0.a"
+			"value" : "pkgcfg_lib_GTK3_gobject-2.0-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_gtk-3",
@@ -2159,7 +3063,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libgtk-3.a"
+			"value" : "pkgcfg_lib_GTK3_gtk-3-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_harfbuzz",
@@ -2175,7 +3079,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libharfbuzz.a"
+			"value" : "pkgcfg_lib_GTK3_harfbuzz-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_hid",
@@ -2191,7 +3095,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libhid.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/hid.lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_imm32",
@@ -2207,7 +3111,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libimm32.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/Imm32.Lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_intl",
@@ -2223,7 +3127,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libintl.a"
+			"value" : "pkgcfg_lib_GTK3_intl-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_ole32",
@@ -2239,7 +3143,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libole32.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/Ole32.Lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_pango-1.0",
@@ -2255,7 +3159,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libpango-1.0.a"
+			"value" : "pkgcfg_lib_GTK3_pango-1.0-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_pangocairo-1.0",
@@ -2271,7 +3175,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libpangocairo-1.0.a"
+			"value" : "pkgcfg_lib_GTK3_pangocairo-1.0-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_pangowin32-1.0",
@@ -2287,7 +3191,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libpangowin32-1.0.a"
+			"value" : "pkgcfg_lib_GTK3_pangowin32-1.0-NOTFOUND"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_setupapi",
@@ -2303,7 +3207,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libsetupapi.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/SetupAPI.Lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_shell32",
@@ -2319,7 +3223,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libshell32.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/shell32.lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_uuid",
@@ -2335,7 +3239,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libuuid.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/Uuid.Lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_winmm",
@@ -2351,7 +3255,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libwinmm.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/WinMM.Lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_winspool",
@@ -2367,7 +3271,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libwinspool.a"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64/WinSpool.Lib"
 		},
 		{
 			"name" : "pkgcfg_lib_GTK3_z",
@@ -2383,7 +3287,23 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/msys64/mingw64/lib/libz.a"
+			"value" : "pkgcfg_lib_GTK3_z-NOTFOUND"
+		},
+		{
+			"name" : "pkgcfg_lib_JSONC_json-c",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "pkgcfg_lib_JSONC_json-c-NOTFOUND"
 		},
 		{
 			"name" : "prefix_result",
@@ -2395,7 +3315,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/msys64/mingw64/lib"
+			"value" : "C:/msys64/mingw64/bin/../lib"
 		}
 	],
 	"kind" : "cache",
