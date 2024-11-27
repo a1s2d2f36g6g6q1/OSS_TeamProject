@@ -115,7 +115,7 @@ void send_game_score(const char* username, const char* game, int score) {
         const char* json_string = json_object_to_json_string(json_data);
 
         headers = curl_slist_append(headers, "Content-Type: application/json");
-        curl_easy_setopt(curl, CURLOPT_URL, "http://172.30.152.50:5000/auth/save-score");
+        curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.137.1:5000/auth/save-score");
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_string);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
@@ -166,12 +166,12 @@ int main(int argc, char* argv[]) {
     GtkWidget* login_screen = create_login_screen(stack);
     GtkWidget* main_menu = create_main_menu(stack);
     GtkWidget* minesweeper_screen = create_minesweeper_screen(stack);
-    //GtkWidget* multi_screen = create_multi_screen(stack);
+    GtkWidget* multi_screen = create_multi_screen(stack);
 
     gtk_stack_add_named(stack, login_screen, "login_screen");
     gtk_stack_add_named(stack, main_menu, "main_menu");
     gtk_stack_add_named(stack, minesweeper_screen, "minesweeper_screen");
-    //gtk_stack_add_named(stack, multi_screen, "multi");
+    gtk_stack_add_named(stack, multi_screen, "multi");
 
     gtk_stack_set_visible_child_name(stack, "login_screen");
 

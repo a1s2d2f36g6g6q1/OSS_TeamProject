@@ -15,7 +15,7 @@
     #define closesocket close
 #endif
 
-#include <curl/curl.h>
+#include <curl.h>
 #include <gtk/gtk.h>
 #include <json.h>
 #include <stdbool.h>
@@ -111,7 +111,21 @@ void on_create_room(GtkWidget* widget, gpointer data) {
 }
 
 void on_join_room(GtkWidget* widget, gpointer data) {
-    // Join room logic
+    char response[4096];
+    GtkEntry* join_entry = GTK_ENTRY(data);
+    const char* room_id_str = gtk_entry_get_text(join_entry);
+    int room_id = atoi(room_id_str); // 입력된 Room ID를 정수로 변환
+
+    struct json_object* json = json_object_new_object();
+    json_object_object_add(json, "action", json_object_new_string("join"));
+    json_object_object_add(json, "roomId", json_object_new_int(room_id));
+
+    const char* json_str = json_object_to_json_string(json);
+    send_json_request(global_socket, "/game/join", json_str);
+
+    receive_response(global_socket, response, sizeof(response));
+    gtk_label_set_text(GTK_LABEL(response_label), response); // 응답을 GTK 라벨에 출력
+    json_object_put(json);
 }
 
 void on_send_message(GtkWidget* widget, gpointer data) {
@@ -120,7 +134,7 @@ void on_send_message(GtkWidget* widget, gpointer data) {
 
 // 화면 생성 함수
 GtkWidget* create_multi_screen(GtkStack* stack) {
-    global_socket = initialize_socket("172.30.152.50", 5000);
+    global_socket = initialize_socket("192.168.137.1", 5000);
     if (global_socket == INVALID_SOCKET) {
         printf("Failed to connect to server.\n");
         return NULL;
