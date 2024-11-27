@@ -138,6 +138,32 @@ int move_tiles(int dx, int dy){
     }
 }
 
+    // 키보드 입력 처리
+gboolean on_key_press(GtkWidget* widget, GdkEventKey* event, gpointer data) {
+    int moved = 0;
+
+    switch (event->keyval) {
+    case GDK_KEY_Left:
+        moved = move_tiles(0, -1);
+        break;
+    case GDK_KEY_Right:
+        moved = move_tiles(0, 1);
+        break;
+    case GDK_KEY_Up:
+        moved = move_tiles(-1, 0);
+        break;
+    case GDK_KEY_Down:
+        moved = move_tiles(1, 0);
+        break;
+    }
+
+    if (moved) {
+        add_random_tile();
+        gtk_widget_queue_draw(drawing_area);
+    }
+    return TRUE;
+}
+
 return moved;
 
 }
