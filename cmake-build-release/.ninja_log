@@ -1,15 +1,7 @@
 # ninja log v6
-4	1124	1732688308857487443	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o	538eb4ac11df00ad
-2	964	1732688308855201142	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o	7aa544abf11af091
-9	100	1732688548521992955	build.ninja	89288420073f7ea3
-0	10	1732688548533515456	clean	59f41d64c9f3416f
-3	756	1732688548805534883	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o	7aa544abf11af091
-3	778	1732688548806067897	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o	538eb4ac11df00ad
-4	21	1732688594296668185	clean	59f41d64c9f3416f
-4	521	1732688594510258771	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o	538eb4ac11df00ad
-3	522	1732688594509536266	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o	8297815c603ed18
-3	523	1732688594509767462	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o	7aa544abf11af091
-4	18	1732688615968739666	clean	59f41d64c9f3416f
-3	623	1732688616177654988	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o	7aa544abf11af091
-3	624	1732688616177767232	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o	538eb4ac11df00ad
 2	624	1732688616177543910	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o	8297815c603ed18
+3	623	1732688616177654988	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o	7aa544abf11af091
+4	18	1732688615968739666	clean	59f41d64c9f3416f
+9	100	1732688952904279117	build.ninja	89288420073f7ea3
+3	624	1732688616177767232	CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o	538eb4ac11df00ad
+5	98	1732688952904279117	build.ninja	89288420073f7ea3

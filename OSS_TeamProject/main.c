@@ -1,5 +1,12 @@
+#ifdef _WIN32
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
+#include <WinSock2.h>
+#pragma comment(lib, "ws2_32.lib")
+#else
+// macOS 및 Linux 환경에서는 필요 없음
+#endif
+
 #include <curl.h>
 #include <gtk/gtk.h>
 #include <json.h>
@@ -8,10 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <WinSock2.h>
 #include "games.h"
-
-#pragma comment(lib, "ws2_32.lib")
 
 void switch_to_mult(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
