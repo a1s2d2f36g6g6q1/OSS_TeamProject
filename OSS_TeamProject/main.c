@@ -7,7 +7,7 @@
 // macOS 및 Linux 환경에서는 필요 없음
 #endif
 
-#include <curl.h>
+#include <curl/curl.h>
 #include <gtk/gtk.h>
 #include <json.h>
 #include <math.h>

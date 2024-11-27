@@ -159,6 +159,8 @@ MyCExecutable: CMakeFiles/MyCExecutable.dir/OSS_TeamProject/BP.c.o
 MyCExecutable: CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o
 MyCExecutable: CMakeFiles/MyCExecutable.dir/OSS_TeamProject/mine.c.o
 MyCExecutable: CMakeFiles/MyCExecutable.dir/build.make
+MyCExecutable: /opt/homebrew/opt/curl/lib/libcurl.dylib
+MyCExecutable: /opt/homebrew/opt/curl/lib/libcurl.dylib
 MyCExecutable: CMakeFiles/MyCExecutable.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/u4bi_/_Mac/Study/OSS_TeamProject/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable MyCExecutable"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MyCExecutable.dir/link.txt --verbose=$(VERBOSE)
