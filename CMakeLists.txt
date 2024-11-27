@@ -13,31 +13,39 @@ set(SOURCES
         OSS_TeamProject/games.h
 )
 
+# 실행 파일 생성
+add_compile_options(-Wno-incompatible-function-pointer-types -Wno-deprecated-declarations -Wno-return-type)
 add_executable(MyCExecutable ${SOURCES})
 
-# GTK+3 및 Cairo 찾기
+# GTK+3, Cairo, Curl, JSON-C 찾기
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(CAIRO REQUIRED cairo)
-
-# include 및 라이브러리 경로 설정
-include_directories(${GTK3_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${CURL_IN})
-link_directories(${GTK3_LIBRARY_DIRS} ${CAIRO_LIBRARY_DIRS})
-add_definitions(${GTK3_CFLAGS_OTHER} ${CAIRO_CFLAGS_OTHER})
-
-# 추가된 curl 및 json-c 라이브러리 설정
 pkg_check_modules(CURL REQUIRED libcurl)
 pkg_check_modules(JSONC REQUIRED json-c)
 
-include_directories(${CURL_INCLUDE_DIRS} ${JSONC_INCLUDE_DIRS})
-link_directories(${CURL_LIBRARY_DIRS} ${JSONC_LIBRARY_DIRS})
+# include 디렉토리 설정
+include_directories(
+        ${GTK3_INCLUDE_DIRS}
+        ${CAIRO_INCLUDE_DIRS}
+        ${CURL_INCLUDE_DIRS}
+        ${JSONC_INCLUDE_DIRS}
+        /opt/homebrew/opt/curl/include # libcurl 헤더 경로 수동 추가
+)
 
-# Windows 환경 처리
-if(WIN32)
-    target_link_libraries(MyCExecutable ws2_32) # WinSock2 사용
-endif()
+# 링크 디렉토리 설정
+link_directories(
+        ${GTK3_LIBRARY_DIRS}
+        ${CAIRO_LIBRARY_DIRS}
+        ${CURL_LIBRARY_DIRS}
+        ${JSONC_LIBRARY_DIRS}
+        /opt/homebrew/opt/curl/lib # libcurl 라이브러리 경로 수동 추가
+)
 
-# 모든 환경에서 공통으로 필요한 라이브러리 연결
+# 필요한 플래그 추가
+add_definitions(${GTK3_CFLAGS_OTHER} ${CAIRO_CFLAGS_OTHER} ${CURL_CFLAGS_OTHER} ${JSONC_CFLAGS_OTHER})
+
+# 링크 라이브러리 설정
 target_link_libraries(MyCExecutable
         ${GTK3_LDFLAGS}
         ${CAIRO_LDFLAGS}
@@ -45,13 +53,7 @@ target_link_libraries(MyCExecutable
         ${JSONC_LIBRARIES}
         gtk-3 gdk-3 pangocairo-1.0 pango-1.0 harfbuzz atk-1.0 cairo-gobject
         gdk_pixbuf-2.0 gio-2.0 gobject-2.0 glib-2.0 intl
+        /opt/homebrew/opt/curl/lib/libcurl.dylib # libcurl 수동 링크
 )
 
-# 디버깅용 메시지
-message(STATUS "GTK3 Include dirs: ${GTK3_INCLUDE_DIRS}")
-message(STATUS "GTK3 Library dirs: ${GTK3_LIBRARY_DIRS}")
-message(STATUS "GTK3 Libraries: ${GTK3_LIBRARIES}")
-message(STATUS "CURL Include dirs: ${CURL_INCLUDE_DIRS}")
-message(STATUS "CURL Libraries: ${CURL_LIBRARIES}")
-message(STATUS "JSON-C Include dirs: ${JSONC_INCLUDE_DIRS}")
-message(STATUS "JSON-C Libraries: ${JSONC_LIBRARIES}")
+
