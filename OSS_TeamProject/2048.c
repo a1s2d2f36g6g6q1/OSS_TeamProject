@@ -186,18 +186,23 @@ bool is_game_over() {
     return true; // 더 이상 움직일 수 없음
 }
 
-void start_2048_game() {
-
+void start_2048_game(GtkStack* stack) {
+    score = 0;
     initialize_grid(grid_size);
     add_random_tile();
     add_random_tile();
 
-    GtkWidget *window;
-    gtk_init(NULL, NULL);
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "2048 Game");
-    gtk_window_set_default_size(GTK_WINDOW(window), 300, 600);
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_window_set_default_size(GTK_WINDOW(window), 
+    grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN,
+    grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN);    
+
+    drawing_area = gtk_drawing_area_new();
+    gtk_container_add(GTK_CONTAINER(window), drawing_area);
+    g_signal_connect(drawing_area, "draw", G_CALLBACK(on_draw), NULL);
+
+    g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), NULL);
+
     gtk_widget_show_all(window);
-    gtk_main();
 }
