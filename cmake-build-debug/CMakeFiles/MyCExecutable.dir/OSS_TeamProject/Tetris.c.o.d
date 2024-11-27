@@ -1,20 +1,38 @@
 CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o: \
   /Users/u4bi_/_Mac/Study/OSS_TeamProject/OSS_TeamProject/Tetris.c \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/stdio.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/_stdio.h \
+  /opt/homebrew/Cellar/gtk+3/3.24.43/include/gtk-3.0/gtk/gtk.h \
+  /opt/homebrew/Cellar/gtk+3/3.24.43/include/gtk-3.0/gdk/gdk.h \
+  /opt/homebrew/Cellar/gtk+3/3.24.43/include/gtk-3.0/gdk/gdkconfig.h \
+  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib.h \
+  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/galloca.h \
+  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/gtypes.h \
+  /opt/homebrew/Cellar/glib/2.82.2/lib/glib-2.0/include/glibconfig.h \
+  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/gmacros.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stddef.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/limits.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/limits.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/cdefs.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_symbol_aliasing.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_posix_availability.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/Availability.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/AvailabilityVersions.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/AvailabilityInternal.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/AvailabilityInternalLegacy.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/machine/limits.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/arm/limits.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/arm/_limits.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/syslimits.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/float.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/float.h \
+  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/gversionmacros.h \
+  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/glib-visibility.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/time.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/_types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/machine/_types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/arm/_types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_pthread/_pthread_types.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_va_list.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/Availability.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/AvailabilityVersions.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/AvailabilityInternal.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/AvailabilityInternalLegacy.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_clock_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/machine/types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/arm/types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_int8_t.h \
@@ -27,43 +45,17 @@ CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_u_int64_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_intptr_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_uintptr_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_size_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_null.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/stdio.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_seek_set.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/_ctermid.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_off_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_ssize_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/secure/_stdio.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/secure/_common.h \
-  /opt/homebrew/Cellar/gtk+3/3.24.43/include/gtk-3.0/gtk/gtk.h \
-  /opt/homebrew/Cellar/gtk+3/3.24.43/include/gtk-3.0/gdk/gdk.h \
-  /opt/homebrew/Cellar/gtk+3/3.24.43/include/gtk-3.0/gdk/gdkconfig.h \
-  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib.h \
-  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/galloca.h \
-  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/gtypes.h \
-  /opt/homebrew/Cellar/glib/2.82.2/lib/glib-2.0/include/glibconfig.h \
-  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/gmacros.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stddef.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/limits.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/limits.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/machine/limits.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/arm/limits.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/arm/_limits.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/syslimits.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/float.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/float.h \
-  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/gversionmacros.h \
-  /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/glib-visibility.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/time.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_clock_t.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_size_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_time_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_timespec.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/string.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_rsize_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_errno_t.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_ssize_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/secure/_strings.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/secure/_common.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/secure/_string.h \
   /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/garray.h \
   /opt/homebrew/Cellar/glib/2.82.2/include/glib-2.0/glib/gasyncqueue.h \
@@ -204,6 +196,7 @@ CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_ino64_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_key_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_nlink_t.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_off_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_useconds_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_suseconds_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_fd_def.h \
@@ -286,6 +279,8 @@ CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/unistd.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/unistd.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_posix_vdisable.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_seek_set.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/_ctermid.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/select.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_select.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_uuid_t.h \
@@ -468,6 +463,11 @@ CMakeFiles/MyCExecutable.dir/OSS_TeamProject/Tetris.c.o: \
   /opt/homebrew/Cellar/pango/1.54.0/include/pango-1.0/pango/pango-markup.h \
   /opt/homebrew/Cellar/pango/1.54.0/include/pango-1.0/pango/pango-renderer.h \
   /opt/homebrew/Cellar/pango/1.54.0/include/pango-1.0/pango/pango-utils.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/stdio.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/_stdio.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/_types/_va_list.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/stdio.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/secure/_stdio.h \
   /opt/homebrew/Cellar/cairo/1.18.2/include/cairo/cairo.h \
   /opt/homebrew/Cellar/cairo/1.18.2/include/cairo/cairo-version.h \
   /opt/homebrew/Cellar/cairo/1.18.2/include/cairo/cairo-features.h \

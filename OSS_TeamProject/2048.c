@@ -7,7 +7,7 @@
 #include "games.h"
 
 #define TILE_SIZE 100
-#define TILE_MARGINE 10
+#define TILE_MARGIN 10
 
 //위젯 and 데이터구조설계
 GtkWidget* drawing_area;

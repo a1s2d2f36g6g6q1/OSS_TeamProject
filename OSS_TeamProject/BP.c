@@ -158,7 +158,6 @@ void start_breakout_game_BP()
     gtk_widget_show_all(window); // 모든 위젯을 표시
     gtk_main();                  // GTK 메인 루프 시작
 
-    return 0;
 }
 
 // 게임 초기화 함수
