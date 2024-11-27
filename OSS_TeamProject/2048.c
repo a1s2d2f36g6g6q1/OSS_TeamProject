@@ -107,39 +107,40 @@ gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
 }
 
 //타일 이동 및 합치기 함수
-int move_tiles(int dx, int dy){
+int move_tiles(int dx, int dy) {
     int moved = 0;
     for (int i = 0; i < grid_size; i++) {
-    for (int j = 0; j < grid_size; j++) {
-        int x = (dx == 1) ? (grid_size - 1 - i) : i;
-        int y = (dy == 1) ? (grid_size - 1 - j) : j;
+        for (int j = 0; j < grid_size; j++) {
+            int x = (dx == 1) ? (grid_size - 1 - i) : i;
+            int y = (dy == 1) ? (grid_size - 1 - j) : j;
 
-        if (grid[x][y] != 0) {
-            int nx = x, ny = y;  
-            while (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
-                   grid[nx + dx][ny + dy] == 0) {  
-                nx += dx;
-                ny += dy;
-            }
+            if (grid[x][y] != 0) {
+                int nx = x, ny = y;
+                while (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
+                    grid[nx + dx][ny + dy] == 0) {
+                    nx += dx;
+                    ny += dy;
+                }
 
-            if (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
-                grid[nx + dx][ny + dy] == grid[x][y]) {
-                grid[nx + dx][ny + dy] *= 2;
-                score += grid[nx + dx][ny + dy];
-                grid[x][y] = 0;
-                moved = 1;
-            }
-            else if (nx != x || ny != y) {
-                grid[nx][ny] = grid[x][y];
-                grid[x][y] = 0;
-                moved = 1;
+                if (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
+                    grid[nx + dx][ny + dy] == grid[x][y]) {
+                    grid[nx + dx][ny + dy] *= 2;
+                    score += grid[nx + dx][ny + dy];
+                    grid[x][y] = 0;
+                    moved = 1;
+                }
+                else if (nx != x || ny != y) {
+                    grid[nx][ny] = grid[x][y];
+                    grid[x][y] = 0;
+                    moved = 1;
+                }
             }
         }
     }
 }
 
     // 키보드 입력 처리
-gboolean on_key_press(GtkWidget* widget, GdkEventKey* event, gpointer data) {
+gboolean on_key_press1(GtkWidget* widget, GdkEventKey* event, gpointer data) {
     int moved = 0;
 
     switch (event->keyval) {
@@ -164,9 +165,7 @@ gboolean on_key_press(GtkWidget* widget, GdkEventKey* event, gpointer data) {
     return TRUE;
 }
 
-return moved;
 
-}
 // 게임 오버 상태 체크 함수
 bool is_game_over() {
     // 빈 칸 확인
@@ -186,7 +185,9 @@ bool is_game_over() {
     return true; // 더 이상 움직일 수 없음
 }
 
-void start_2048_game(GtkStack* stack) {
+
+
+void start_2048_game(GtkStack* stack){
     score = 0;
     initialize_grid(grid_size);
     add_random_tile();
@@ -202,7 +203,7 @@ void start_2048_game(GtkStack* stack) {
     gtk_container_add(GTK_CONTAINER(window), drawing_area);
     g_signal_connect(drawing_area, "draw", G_CALLBACK(on_draw), NULL);
 
-    g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), NULL);
+    g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press1), NULL);
 
     gtk_widget_show_all(window);
 }
