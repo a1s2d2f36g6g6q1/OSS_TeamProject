@@ -14,6 +14,7 @@ int current_y = 0;                       // 도형의 Y 위치
 int game_speed = 500;                    // 게임 속도 (ms)
 int score_Tetris = 0;                    // 점수
 bool game_over_Tetris = false;           // 게임 오버 상태
+void clear_lines();                      // 꽉 찬 줄 제거
 
 int tetrominos[7][4][4] = {
     // I 블록
@@ -101,7 +102,7 @@ void spawn_new_tetromino()
     }
 }
 
-// 게임판 그리기
+// draw_game_board 수정
 gboolean draw_game_board(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
     double cell_size = 30;
@@ -117,7 +118,14 @@ gboolean draw_game_board(GtkWidget *widget, cairo_t *cr, gpointer data)
         {
             if (grid[y][x] != 0)
             {
-                cairo_set_source_rgb(cr, 0.0, 0.0, 0.5); // 짙은 파란색
+                if (game_over_Tetris)
+                {
+                    cairo_set_source_rgb(cr, 1.0, 0.0, 0.0); // 빨간색
+                }
+                else
+                {
+                    cairo_set_source_rgb(cr, 0.0, 0.0, 0.5); // 짙은 파란색
+                }
                 cairo_rectangle(cr, x * cell_size, y * cell_size, cell_size - 1, cell_size - 1);
                 cairo_fill(cr);
             }
@@ -125,15 +133,18 @@ gboolean draw_game_board(GtkWidget *widget, cairo_t *cr, gpointer data)
     }
 
     // 현재 도형
-    for (int y = 0; y < 4; y++)
+    if (!game_over_Tetris) // 게임 오버 시 현재 도형 그리지 않음
     {
-        for (int x = 0; x < 4; x++)
+        for (int y = 0; y < 4; y++)
         {
-            if (current_tetromino[y][x] == 1)
+            for (int x = 0; x < 4; x++)
             {
-                cairo_set_source_rgb(cr, 0.5, 0.8, 1.0); // 하늘색
-                cairo_rectangle(cr, (current_x + x) * cell_size, (current_y + y) * cell_size, cell_size - 1, cell_size - 1);
-                cairo_fill(cr);
+                if (current_tetromino[y][x] == 1)
+                {
+                    cairo_set_source_rgb(cr, 0.5, 0.8, 1.0); // 하늘색
+                    cairo_rectangle(cr, (current_x + x) * cell_size, (current_y + y) * cell_size, cell_size - 1, cell_size - 1);
+                    cairo_fill(cr);
+                }
             }
         }
     }
@@ -155,11 +166,11 @@ gboolean draw_game_board(GtkWidget *widget, cairo_t *cr, gpointer data)
     return FALSE;
 }
 
-// 게임 루프
+// game_loop 수정
 gboolean game_loop(GtkWidget *widget)
 {
     if (game_over_Tetris)
-        return FALSE;
+        return FALSE; // 게임 루프 종료
 
     if (!check_collision(current_x, current_y + 1, current_tetromino))
     {
@@ -178,7 +189,21 @@ gboolean game_loop(GtkWidget *widget)
                 }
             }
         }
-        spawn_new_tetromino();
+        clear_lines();
+
+        // 게임 오버 체크
+        for (int x = 0; x < GRID_WIDTH; x++)
+        {
+            if (grid[0][x] != 0)
+            {
+                game_over_Tetris = true;
+                break;
+            }
+        }
+        if (!game_over_Tetris)
+        {
+            spawn_new_tetromino(); // 게임 오버가 아닐 경우에만 새 도형 생성
+        }
     }
 
     gtk_widget_queue_draw(widget);
@@ -228,6 +253,43 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data)
     }
     gtk_widget_queue_draw(widget); // 화면 갱신
     return TRUE;
+}
+
+void clear_lines()
+{
+    for (int y = 0; y < GRID_HEIGHT; y++)
+    {
+        bool full_line = true;
+        for (int x = 0; x < GRID_WIDTH; x++)
+        {
+            if (grid[y][x] == 0)
+            {
+                full_line = false;
+                break;
+            }
+        }
+
+        if (full_line)
+        {
+            // 점수 추가
+            score_Tetris += 100;
+
+            // 줄 위로 당기기
+            for (int ny = y; ny > 0; ny--)
+            {
+                for (int nx = 0; nx < GRID_WIDTH; nx++)
+                {
+                    grid[ny][nx] = grid[ny - 1][nx];
+                }
+            }
+
+            // 가장 위 줄은 초기화
+            for (int nx = 0; nx < GRID_WIDTH; nx++)
+            {
+                grid[0][nx] = 0;
+            }
+        }
+    }
 }
 
 // 게임 시작
