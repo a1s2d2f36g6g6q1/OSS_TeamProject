@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:/msys64/mingw64/include/webp;C:/msys64/mingw64/include/glib-2.0;C:/msys64/mingw64/lib/glib-2.0/include;C:/msys64/mingw64/include/libpng16;C:/msys64/mingw64/include/gdk-pixbuf-2.0;C:\msys64\mingw64\include\gtk-3.0;C:/msys64/mingw64/include/pango-1.0;C:/msys64/mingw64/include/harfbuzz;C:/msys64/mingw64/include/fribidi;C:/msys64/mingw64/include/atk-1.0;C:/msys64/mingw64/include/cairo;C:/msys64/mingw64/include/freetype2;C:/msys64/mingw64/include/pixman-1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\msys64\mingw64\include\curl;C:\msys64\mingw64\include\json-c;C:/msys64/mingw64/include/webp;C:/msys64/mingw64/include/glib-2.0;C:/msys64/mingw64/lib/glib-2.0/include;C:/msys64/mingw64/include/libpng16;C:/msys64/mingw64/include/gdk-pixbuf-2.0;C:\msys64\mingw64\include\gtk-3.0;C:/msys64/mingw64/include/pango-1.0;C:/msys64/mingw64/include/harfbuzz;C:/msys64/mingw64/include/fribidi;C:/msys64/mingw64/include/atk-1.0;C:/msys64/mingw64/include/cairo;C:/msys64/mingw64/include/freetype2;C:/msys64/mingw64/include/pixman-1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\msys64\mingw64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libgtk-3.dll.a;libgdk-3.dll.a;libpangocairo-1.0.dll.a;libpango-1.0.dll.a;libgobject-2.0.dll.a;libglib-2.0.dll.a;libintl.dll.a;libcairo.dll.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libgtk-3.dll.a;libgdk-3.dll.a;libpangocairo-1.0.dll.a;libpango-1.0.dll.a;libgobject-2.0.dll.a;libglib-2.0.dll.a;libintl.dll.a;libcairo.dll.a;libcurl.dll.a;libjson-c.dll.a;libcurl.a;libjson-c.a;libz.a;libssl.a;libcrypto.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,8 +132,10 @@
   <ItemGroup>
     <ClCompile Include="2048.c" />
     <ClCompile Include="BP.c" />
+    <ClCompile Include="login.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mine.c" />
+    <ClCompile Include="multi.c" />
     <ClCompile Include="tetris.c" />
   </ItemGroup>
   <ItemGroup>

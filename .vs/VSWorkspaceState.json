@@ -1,13 +1,17 @@
 {
-  "ExpandedNodes": [
-    ""
-  ],
-  "SelectedNode": "\\Tetris.c",
-  "PreviewInSolutionExplorer": false,
   "OutputFoldersPerTargetSystem": {
     "Local Machine": [
       "out\\build\\x64-Debug",
       "out\\install\\x64-Debug"
+    ],
+    "\uB85C\uCEEC \uCEF4\uD4E8\uD130": [
+      "out\\build\\x64-Debug",
+      "out\\install\\x64-Debug"
     ]
-  }
+  },
+  "ExpandedNodes": [
+    ""
+  ],
+  "SelectedNode": "\\OSS_TeamProject.sln",
+  "PreviewInSolutionExplorer": false
 }

@@ -10,6 +10,7 @@ const gameRoutes = require('./route/game');
 const app = express();
 const server = http.createServer(app); // HTTP 서버 생성
 
+<<<<<<< HEAD
 const appPORT = 5000;
 const serverPORT = 6000;
 
@@ -19,6 +20,22 @@ app.use(cors());
 app.use((req, res, next) => {
     res.setHeader('Connection', 'keep-alive');
     next();
+=======
+app.use(bodyParser.json()); // JSON 요청 처리
+app.use(cors()); // CORS 적용
+app.use(express.json({ limit: '1mb' }));
+
+app.use('/auth', authRoutes); // '/auth' 경로에 authRoutes 사용
+app.use('/game', gameRoutes);
+
+app.use((req, res, next) => {
+    res.setHeader('Connection', 'keep-alive');
+    next();
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
+>>>>>>> d99c2cab9c88eb89ae8ed027efd9793e28c88eca
 });
 app.use('/auth', authRoutes); // '/auth' 경로에 authRoutes 사용
 app.use('/game', gameRoutes);
