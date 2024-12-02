@@ -157,7 +157,7 @@ gboolean draw_game_board(GtkWidget *widget, cairo_t *cr, gpointer data)
     // 게임 오버
     if (game_over_Tetris)
     {
-        cairo_set_source_rgb(cr, 1.0, 0.0, 0.0); // 빨간색
+        cairo_set_source_rgb(cr, 1.0, 0.0, 1.0); // 빨간색
         cairo_set_font_size(cr, 40);
         cairo_move_to(cr, 50, 250);
         cairo_show_text(cr, "Game Over");
@@ -257,9 +257,13 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 void clear_lines()
 {
-    for (int y = 0; y < GRID_HEIGHT; y++)
+    int cleared_lines = 0; // 삭제된 줄 수
+
+    for (int y = GRID_HEIGHT - 1; y >= 0; y--) // 아래에서 위로 검사
     {
         bool full_line = true;
+
+        // 현재 줄이 가득 찼는지 확인
         for (int x = 0; x < GRID_WIDTH; x++)
         {
             if (grid[y][x] == 0)
@@ -269,12 +273,12 @@ void clear_lines()
             }
         }
 
+        // 가득 찬 줄이면 삭제
         if (full_line)
         {
-            // 점수 추가
-            score_Tetris += 100;
+            cleared_lines++;
 
-            // 줄 위로 당기기
+            // 현재 줄 위에 있는 블록을 한 줄씩 아래로 내림
             for (int ny = y; ny > 0; ny--)
             {
                 for (int nx = 0; nx < GRID_WIDTH; nx++)
@@ -283,13 +287,19 @@ void clear_lines()
                 }
             }
 
-            // 가장 위 줄은 초기화
+            // 가장 위쪽 줄은 초기화
             for (int nx = 0; nx < GRID_WIDTH; nx++)
             {
                 grid[0][nx] = 0;
             }
+
+            // 같은 줄을 다시 검사 (줄이 내려왔으므로 y 증가 방지)
+            y++;
         }
     }
+
+    // 점수 업데이트 (삭제된 줄 수에 따라)
+    score_Tetris += cleared_lines * 100; // 1줄당 100점
 }
 
 // 게임 시작
