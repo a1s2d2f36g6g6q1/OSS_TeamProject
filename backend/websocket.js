@@ -17,6 +17,12 @@ function setupWebSocketServer(server) {
                 if (message.action === 'join') {
                     joinRoom(ws, message.roomId);
                 } else if (message.action === 'message') {
+                    // 필드 유효성 검사 추가
+                    if (typeof message.roomId === 'undefined' || typeof message.content === 'undefined') {
+                        console.error('Invalid message format: Missing roomId or content.');
+                        ws.send(JSON.stringify({ action: 'error', message: 'Missing roomId or content field.' }));
+                        return;
+                    }
                     // 방에 있는 다른 사용자에게 메시지 브로드캐스트
                     broadcastMessage(message.roomId, message.content, ws);
                 } else {
@@ -57,11 +63,17 @@ function setupWebSocketServer(server) {
     }
 
     function broadcastMessage(roomId, content, senderSocket) {
-        if (!rooms[roomId]) return;
-
+        if (!rooms[roomId]) {
+            console.error(`Room ${roomId} does not exist or is empty.`);
+            return;
+        }
+    
         rooms[roomId].forEach((socket) => {
             if (socket !== senderSocket) {
-                socket.send(JSON.stringify({ action: 'message', roomId, content }));
+                // JSON 형식으로 보내기 전에 검사
+                const messageToSend = JSON.stringify({ action: 'message', roomId: roomId, content: content });
+                console.log(`Broadcasting message to room ${roomId}: ${messageToSend}`); // 로그 추가
+                socket.send(messageToSend);
             }
         });
         console.log(`Broadcasted message to room ${roomId}: ${content}`);
@@ -74,6 +86,5 @@ function setupWebSocketServer(server) {
         }
     }
 }
-    
 
 module.exports = setupWebSocketServer;
