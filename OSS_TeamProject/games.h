@@ -14,7 +14,6 @@ void switch_to_main_menu(GtkWidget* widget, gpointer data);
 void switch_to_login(GtkWidget* widget, gpointer data);
 GtkWidget* create_minesweeper_screen(GtkStack* stack);
 GtkWidget* create_login_screen(GtkStack* stack);
-GtkWidget* create_multi_screen(GtkStack* stack);
 GtkWidget* create_2048_screen(GtkStack* stack);
 
 extern bool is_guest_mode;
