@@ -168,13 +168,13 @@ void on_send_message(GtkWidget* widget, gpointer data) {
         return;
     }
 
-    // JSON 형식의 메시지 생성
     struct json_object* json = json_object_new_object();
     json_object_object_add(json, "action", json_object_new_string("message"));
     json_object_object_add(json, "roomId", json_object_new_int(room_id));
     json_object_object_add(json, "content", json_object_new_string(message));
 
     const char* json_str = json_object_to_json_string(json);
+
     send_json_request(global_socket, "/game/message", json_str);
 
     // 서버 응답을 처리
@@ -188,7 +188,7 @@ void on_send_message(GtkWidget* widget, gpointer data) {
 
 // 화면 생성 함수
 GtkWidget* create_multi_screen(GtkStack* stack) {
-    global_socket = initialize_socket("192.168.137.1", 6000);
+    global_socket = initialize_socket("172.30.132.172", 6000);
     if (global_socket == INVALID_SOCKET) {
         printf("Failed to connect to server.\n");
         return NULL;

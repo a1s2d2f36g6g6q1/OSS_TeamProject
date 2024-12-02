@@ -186,24 +186,56 @@ bool is_game_over() {
 }
 
 
+GtkWidget* create_2048_screen(GtkStack* stack) {
+    GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
-void start_2048_game(GtkStack* stack){
+    // 점수 표시 라벨
+    GtkWidget* score_label = gtk_label_new("Score: 0");
+    gtk_box_pack_start(GTK_BOX(vbox), score_label, FALSE, FALSE, 0);
+
+    // 2048 게임 보드 (DrawingArea)
+    drawing_area = gtk_drawing_area_new();
+    gtk_widget_set_size_request(drawing_area, grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN,
+        grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN);
+    gtk_box_pack_start(GTK_BOX(vbox), drawing_area, TRUE, TRUE, 0);
+
+    // 포커스를 받을 수 있도록 설정하고 이벤트 마스크 추가
+    gtk_widget_set_can_focus(drawing_area, TRUE);
+    gtk_widget_add_events(drawing_area, GDK_KEY_PRESS_MASK);
+    gtk_widget_grab_focus(drawing_area);  // 포커스 설정
+
+    // DrawingArea의 이벤트 연결
+    g_signal_connect(drawing_area, "draw", G_CALLBACK(on_draw), NULL);
+    g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(on_key_press1), stack);
+
+    // 뒤로가기 버튼
+    GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
+    gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 0);
+    g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
+
+    // 2048 게임 초기화
+    initialize_grid(grid_size);
+    add_random_tile();
+    add_random_tile();
+
+    return vbox;
+}
+
+void start_2048_game(GtkWidget* widget, gpointer data) {
+    GtkStack* stack = GTK_STACK(data);
+
+    // 2048 게임 초기화
     score = 0;
     initialize_grid(grid_size);
     add_random_tile();
     add_random_tile();
 
-    GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "2048 Game");
-    gtk_window_set_default_size(GTK_WINDOW(window), 
-    grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN,
-    grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN);    
+    // 2048 화면으로 전환
+    gtk_stack_set_visible_child_name(stack, "2048_screen");
 
-    drawing_area = gtk_drawing_area_new();
-    gtk_container_add(GTK_CONTAINER(window), drawing_area);
-    g_signal_connect(drawing_area, "draw", G_CALLBACK(on_draw), NULL);
+    // Drawing Area에 포커스 설정
+    gtk_widget_grab_focus(drawing_area);
 
-    g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press1), NULL);
-
-    gtk_widget_show_all(window);
+    // 화면 업데이트 요청
+    gtk_widget_queue_draw(drawing_area);
 }
