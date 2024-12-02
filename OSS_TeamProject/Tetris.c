@@ -220,38 +220,57 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data)
             current_x--;
         }
         break;
+
     case GDK_KEY_Right: // 오른쪽 이동
         if (!check_collision(current_x + 1, current_y, current_tetromino))
         {
             current_x++;
         }
         break;
-    case GDK_KEY_Down: // 아래로 이동
-        if (!check_collision(current_x, current_y + 1, current_tetromino))
+
+    case GDK_KEY_Down:                                                        // 아래로 빠르게 이동
+        while (!check_collision(current_x, current_y + 1, current_tetromino)) // 바닥에 도달할 때까지
         {
             current_y++;
         }
-        else
+
+        // 도형을 고정하고 줄 삭제
+        for (int y = 0; y < 4; y++)
         {
-            // 도형 고정
-            for (int y = 0; y < 4; y++)
+            for (int x = 0; x < 4; x++)
             {
-                for (int x = 0; x < 4; x++)
+                if (current_tetromino[y][x] == 1)
                 {
-                    if (current_tetromino[y][x] == 1)
-                    {
-                        grid[current_y + y][current_x + x] = 1;
-                    }
+                    grid[current_y + y][current_x + x] = 1;
                 }
             }
+        }
+
+        clear_lines(); // 줄 삭제 호출
+
+        // 게임 오버 확인
+        for (int x = 0; x < GRID_WIDTH; x++)
+        {
+            if (grid[0][x] != 0)
+            {
+                game_over_Tetris = true;
+                break;
+            }
+        }
+
+        // 새 도형 생성
+        if (!game_over_Tetris)
+        {
             spawn_new_tetromino();
         }
         break;
+
     case GDK_KEY_Up: // 도형 회전
         rotate_tetromino();
         break;
     }
-    gtk_widget_queue_draw(widget); // 화면 갱신
+
+    gtk_widget_queue_draw(widget); // 화면 갱신 요청
     return TRUE;
 }
 
@@ -273,12 +292,12 @@ void clear_lines()
             }
         }
 
-        // 가득 찬 줄이면 삭제
+        // 가득 찬 줄 처리
         if (full_line)
         {
             cleared_lines++;
 
-            // 현재 줄 위에 있는 블록을 한 줄씩 아래로 내림
+            // 해당 줄을 위로 당김
             for (int ny = y; ny > 0; ny--)
             {
                 for (int nx = 0; nx < GRID_WIDTH; nx++)
@@ -287,19 +306,22 @@ void clear_lines()
                 }
             }
 
-            // 가장 위쪽 줄은 초기화
+            // 가장 위쪽 줄 초기화
             for (int nx = 0; nx < GRID_WIDTH; nx++)
             {
                 grid[0][nx] = 0;
             }
 
-            // 같은 줄을 다시 검사 (줄이 내려왔으므로 y 증가 방지)
+            // 줄이 내려왔으므로 같은 줄을 다시 검사
             y++;
         }
     }
 
-    // 점수 업데이트 (삭제된 줄 수에 따라)
-    score_Tetris += cleared_lines * 100; // 1줄당 100점
+    // 점수 계산 (한 번에 여러 줄 삭제 시 가중치)
+    if (cleared_lines > 0)
+    {
+        score_Tetris += cleared_lines * 100; // 1줄당 100점
+    }
 }
 
 // 게임 시작
