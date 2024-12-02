@@ -1,18 +1,18 @@
 #ifdef _WIN32
-    #define _CRT_SECURE_NO_WARNINGS
-    #define _WINSOCK_DEPRECATED_NO_WARNINGS
-    #include <WinSock2.h>
-    #include <windows.h>
-    #pragma comment(lib, "ws2_32.lib")
+#define _CRT_SECURE_NO_WARNINGS
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#include <WinSock2.h>
+#include <windows.h>
+#pragma comment(lib, "ws2_32.lib")
 #else
-    #include <sys/socket.h>
-    #include <netinet/in.h>
-    #include <arpa/inet.h>
-    #include <unistd.h>
-    #define SOCKET int
-    #define INVALID_SOCKET -1
-    #define SOCKET_ERROR -1
-    #define closesocket close
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#define SOCKET int
+#define INVALID_SOCKET -1
+#define SOCKET_ERROR -1
+#define closesocket close
 #endif
 
 #include <curl.h>
@@ -27,6 +27,12 @@
 // 글로벌 변수
 SOCKET global_socket = INVALID_SOCKET;
 GtkWidget* response_label;
+
+// 구조체 정의
+typedef struct {
+    GtkEntry* room_entry;
+    GtkEntry* message_entry;
+} EntryWidgets;
 
 // 소켓 초기화 및 종료
 void initialize_sockets() {
@@ -129,12 +135,60 @@ void on_join_room(GtkWidget* widget, gpointer data) {
 }
 
 void on_send_message(GtkWidget* widget, gpointer data) {
-    // Send message logic
+    // 구조체에서 위젯 가져오기
+    EntryWidgets* entries = (EntryWidgets*)data;
+
+    // 위젯 유효성 검사
+    if (!GTK_IS_ENTRY(entries->room_entry) || !GTK_IS_ENTRY(entries->message_entry)) {
+        gtk_label_set_text(GTK_LABEL(response_label), "Internal error: Invalid entries.");
+        return;
+    }
+
+    GtkEntry* room_entry = entries->room_entry;
+    GtkEntry* message_entry = entries->message_entry;
+
+    // 입력값 가져오기
+    const char* room_id_str = gtk_entry_get_text(room_entry);
+    const char* message = gtk_entry_get_text(message_entry);
+
+    // 입력값 유효성 검사
+    if (room_id_str == NULL || strlen(room_id_str) == 0) {
+        gtk_label_set_text(GTK_LABEL(response_label), "Room ID is required.");
+        return;
+    }
+
+    if (message == NULL || strlen(message) == 0) {
+        gtk_label_set_text(GTK_LABEL(response_label), "Message cannot be empty.");
+        return;
+    }
+
+    int room_id = atoi(room_id_str);
+    if (room_id <= 0) {
+        gtk_label_set_text(GTK_LABEL(response_label), "Invalid Room ID.");
+        return;
+    }
+
+    // JSON 형식의 메시지 생성
+    struct json_object* json = json_object_new_object();
+    json_object_object_add(json, "action", json_object_new_string("message"));
+    json_object_object_add(json, "roomId", json_object_new_int(room_id));
+    json_object_object_add(json, "content", json_object_new_string(message));
+
+    const char* json_str = json_object_to_json_string(json);
+    send_json_request(global_socket, "/game/message", json_str);
+
+    // 서버 응답을 처리
+    char response[4096];
+    receive_response(global_socket, response, sizeof(response));
+    gtk_label_set_text(GTK_LABEL(response_label), response);
+
+    json_object_put(json);
+    free(entries);
 }
 
 // 화면 생성 함수
 GtkWidget* create_multi_screen(GtkStack* stack) {
-    global_socket = initialize_socket("192.168.137.1", 5000);
+    global_socket = initialize_socket("192.168.137.1", 6000);
     if (global_socket == INVALID_SOCKET) {
         printf("Failed to connect to server.\n");
         return NULL;
@@ -166,6 +220,16 @@ GtkWidget* create_multi_screen(GtkStack* stack) {
     gtk_entry_set_placeholder_text(GTK_ENTRY(room_entry), "Enter Room ID");
     gtk_box_pack_start(GTK_BOX(vbox), message_entry, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), room_entry, FALSE, FALSE, 0);
+
+    GtkWidget* send_button = gtk_button_new_with_label("Send Message");
+
+    // 구조체를 동적 할당하여 콜백으로 전달
+    EntryWidgets* entries = (EntryWidgets*)malloc(sizeof(EntryWidgets));
+    entries->room_entry = GTK_ENTRY(room_entry);
+    entries->message_entry = GTK_ENTRY(message_entry);
+
+    g_signal_connect(send_button, "clicked", G_CALLBACK(on_send_message), entries);
+    gtk_box_pack_start(GTK_BOX(vbox), send_button, FALSE, FALSE, 0);
 
     response_label = gtk_label_new("");
     gtk_box_pack_start(GTK_BOX(vbox), response_label, FALSE, FALSE, 0);
