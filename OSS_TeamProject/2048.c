@@ -36,13 +36,13 @@ void free_grid(int size) {
 
 // 새로운 타일 생성
 void add_random_tile(){
-    int** empty_tiles = (int**)malloc((grid_size * grid_size) * sizeof(int*));
+    int** empty_tiles = (int**)malloc(grid_size * grid_size * sizeof(int*));
 int empty_count = 0;
 
 for (int i = 0; i < grid_size; i++) {
     for (int j = 0; j < grid_size; j++) {
         if (grid[i][j] == 0) {
-            empty_tiles[empty_count] = (int*)malloc(2 * sizeof(int));
+            empty_tiles[empty_count] = malloc(2 * sizeof(int));
             empty_tiles[empty_count][0] = i;
             empty_tiles[empty_count][1] = j;
             empty_count++;
@@ -52,7 +52,8 @@ for (int i = 0; i < grid_size; i++) {
 
 if (empty_count > 0) {
     int* tile = empty_tiles[rand() % empty_count];
-    grid[tile[0]][tile[1]] = (rand() % 2 + 1) * 2;  // 2 또는 4 추가
+    int random_value = (rand() % 10 < 9) ? 2 : 4;
+    grid[tile[0]][tile[1]] = random_value;
 }
     // 동적 메모리 해제
 for (int i = 0; i < empty_count; i++) {
