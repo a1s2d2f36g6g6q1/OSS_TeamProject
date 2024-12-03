@@ -9,6 +9,14 @@
 #define TILE_SIZE 100
 #define TILE_MARGIN 10
 
+GtkLabel* score_label;  // 점수 표시 라벨
+
+void update_score() {
+    char score_text[50];
+    sprintf(score_text, "Score: %d", score);
+    gtk_label_set_text(score_label, score_text);
+}
+
 //위젯 and 데이터구조설계
 GtkWidget* drawing_area;
 int** grid;
@@ -117,14 +125,12 @@ int move_tiles(int dx, int dy) {
 
             if (grid[x][y] != 0) {
                 int nx = x, ny = y;
-                while (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
-                    grid[nx + dx][ny + dy] == 0) {
+                while (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size && grid[nx + dx][ny + dy] == 0) {
                     nx += dx;
                     ny += dy;
                 }
 
-                if (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size &&
-                    grid[nx + dx][ny + dy] == grid[x][y]) {
+                if (nx + dx >= 0 && nx + dx < grid_size && ny + dy >= 0 && ny + dy < grid_size && grid[nx + dx][ny + dy] == grid[x][y]) {
                     grid[nx + dx][ny + dy] *= 2;
                     score += grid[nx + dx][ny + dy];
                     grid[x][y] = 0;
@@ -138,6 +144,11 @@ int move_tiles(int dx, int dy) {
             }
         }
     }
+
+    if(moved){
+        update_score();
+    }
+    return moved;
 }
 
     // 키보드 입력 처리
@@ -191,8 +202,8 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
     // 점수 표시 라벨
-    GtkWidget* score_label = gtk_label_new("Score: 0");
-    gtk_box_pack_start(GTK_BOX(vbox), score_label, FALSE, FALSE, 0);
+    score_label = gtk_label_new("Score: 0");
+    gtk_box_pack_start(GTK_BOX(vbox), GTK_WIDGET(score_label), FALSE, FALSE, 0);
 
     // 2048 게임 보드 (DrawingArea)
     drawing_area = gtk_drawing_area_new();
