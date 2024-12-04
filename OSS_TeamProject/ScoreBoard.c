@@ -28,8 +28,7 @@ static size_t WriteMemoryCallback(void* contents, size_t size, size_t nmemb, voi
     return realsize;
 }
 
-// 점수 테이블 업데이트 함수
-void update_score_table(GtkWidget* grid) {
+void update_score_table(GtkWidget * grid) {
     CURL* curl;
     CURLcode res;
     struct MemoryStruct chunk;
@@ -39,18 +38,17 @@ void update_score_table(GtkWidget* grid) {
 
     curl = curl_easy_init();
     if (curl) {
+        // 1등부터 10등까지의 점수 가져오기
         const char* server_url = "http://localhost:5000/auth/get-all-scores";
-
         curl_easy_setopt(curl, CURLOPT_URL, server_url);
-        curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); // GET 요청 설정
+        curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&chunk);
 
         res = curl_easy_perform(curl);
         if (res == CURLE_OK) {
-            printf("Server response: %s\n", chunk.memory); // 응답 디버깅
+            printf("Server response: %s\n", chunk.memory);
 
-            // JSON 데이터 파싱
             struct json_object* parsed_json = json_tokener_parse(chunk.memory);
             if (parsed_json == NULL) {
                 fprintf(stderr, "Failed to parse JSON response\n");
@@ -61,7 +59,6 @@ void update_score_table(GtkWidget* grid) {
             if (json_object_object_get_ex(parsed_json, "gameScores", &game_scores)) {
                 int num_scores = json_object_array_length(game_scores);
 
-                // 각 점수 데이터를 업데이트
                 for (int i = 0; i < num_scores; i++) {
                     struct json_object* score_entry = json_object_array_get_idx(game_scores, i);
                     struct json_object* game;
@@ -69,36 +66,16 @@ void update_score_table(GtkWidget* grid) {
                     struct json_object* high_score;
                     struct json_object* rank;
 
-                    // JSON 속성 가져오기
                     if (json_object_object_get_ex(score_entry, "game", &game) &&
                         json_object_object_get_ex(score_entry, "username", &username) &&
                         json_object_object_get_ex(score_entry, "high_score", &high_score) &&
                         json_object_object_get_ex(score_entry, "rank", &rank)) {
 
-                        // 게임 이름 변환
                         const char* game_name = json_object_get_string(game);
                         const char* user_name = json_object_get_string(username);
                         int score_value = json_object_get_int(high_score);
                         int rank_value = json_object_get_int(rank);
 
-                        const char* formatted_game_name;
-                        if (strcmp(game_name, "mine") == 0) {
-                            formatted_game_name = "MineSweeper";
-                        }
-                        else if (strcmp(game_name, "tetris") == 0) {
-                            formatted_game_name = "Tetris";
-                        }
-                        else if (strcmp(game_name, "2048") == 0) {
-                            formatted_game_name = "2048";
-                        }
-                        else if (strcmp(game_name, "bp") == 0) {
-                            formatted_game_name = "BrickBreak";
-                        }
-                        else {
-                            formatted_game_name = "Unknown";
-                        }
-
-                        // 그리드의 열 위치 계산 (게임별 열을 나눔)
                         int game_column = 0;
                         if (strcmp(game_name, "tetris") == 0) {
                             game_column = 3;
@@ -110,11 +87,6 @@ void update_score_table(GtkWidget* grid) {
                             game_column = 9;
                         }
 
-                        // 게임 이름 업데이트 (0행에 표시)
-                        GtkWidget* game_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column, 0);
-                        if (game_label) gtk_label_set_text(GTK_LABEL(game_label), formatted_game_name);
-
-                        // 순위 데이터 업데이트
                         GtkWidget* rank_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column, rank_value + 1);
                         GtkWidget* username_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column + 1, rank_value + 1);
                         GtkWidget* score_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column + 2, rank_value + 1);
@@ -137,14 +109,75 @@ void update_score_table(GtkWidget* grid) {
                     }
                 }
             }
-            else {
-                fprintf(stderr, "Invalid JSON structure: 'gameScores' not found\n");
-            }
 
-            json_object_put(parsed_json); // JSON 객체 메모리 해제
+            json_object_put(parsed_json);
         }
         else {
             fprintf(stderr, "Failed to fetch scores: %s\n", curl_easy_strerror(res));
+        }
+
+        // 사용자 자신의 최고 점수 가져오기
+        char user_url[256];
+        snprintf(user_url, sizeof(user_url), "http://localhost:5000/auth/get-user-scores?username=%s", username);
+        printf("Requesting user scores with URL: %s\n", user_url);
+
+        chunk.memory = malloc(1);  // 메모리 재할당
+        chunk.size = 0;
+
+        curl_easy_setopt(curl, CURLOPT_URL, user_url);
+        res = curl_easy_perform(curl);
+        if (res == CURLE_OK) {
+            printf("User Scores Response: %s\n", chunk.memory);
+
+            struct json_object* parsed_json = json_tokener_parse(chunk.memory);
+            if (parsed_json == NULL) {
+                fprintf(stderr, "Failed to parse JSON response\n");
+                return;
+            }
+
+            struct json_object* user_scores;
+            if (json_object_object_get_ex(parsed_json, "userScores", &user_scores)) {
+                int num_games = json_object_array_length(user_scores);
+
+                for (int i = 0; i < num_games; i++) {
+                    struct json_object* score_entry = json_object_array_get_idx(user_scores, i);
+                    struct json_object* game;
+                    struct json_object* high_score;
+
+                    if (json_object_object_get_ex(score_entry, "game", &game) &&
+                        json_object_object_get_ex(score_entry, "high_score", &high_score)) {
+
+                        const char* game_name = json_object_get_string(game);
+                        int score_value = json_object_get_int(high_score);
+
+                        int game_column = 0;
+                        if (strcmp(game_name, "tetris") == 0) {
+                            game_column = 3;
+                        }
+                        else if (strcmp(game_name, "2048") == 0) {
+                            game_column = 6;
+                        }
+                        else if (strcmp(game_name, "bp") == 0) {
+                            game_column = 9;
+                        }
+
+                        GtkWidget* user_score_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column + 2, 13);
+                        if (user_score_label) {
+                            char user_score_text[16];
+                            snprintf(user_score_text, sizeof(user_score_text), "%d", score_value);
+                            gtk_label_set_text(GTK_LABEL(user_score_label), user_score_text);
+                        }
+                        else {
+                            printf("User score label not found for game: %s\n", game_name);
+                        }
+                    }
+                }
+            }
+
+            json_object_put(parsed_json);
+        }
+        else {
+            fprintf(stderr, "Failed to fetch user scores: %s\n", curl_easy_strerror(res));
         }
 
         curl_easy_cleanup(curl);
@@ -152,10 +185,9 @@ void update_score_table(GtkWidget* grid) {
             free(chunk.memory);
         }
     }
-    else {
-        fprintf(stderr, "Failed to initialize CURL\n");
-    }
 }
+
+
 
 
 // 새로고침 버튼 핸들러
@@ -202,6 +234,13 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
             gtk_grid_attach(GTK_GRID(grid), username, g * 3 + 1, i + 2, 1, 1);
             gtk_grid_attach(GTK_GRID(grid), score, g * 3 + 2, i + 2, 1, 1);
         }
+
+        // 사용자 점수 추가 공간
+        GtkWidget* your_score_label = gtk_label_new("Your Best Score:");
+        GtkWidget* your_score_value = gtk_label_new("0");
+
+        gtk_grid_attach(GTK_GRID(grid), your_score_label, g * 3, 13, 2, 1); // 사용자 점수 레이블
+        gtk_grid_attach(GTK_GRID(grid), your_score_value, g * 3 + 2, 13, 1, 1); // 사용자 점수 값
     }
 
     gtk_box_pack_start(GTK_BOX(vbox), grid, TRUE, TRUE, 10);
