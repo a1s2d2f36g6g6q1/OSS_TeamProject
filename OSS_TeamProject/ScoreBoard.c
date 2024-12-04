@@ -45,34 +45,29 @@ void on_refresh_button_clicked(GtkWidget* widget, gpointer grid) {
 // 점수판 페이지 생성
 GtkWidget* create_scoreboard_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
 
-    // 전체 점수판을 가로로 나열할 수 있는 그리드
+    // 점수판 그리드
     GtkWidget* grid = gtk_grid_new();
-    gtk_grid_set_row_spacing(GTK_GRID(grid), 20);
-    gtk_grid_set_column_spacing(GTK_GRID(grid), 30);
+    gtk_grid_set_row_spacing(GTK_GRID(grid), 5);
+    gtk_grid_set_column_spacing(GTK_GRID(grid), 20);
 
     for (int g = 0; g < 4; g++) {
-        // 각 게임별 섹션을 담을 VBox 생성
-        GtkWidget* game_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-
-        // 게임 이름 라벨
+        // 게임 이름 추가
         GtkWidget* game_label = gtk_label_new(game_scores[g].game_name);
-        gtk_widget_set_margin_bottom(game_label, 10);
-        gtk_box_pack_start(GTK_BOX(game_box), game_label, FALSE, FALSE, 5);
+        gtk_grid_attach(GTK_GRID(grid), game_label, g * 3, 0, 3, 1); // 각 게임 이름을 3칸에 걸쳐 표시
 
-        // 열 제목 라벨
+        // 열 제목
         GtkWidget* rank_label = gtk_label_new("Rank");
         GtkWidget* username_label = gtk_label_new("Username");
         GtkWidget* score_label = gtk_label_new("Score");
-        GtkWidget* header_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-        gtk_box_pack_start(GTK_BOX(header_hbox), rank_label, FALSE, FALSE, 5);
-        gtk_box_pack_start(GTK_BOX(header_hbox), username_label, FALSE, FALSE, 5);
-        gtk_box_pack_start(GTK_BOX(header_hbox), score_label, FALSE, FALSE, 5);
-        gtk_box_pack_start(GTK_BOX(game_box), header_hbox, FALSE, FALSE, 5);
+        gtk_grid_attach(GTK_GRID(grid), rank_label, g * 3, 1, 1, 1);
+        gtk_grid_attach(GTK_GRID(grid), username_label, g * 3 + 1, 1, 1, 1);
+        gtk_grid_attach(GTK_GRID(grid), score_label, g * 3 + 2, 1, 1, 1);
 
         // 순위 데이터
         for (int i = 0; i < 10; i++) {
-            GtkWidget* row_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
             char rank_text[4];
             snprintf(rank_text, sizeof(rank_text), "%d", i + 1);
 
@@ -82,25 +77,29 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
             snprintf(score_text, sizeof(score_text), "%d", game_scores[g].scores[i].score);
             GtkWidget* score = gtk_label_new(score_text);
 
-            gtk_box_pack_start(GTK_BOX(row_hbox), rank, FALSE, FALSE, 5);
-            gtk_box_pack_start(GTK_BOX(row_hbox), username, FALSE, FALSE, 5);
-            gtk_box_pack_start(GTK_BOX(row_hbox), score, FALSE, FALSE, 5);
-
-            gtk_box_pack_start(GTK_BOX(game_box), row_hbox, FALSE, FALSE, 2);
+            gtk_grid_attach(GTK_GRID(grid), rank, g * 3, i + 2, 1, 1);
+            gtk_grid_attach(GTK_GRID(grid), username, g * 3 + 1, i + 2, 1, 1);
+            gtk_grid_attach(GTK_GRID(grid), score, g * 3 + 2, i + 2, 1, 1);
         }
-
-        // 각 게임 섹션을 Grid의 열에 추가
-        gtk_grid_attach(GTK_GRID(grid), game_box, g, 0, 1, 1);
     }
 
     gtk_box_pack_start(GTK_BOX(vbox), grid, TRUE, TRUE, 10);
 
+    // 버튼 박스
+    GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+    gtk_widget_set_halign(button_box, GTK_ALIGN_CENTER);
+
     // 새로고침 버튼
     GtkWidget* refresh_button = gtk_button_new_with_label("Refresh Scores");
-    gtk_widget_set_margin_top(refresh_button, 20);
-    gtk_widget_set_halign(refresh_button, GTK_ALIGN_CENTER);
     g_signal_connect(refresh_button, "clicked", G_CALLBACK(on_refresh_button_clicked), grid);
-    gtk_box_pack_end(GTK_BOX(vbox), refresh_button, FALSE, FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(button_box), refresh_button, FALSE, FALSE, 5);
+
+    // 메인메뉴로 돌아가기 버튼
+    GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
+    g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
+    gtk_box_pack_start(GTK_BOX(button_box), back_button, FALSE, FALSE, 5);
+
+    gtk_box_pack_start(GTK_BOX(vbox), button_box, FALSE, FALSE, 10);
 
     return vbox;
 }
