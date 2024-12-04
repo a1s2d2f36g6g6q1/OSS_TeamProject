@@ -1,3 +1,5 @@
+#pragma warning(disable : 4819)
+
 #ifdef _WIN32
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
