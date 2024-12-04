@@ -176,6 +176,7 @@ int main(int argc, char* argv[]) {
     GtkWidget* breakout_screen = create_breakout_screen(stack);
     GtkWidget* scoreboard_screen = create_scoreboard_screen(stack);
     GtkWidget* setting_screen = create_setting_screen(stack);
+    GtkWidget* signup_screen = create_signup_screen(stack);
 
     gtk_stack_add_named(stack, login_screen, "login_screen");
     gtk_stack_add_named(stack, main_menu, "main_menu");
@@ -184,6 +185,7 @@ int main(int argc, char* argv[]) {
 	gtk_stack_add_named(stack, breakout_screen, "breakout_screen");
 	gtk_stack_add_named(stack, scoreboard_screen, "scoreboard_screen");
 	gtk_stack_add_named(stack, setting_screen, "setting_screen");
+	gtk_stack_add_named(stack, signup_screen, "signup_screen");
 
     gtk_stack_set_visible_child_name(stack, "login_screen");
 

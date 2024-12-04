@@ -10,6 +10,12 @@
 bool is_guest_mode = false;
 char username[50];
 
+void switch_to_register(GtkWidget* widget, gpointer data) {
+    GtkStack* stack = GTK_STACK(data);
+    gtk_stack_set_visible_child_name(stack, "signup_screen");
+}
+
+
 void handle_login_success(GtkStack* stack) {
     gtk_stack_set_visible_child_name(stack, "main_menu");
 }
@@ -159,6 +165,9 @@ GtkWidget* create_login_screen(GtkStack* stack) {
     GtkWidget* guest_button = gtk_button_new_with_label("Guest");
     gtk_box_pack_start(GTK_BOX(vbox), guest_button, FALSE, FALSE, 5);
 
+    GtkWidget* sign_up_button = gtk_button_new_with_label("Sign up");
+    gtk_box_pack_start(GTK_BOX(vbox), sign_up_button, FALSE, FALSE, 5);
+
     GtkWidget* result_label = gtk_label_new("");
     gtk_box_pack_start(GTK_BOX(vbox), result_label, FALSE, FALSE, 5);
 
@@ -170,6 +179,7 @@ GtkWidget* create_login_screen(GtkStack* stack) {
 
     g_signal_connect(login_button, "clicked", G_CALLBACK(on_login_button_clicked), widgets);
     g_signal_connect(guest_button, "clicked", G_CALLBACK(on_guest_button_clicked), stack);
+    g_signal_connect(sign_up_button, "clicked", G_CALLBACK(switch_to_register), stack);
 
     return outer_box;
 }

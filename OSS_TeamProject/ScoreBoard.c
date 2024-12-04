@@ -252,7 +252,7 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
             snprintf(rank_text, sizeof(rank_text), "%d", i + 1);
 
             GtkWidget* rank = gtk_label_new(rank_text);
-            GtkWidget* username = gtk_label_new("username_placeholder");
+            GtkWidget* username = gtk_label_new("-");
             GtkWidget* score = gtk_label_new("0");
 
             gtk_grid_attach(GTK_GRID(grid), rank, g * 4, i + 3, 1, 1);

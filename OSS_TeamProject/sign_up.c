@@ -28,7 +28,7 @@ void on_register_button_clicked(GtkWidget* widget, gpointer data) {
 }
 
 // 회원가입 페이지 생성 함수
-GtkWidget* create_register_page(GtkStack* stack) {
+GtkWidget* create_signup_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
