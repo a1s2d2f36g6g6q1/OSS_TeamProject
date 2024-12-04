@@ -35,26 +35,35 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/save-score', (req, res) => {
+router.post('/save-score', async (req, res) => {
     const { username, game, score } = req.body;
 
-    const query = `
-        INSERT INTO scores (user_id, username, game, high_score)
-        VALUES (
-            (SELECT id FROM users WHERE username = ?),
-            ?, ?, ?
-        )
-        ON DUPLICATE KEY UPDATE high_score = GREATEST(high_score, ?);
-    `;
+    if (!username || !game || !score) {
+        return res.status(400).json({ success: false, message: 'Invalid input' });
+    }
 
-    db.query(query, [username, username, game, score, score], (err) => {
-        if (err) {
-            console.error('Database error:', err);
-            return res.status(500).json({ success: false, message: 'Database error' });
-        }
+    try {
+        const query = `
+            INSERT INTO scores (user_id, username, game, high_score)
+            VALUES (
+                (SELECT id FROM users WHERE username = ?),
+                ?, ?, ?
+            )
+            ON DUPLICATE KEY UPDATE high_score = GREATEST(high_score, ?);
+        `;
+
+        const params = [username, username, game, score, score];
+
+        const [result] = await db.execute(query, params);
+
+        console.log('Score updated:', result);
         res.json({ success: true, message: 'Score updated successfully' });
-    });
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({ success: false, message: 'Database error' });
+    }
 });
+
 
 router.get('/get-all-scores', async (req, res) => {
     console.log('GET /auth/get-all-scores called'); // 요청 디버깅
