@@ -180,20 +180,41 @@ void on_game_window_destroy(GtkWidget* widget, gpointer data) {
     g_source_remove(timer_id); // 타이머 제거
 }
 
+void style_grid_with_border(GtkWidget* grid) {
+    GtkCssProvider* provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider,
+        "#field-grid { border: 2px solid black; padding: 5px; }", -1, NULL);
+    GtkStyleContext* context = gtk_widget_get_style_context(grid);
+    gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider),
+        GTK_STYLE_PROVIDER_PRIORITY_USER);
+    gtk_style_context_add_class(context, "field-grid");
+    g_object_unref(provider);
+}
+
 GtkWidget* create_minesweeper_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(vbox, GTK_ALIGN_START); // 위쪽 정렬
+    gtk_widget_set_margin_top(vbox, 50);         // 상단 여백 설정
 
+    // 상단바 (지뢰 및 시간 표시)
     GtkWidget* hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
     gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 5);
 
-    GtkWidget* grid = gtk_grid_new();
-    gtk_box_pack_start(GTK_BOX(vbox), grid, TRUE, TRUE, 5);
-
-    mine_label = gtk_label_new("Mines: 40"); 
+    mine_label = gtk_label_new("Mines: 40");
     gtk_box_pack_start(GTK_BOX(hbox), mine_label, FALSE, FALSE, 5);
 
-    timer_label = gtk_label_new("Time: 0"); 
+    timer_label = gtk_label_new("Time: 0");
     gtk_box_pack_end(GTK_BOX(hbox), timer_label, FALSE, FALSE, 5);
+
+    GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
+    gtk_box_pack_start(GTK_BOX(hbox), back_button, TRUE, TRUE, 5);
+    g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
+
+    // 필드(Grid) 설정
+    GtkWidget* grid = gtk_grid_new();
+    gtk_widget_set_name(grid, "field-grid");
+    gtk_box_pack_start(GTK_BOX(vbox), grid, TRUE, TRUE, 5);
 
     for (int i = 0; i < FIELD_SIZE; i++) {
         for (int j = 0; j < FIELD_SIZE; j++) {
@@ -205,16 +226,15 @@ GtkWidget* create_minesweeper_screen(GtkStack* stack) {
             gtk_widget_set_size_request(buttons[i][j], 50, 50);
             gtk_grid_attach(GTK_GRID(grid), buttons[i][j], j, i, 1, 1);
             g_signal_connect(buttons[i][j], "button-press-event", G_CALLBACK(on_button_clicked), coords);
-            gtk_widget_set_sensitive(buttons[i][j], FALSE);
         }
     }
 
-    GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
-    gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 5);
-    g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
+    // 필드 외곽선 스타일 추가
+    style_grid_with_border(grid);
 
     return vbox;
 }
+
 
 void start_minesweeper_game(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
