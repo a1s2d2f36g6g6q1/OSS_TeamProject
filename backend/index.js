@@ -21,4 +21,3 @@ app.use('/auth', authRoutes); // '/auth' 경로에 authRoutes 사용
 app.listen(appPORT,'0.0.0.0', () => {
     console.log(`app running on http://0.0.0.0:${appPORT}`);
 });
-
