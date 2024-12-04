@@ -82,43 +82,48 @@ void init_bricks() {
 
 // 타이머 이벤트 핸들러 (게임 상태 업데이트 코드)
 gboolean on_timer(gpointer data) {
-    // 공 위치
-    ball.x += ball.dx;  // 공의 x 위치
-    ball.y += ball.dy;  // 공의 y 위치
+    // Validate the drawing area widget before updating
+    if (GTK_IS_WIDGET(drawing_area) && gtk_widget_get_visible(drawing_area)) {
+        // 공 위치
+        ball.x += ball.dx;  // 공의 x 위치
+        ball.y += ball.dy;  // 공의 y 위치
 
-    // 벽 충돌 감지
-    if (ball.x < 0 || ball.x > WINDOW_WIDTH) {
-        ball.dx = -ball.dx;  // x 방향 반전
-    }
-
-    if (ball.y < 0) {
-        ball.dy = -ball.dy;  // y 방향 반전
-    }
-
-    if (ball.y > WINDOW_WIDTH) {
-        // 공이 바닥에 닿았을 때
-        state.lives--;
-
-        if (state.lives <= 0) {
-            reset_game();  // 게임 초기화 함수 호출
+        // 벽 충돌 감지
+        if (ball.x < 0 || ball.x > WINDOW_WIDTH) {
+            ball.dx = -ball.dx;  // x 방향 반전
         }
-        else {
-            reset_ball();  // 공 초기화 함수 호출
+
+        if (ball.y < 0) {
+            ball.dy = -ball.dy;  // y 방향 반전
         }
-    }
 
-    // 패들 충돌 감지
-    if (ball.y + 10 >= paddle.y && ball.x >= paddle.x && ball.x <= paddle.x + 100) {
-        ball.dy = -ball.dy;  // y 방향 반전
-    }
+        if (ball.y > WINDOW_WIDTH) {
+            // 공이 바닥에 닿았을 때
+            state.lives--;
 
-    // 레벨 업 조건
-    if (state.score >= 100) {  // 점수가 100 이상일 때 레벨 업
-        state.level++;
-        state.score = 0;  // 점수 초기화
-        init_bricks();
+            if (state.lives <= 0) {
+                reset_game();  // 게임 초기화 함수 호출
+            }
+            else {
+                reset_ball();  // 공 초기화 함수 호출
+            }
+        }
+
+        // 패들 충돌 감지
+        if (ball.y + 10 >= paddle.y && ball.x >= paddle.x && ball.x <= paddle.x + 100) {
+            ball.dy = -ball.dy;  // y 방향 반전
+        }
+
+        // 레벨 업 조건
+        if (state.score >= 100) {  // 점수가 100 이상일 때 레벨 업
+            state.level++;
+            state.score = 0;  // 점수 초기화
+            init_bricks();
+        }
+
+        // Queue a redraw only if the widget is realized and valid
+        gtk_widget_queue_draw(drawing_area);  // 화면 갱신
     }
-    gtk_widget_queue_draw(drawing_area);  // 화면 갱신
 
     return TRUE;  // 계속 호출되도록 TRUE 반환
 }
@@ -214,27 +219,26 @@ void set_drawing_area_size(GtkWidget* drawing_area) {
 
 // 게임 화면 생성 함수
 GtkWidget* create_breakout_screen(GtkStack* stack) {
-    // 세로로 위젯을 정렬할 컨테이너 생성
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
     // 점수 표시 라벨 생성 및 컨테이너에 추가
-    score_label = GTK_LABEL(gtk_label_new("Score: 0"));
-    gtk_box_pack_start(GTK_BOX(vbox), GTK_WIDGET(score_label), FALSE, FALSE, 0);
+    GtkLabel* breakout_score_label = GTK_LABEL(gtk_label_new("Score: 0"));
+    gtk_box_pack_start(GTK_BOX(vbox), GTK_WIDGET(breakout_score_label), FALSE, FALSE, 0);
 
     // 게임 화면을 그릴 영역 생성
-    drawing_area = gtk_drawing_area_new();
-    set_drawing_area_size(drawing_area);  // 화면 크기 설정 함수 호출
-    gtk_box_pack_start(GTK_BOX(vbox), drawing_area, TRUE, TRUE, 0);
+    GtkWidget* breakout_drawing_area = gtk_drawing_area_new();
+    set_drawing_area_size(breakout_drawing_area);  // 화면 크기 설정 함수 호출
+    gtk_box_pack_start(GTK_BOX(vbox), breakout_drawing_area, TRUE, TRUE, 0);
 
     // 그리기 이벤트 핸들러 등록
-    g_signal_connect(drawing_area, "draw", G_CALLBACK(event_draw), NULL);
+    g_signal_connect(breakout_drawing_area, "draw", G_CALLBACK(event_draw), NULL);
 
     // 키보드 입력 이벤트 핸들러 등록
-    g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(on_key), NULL);
+    g_signal_connect(breakout_drawing_area, "key-press-event", G_CALLBACK(on_key), NULL);
 
     // drawing_area가 포커스를 받을 수 있도록 설정
-    gtk_widget_set_can_focus(drawing_area, TRUE);
-    gtk_widget_grab_focus(drawing_area);  // 프로그램 시작 시 drawing_area에 포커스 설정
+    gtk_widget_set_can_focus(breakout_drawing_area, TRUE);
+    g_signal_connect(breakout_drawing_area, "realize", G_CALLBACK(gtk_widget_grab_focus), NULL);
 
     // 게임 초기화 (공, 벽돌, 패들 상태 초기 설정)
     init_game(game_size);

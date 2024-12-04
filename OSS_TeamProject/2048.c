@@ -1,5 +1,6 @@
 ﻿#pragma warning(disable : 4819)
 
+#define _CRT_SECURE_NO_WARNINGS
 #include <gtk/gtk.h>
 #include <math.h>
 #include <stdbool.h>
@@ -16,10 +17,14 @@ GtkLabel* score_label;  // 점수 표시 라벨
 int score = 0;          // 전역 변수로 score 선언
 
 void update_score() {
-    char score_text[50];
-    sprintf_s(score_text, sizeof(score_text), "Score: %d", score);
-    gtk_label_set_text(score_label, score_text);
+    if (GTK_IS_LABEL(score_label)) {
+        char score_text[50];
+        sprintf(score_text, "Score: %d", score);
+        gtk_label_set_text(score_label, score_text);
+        while (g_main_context_iteration(NULL, FALSE));  // Force the update to be drawn immediately
+    }
 }
+
 
 // 위젯 and 데이터구조설계
 GtkWidget* drawing_area;
@@ -182,26 +187,36 @@ gboolean on_key_press1(GtkWidget* widget, GdkEventKey* event, gpointer data) {
     int moved = 0;
 
     switch (event->keyval) {
-        case GDK_KEY_Left:
-            moved = move_tiles(0, -1);
-            break;
-        case GDK_KEY_Right:
-            moved = move_tiles(0, 1);
-            break;
-        case GDK_KEY_Up:
-            moved = move_tiles(-1, 0);
-            break;
-        case GDK_KEY_Down:
-            moved = move_tiles(1, 0);
-            break;
+    case GDK_KEY_Left:
+        moved = move_tiles(0, -1);
+        break;
+    case GDK_KEY_Right:
+        moved = move_tiles(0, 1);
+        break;
+    case GDK_KEY_Up:
+        moved = move_tiles(-1, 0);
+        break;
+    case GDK_KEY_Down:
+        moved = move_tiles(1, 0);
+        break;
     }
 
     if (moved) {
         add_random_tile();
-        gtk_widget_queue_draw(drawing_area);
+        if (GTK_IS_WIDGET(drawing_area) && gtk_widget_get_visible(drawing_area)) {
+            gtk_widget_queue_draw(drawing_area);  // Queue a redraw of the drawing area
+            while (g_main_context_iteration(NULL, FALSE));  // Force the redraw immediately
+        }
+        if (GTK_IS_LABEL(score_label)) {
+            update_score();  // Update the score label if it's valid
+            while (g_main_context_iteration(NULL, FALSE));  // Force the update to be drawn immediately
+        }
     }
+
     return TRUE;
 }
+
+
 
 // 게임 오버 상태 체크 함수
 bool is_game_over() {
@@ -226,23 +241,23 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
     // 점수 표시 라벨
-    score_label = gtk_label_new("Score: 0");
+    score_label = GTK_LABEL(gtk_label_new("Score: 0"));
     gtk_box_pack_start(GTK_BOX(vbox), GTK_WIDGET(score_label), FALSE, FALSE, 0);
 
     // 2048 게임 보드 (DrawingArea)
     drawing_area = gtk_drawing_area_new();
     gtk_widget_set_size_request(drawing_area, grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN,
-                                grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN);
+        grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN);
     gtk_box_pack_start(GTK_BOX(vbox), drawing_area, TRUE, TRUE, 0);
 
     // 포커스를 받을 수 있도록 설정하고 이벤트 마스크 추가
     gtk_widget_set_can_focus(drawing_area, TRUE);
     gtk_widget_add_events(drawing_area, GDK_KEY_PRESS_MASK);
-    gtk_widget_grab_focus(drawing_area);  // 포커스 설정
 
     // DrawingArea의 이벤트 연결
     g_signal_connect(drawing_area, "draw", G_CALLBACK(on_draw), NULL);
     g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(on_key_press1), stack);
+    g_signal_connect(drawing_area, "realize", G_CALLBACK(gtk_widget_grab_focus), NULL);
 
     // 뒤로가기 버튼
     GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
@@ -257,6 +272,7 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
     return vbox;
 }
 
+
 void start_2048_game(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
 
@@ -269,9 +285,13 @@ void start_2048_game(GtkWidget* widget, gpointer data) {
     // 2048 화면으로 전환
     gtk_stack_set_visible_child_name(stack, "2048_screen");
 
-    // Drawing Area에 포커�� 설정
-    gtk_widget_grab_focus(drawing_area);
+    // Drawing Area에 포커스 설정
+    if (GTK_IS_WIDGET(drawing_area)) {
+        gtk_widget_grab_focus(drawing_area);
+    }
 
     // 화면 업데이트 요청
-    gtk_widget_queue_draw(drawing_area);
+    if (GTK_IS_WIDGET(drawing_area)) {
+        gtk_widget_queue_draw(drawing_area);
+    }
 }
