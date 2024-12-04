@@ -124,6 +124,14 @@ gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
     cairo_set_source_rgb(cr, 0.8, 0.8, 0.8);  // 배경색
     cairo_paint(cr);
 
+    // 외곽선 그리기
+    cairo_set_source_rgb(cr, 0.1, 0.1, 0.1);  // 외곽선 색 (검정색)
+    cairo_set_line_width(cr, 5);
+    cairo_rectangle(cr, TILE_MARGIN, TILE_MARGIN,
+        grid_size * TILE_SIZE + (grid_size - 1) * TILE_MARGIN,
+        grid_size * TILE_SIZE + (grid_size - 1) * TILE_MARGIN);
+    cairo_stroke(cr);
+
     // 타일 그리기
     for (int i = 0; i < grid_size; i++) {
         for (int j = 0; j < grid_size; j++) {
@@ -131,21 +139,22 @@ gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
             set_tile_color(cr, value);
 
             cairo_rectangle(cr, TILE_MARGIN + j * (TILE_SIZE + TILE_MARGIN),
-                            TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN),
-                            TILE_SIZE, TILE_SIZE);
+                TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN),
+                TILE_SIZE, TILE_SIZE);
             cairo_fill(cr);
 
             if (value != 0) {
                 cairo_set_source_rgb(cr, 0, 0, 0);  // 글자 색상 (검정색)
                 cairo_set_font_size(cr, 24);
                 cairo_move_to(cr, TILE_MARGIN + j * (TILE_SIZE + TILE_MARGIN) + TILE_SIZE / 3,
-                              TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN) + TILE_SIZE / 1.5);
+                    TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN) + TILE_SIZE / 1.5);
                 cairo_show_text(cr, g_strdup_printf("%d", value));
             }
         }
     }
     return FALSE;
 }
+
 
 // 타일 이동 및 합치기 함수
 int move_tiles(int dx, int dy) {
@@ -255,13 +264,17 @@ gboolean on_key_press1(GtkWidget* widget, GdkEventKey* event, gpointer data) {
 
 // 게임 오버 상태 체크 함수
 
-
 GtkWidget* create_2048_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);  // VBox를 가운데 정렬
+    gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
 
     // 점수 표시 라벨
     score_label = GTK_LABEL(gtk_label_new("Score: 0"));
-    gtk_box_pack_start(GTK_BOX(vbox), GTK_WIDGET(score_label), FALSE, FALSE, 0);
+    GtkWidget* score_container = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_widget_set_halign(score_container, GTK_ALIGN_CENTER);  // 점수 라벨을 가운데 정렬
+    gtk_box_pack_start(GTK_BOX(score_container), GTK_WIDGET(score_label), TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), score_container, FALSE, FALSE, 0);
 
     // 2048 게임 보드 (DrawingArea)
     drawing_area = gtk_drawing_area_new();
@@ -280,7 +293,10 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
 
     // 뒤로가기 버튼
     GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
-    gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 0);
+    GtkWidget* button_container = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_widget_set_halign(button_container, GTK_ALIGN_CENTER);  // 버튼을 가운데 정렬
+    gtk_box_pack_start(GTK_BOX(button_container), back_button, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), button_container, FALSE, FALSE, 0);
     g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
 
     // 2048 게임 초기화
