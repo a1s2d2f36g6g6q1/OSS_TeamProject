@@ -9,233 +9,255 @@
 
 #include "games.h"
 
-#define TILE_SIZE 100
-#define TILE_MARGIN 8
-#define M_PI 3.14159265358979323846
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+#define BRICK_ROWS 5
+#define BRICK_COLUMNS 10
+#define BRICK_WIDTH 60
+#define BRICK_HEIGHT 20
 
 GtkLabel* score_label;
 GtkWidget* drawing_area;
-static int score = 0;
-char score_text[50];
+int game_size;
 
-int** grid;
-int game_size = 9;
+// 공 구조체
+typedef struct {
+    int x, y;
+    int dx, dy;
+} Ball;
 
-float ball_x, ball_y;
-float ball_dx, ball_dy;
+// 패들 구조체
+typedef struct {
+    int x, y;
+} Paddle;
 
-float paddle_x;
-const float paddle_width = TILE_SIZE * 1.5;
-const float paddle_height = 20;
+// 벽돌 구조체
+typedef struct {
+    int x, y;
+    bool destroyed;
+} Brick;
 
-gboolean is_game_running = TRUE;
+// 상태 구조체
+typedef struct {
+    int score;
+    int lives;
+    int level;
+} State;
 
-// 점수를 업데이트하고 레이블에 표시하는 함수
-void show_score() {
-    sprintf_s(score_text, sizeof(score_text), "Score: %d", score);
-    gtk_label_set_text(score_label, score_text);
+Ball ball;      // 공 구조체 변수
+Paddle paddle;  // 패들 구조체 변수
+Brick bricks[BRICK_ROWS][BRICK_COLUMNS];  // 벽돌 구조체 배열
+State state;    // 게임 상태 변수
+
+// 함수 선언
+void reset_game();
+void reset_ball();
+void init_bricks();
+static void check_collision();
+
+/*
+GtkWidget* create_scoreboard_screen(GtkStack* stack);
+GtkWidget* create_setting_screen(GtkStack* stack);
+*/
+
+// 게임 초기화 함수
+void init_game(int game_size) {
+    state.score = 0;
+    state.lives = 3;
+    state.level = 1;
+    reset_ball();
+    init_bricks();
 }
 
-// 벽돌 초기화: 색상과 점수 부여
-void init_game(int size) {
-    grid = (int**)malloc(size * sizeof(int*));
-    for (int i = 0; i < size; i++) {
-        grid[i] = (int*)malloc(size * sizeof(int));
-        for (int j = 0; j < size; j++) {
-            grid[i][j] = (i < 9) ? (9 - i) : 0;  // 벽돌 갯수를 8에서 9로 증가 (위아래로 늘리기)
+// 벽돌 초기화 함수
+void init_bricks() {
+    for (int i = 0; i < BRICK_ROWS; i++) {
+        for (int j = 0; j < BRICK_COLUMNS; j++) {
+            bricks[i][j].x = j * BRICK_WIDTH + 50;
+            bricks[i][j].y = i * BRICK_HEIGHT + 50;
+            bricks[i][j].destroyed = false;
         }
     }
-    ball_x = (game_size * TILE_SIZE) / 2.0f;
-    ball_y = (game_size * TILE_SIZE - TILE_MARGIN - paddle_height - 10);
-    ball_dx = 1.0;
-    ball_dy = -1.0;
-    paddle_x = (game_size * TILE_SIZE) / 2 - paddle_width / 2;
+}
 
-    // 벽돌 높이 조정
-    const float brick_height = (TILE_SIZE - TILE_MARGIN) / 4;  // 벽돌 높이를 1/4로 설정
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            if (grid[i][j] > 0) {
-                // 벽돌의 높이를 조정하는 로직 추가
-                grid[i][j] = (i < 2) ? (3 - i) : 0;  // 기존 로직 유지
-            }
+// 타이머 이벤트 핸들러 (게임 상태 업데이트 코드)
+gboolean on_timer(gpointer data) {
+    // 공 위치
+    ball.x += ball.dx;  // 공의 x 위치
+    ball.y += ball.dy;  // 공의 y 위치
+
+    // 벽 충돌 감지
+    if (ball.x < 0 || ball.x > WINDOW_WIDTH) {
+        ball.dx = -ball.dx;  // x 방향 반전
+    }
+
+    if (ball.y < 0) {
+        ball.dy = -ball.dy;  // y 방향 반전
+    }
+
+    if (ball.y > WINDOW_WIDTH) {
+        // 공이 바닥에 닿았을 때
+        state.lives--;
+
+        if (state.lives <= 0) {
+            reset_game();  // 게임 초기화 함수 호출
+        }
+        else {
+            reset_ball();  // 공 초기화 함수 호출
         }
     }
+
+    // 패들 충돌 감지
+    if (ball.y + 10 >= paddle.y && ball.x >= paddle.x && ball.x <= paddle.x + 100) {
+        ball.dy = -ball.dy;  // y 방향 반전
+    }
+
+    // 레벨 업 조건
+    if (state.score >= 100) {  // 점수가 100 이상일 때 레벨 업
+        state.level++;
+        state.score = 0;  // 점수 초기화
+        init_bricks();
+    }
+    gtk_widget_queue_draw(drawing_area);  // 화면 갱신
+
+    return TRUE;  // 계속 호출되도록 TRUE 반환
 }
 
-// 게임 메모리 해제 함수
-void free_game(int size) {
-    for (int i = 0; i < size; i++) {
-        free(grid[i]);
-    }
-    free(grid);
-}
-
-// 벽돌 높이와 간격을 설정하는 상수 추가
-const float BRICK_HEIGHT_RATIO = 0.3;  // 벽돌 높이 비율
-const float BRICK_GAP_RATIO = 0.1;     // 벽돌 간격 비율
-
-// 공 이동 함수 (업데이트)
-void move_ball() {
-    if (!is_game_running) return;
-
-    ball_x += ball_dx * 5;
-    ball_y += ball_dy * 5;
-
-    // 벽 충돌 처리
-    if (ball_x < 0 || ball_x > game_size * TILE_SIZE) {
-        ball_dx = -ball_dx;
-    }
-    if (ball_y < 0) {
-        ball_dy = -ball_dy;
-    }
-
-    // 패들 충돌 처리
-    if (ball_y > game_size * TILE_SIZE - TILE_MARGIN - paddle_height &&
-        ball_x > paddle_x && ball_x < paddle_x + paddle_width) {
-        ball_dy = -fabs(ball_dy);  // 패들에 닿으면 위로 반사
-    }
-
-    // 벽돌 충돌 처리
-    for (int i = 0; i < game_size; i++) {
-        for (int j = 0; j < game_size; j++) {
-            if (grid[i][j] > 0) {
-                float brick_height = (TILE_SIZE - TILE_MARGIN) * BRICK_HEIGHT_RATIO;  // 벽돌 높이
-                float gap = brick_height * BRICK_GAP_RATIO;                           // 높이에 비례한 간격
-                if (ball_x > j * TILE_SIZE && ball_x < (j + 1) * TILE_SIZE &&
-                    ball_y > i * (brick_height + gap) && ball_y < (i * (brick_height + gap) + brick_height)) {  // 충돌 감지 로직 수정
-                    score += grid[i][j] * 10;                                                                   // 벽돌 레벨에 따른 점수 추가
-                    grid[i][j] = 0;                                                                             // 벽돌 제거
-                    ball_dy = -ball_dy;
-                    show_score();
+// 벽돌 충돌 감지 함수
+void check_collision() {
+    for (int i = 0; i < BRICK_ROWS; i++) {
+        for (int j = 0; j < BRICK_COLUMNS; j++) {
+            if (!bricks[i][j].destroyed) {
+                if (ball.x >= bricks[i][j].x && ball.x <= bricks[i][j].x + BRICK_WIDTH &&
+                    ball.y >= bricks[i][j].y && ball.y <= bricks[i][j].y + BRICK_HEIGHT) {
+                    ball.dy = -ball.dy;  // y 방향 반전
+                    bricks[i][j].destroyed = true;
+                    state.score += 10;
                 }
             }
         }
     }
-
-    // 바닥에 닿으면 게임    료
-    if (ball_y > game_size * TILE_SIZE) {
-        is_game_running = FALSE;
-        gtk_label_set_text(score_label, "Game Over!");
-        return;
-    }
 }
 
-// 창 크기와 맞춰 drawing_area 크기 설정
-void set_drawing_area_size(GtkWidget* widget) {
-    int width = game_size * TILE_SIZE;
-    int height = game_size * TILE_SIZE;
-    gtk_widget_set_size_request(widget, width, height);
+void reset_game() {
+    state.score = 0;
+    state.lives = 3;
+    state.level = 1;
+    reset_ball();
+    init_bricks();
 }
 
-// 벽돌 색상 설정
-void draw_bricks(cairo_t* cr) {
-    for (int i = 0; i < game_size; i++) {
-        for (int j = 0; j < game_size; j++) {
-            if (grid[i][j] > 0) {  // 벽돌이 존재할 때
-                switch (grid[i][j]) {
-                case 3:
-                    cairo_set_source_rgb(cr, 1, 0, 0);  // 빨간색
-                    break;
-                case 2:
-                    cairo_set_source_rgb(cr, 1, 1, 0);  // 노란색
-                    break;
-                case 1:
-                    cairo_set_source_rgb(cr, 0, 1, 0);  // 초록색
-                    break;
-                }
-                float brick_height = (TILE_SIZE - TILE_MARGIN) * BRICK_HEIGHT_RATIO;  // 벽돌 높이
-                float gap = brick_height * BRICK_GAP_RATIO;                           // 높이에 비례한 간격
-                cairo_rectangle(cr, j * TILE_SIZE, i * (brick_height + gap), TILE_SIZE - TILE_MARGIN, brick_height);
-                cairo_fill(cr);
-            }
-        }
-    }
+void reset_ball() {
+    ball.x = WINDOW_WIDTH / 2;
+    ball.y = WINDOW_HEIGHT - 50;               // 패들 위쪽에 초기화
+    ball.dx = (rand() % 2 == 0 ? 1 : -1) * 5;  // 임의의 x 방향
+    ball.dy = -5;                              // 위쪽으로 이동
 }
 
-// 그리기 이벤트 핸들러 (업데이트)
+// 그리기 이벤트 핸들러 (게임 화면 그리기 코드)
 gboolean event_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
-    // 배경색 설정 (검은색)
-    cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
+    // 배경색 검정
+    cairo_set_source_rgb(cr, 0, 0, 0);
     cairo_paint(cr);
 
-    // 벽돌 그리기
-    draw_bricks(cr);  // 벽돌 그리기 호출
-
     // 공 그리기
-    cairo_set_source_rgb(cr, 1, 0, 0);
-    cairo_arc(cr, ball_x, ball_y, 10, 0, 2 * M_PI);
-    cairo_fill(cr);
+    cairo_set_source_rgb(cr, 1, 0, 0);               // 빨간색
+    cairo_arc(cr, ball.x, ball.y, 10, 0, 2 * G_PI);  // 공의 위치와 반지름
+    cairo_fill(cr);                                  // 공 그리기
+
+    // 벽돌 그리기
+    for (int i = 0; i < BRICK_ROWS; i++) {
+        for (int j = 0; j < BRICK_COLUMNS; j++) {
+            if (!bricks[i][j].destroyed) {
+                cairo_set_source_rgb(cr, 0, 1, 0);  // 초록색
+                cairo_rectangle(cr, bricks[i][j].x, bricks[i][j].y, BRICK_WIDTH, BRICK_HEIGHT);
+                cairo_fill(cr);  // 벽돌 그리기
+            }
+        }
+    }
 
     // 패들 그리기
-    cairo_set_source_rgb(cr, 0, 0, 1);
-    cairo_rectangle(cr, paddle_x, game_size * TILE_SIZE - TILE_MARGIN - paddle_height, paddle_width, paddle_height);
-    cairo_fill(cr);
+    cairo_set_source_rgb(cr, 0, 0, 1);                 // 파란색
+    cairo_rectangle(cr, paddle.x, paddle.y, 100, 20);  // 패들의 위치와 크기
+    cairo_fill(cr);                                    // 패들 그리기
 
-    return FALSE;
+    // 현재 레벨 표시
+    cairo_set_font_size(cr, 20);
+    cairo_set_source_rgb(cr, 1, 1, 1);  // 흰색
+    cairo_move_to(cr, 10, 20);
+    cairo_show_text(cr, g_strdup_printf("Level: %d", state.level));
+
+    return FALSE;  // GTK가 추가적으로 그리도록 FALSE 반환
 }
 
-// 키 입력 이벤트 핸들러
+// 키보드 입력 핸들러
 gboolean on_key(GtkWidget* widget, GdkEventKey* event, gpointer data) {
+    // 레벨에 따라 패들 속도 조정
+    int paddle_speed = 10 + (state.level * 2);
+
+    // 패들 이동
     switch (event->keyval) {
-    case GDK_KEY_Left:
-        paddle_x -= 20;
-        if (paddle_x < 0) paddle_x = 0;
+    case GDK_KEY_Left:             // 왼쪽 화살표 키
+        paddle.x -= paddle_speed;  // 패들을 왼쪽으로 이동
         break;
-    case GDK_KEY_Right:
-        paddle_x += 20;
-        if (paddle_x > game_size * TILE_SIZE - paddle_width) {
-            paddle_x = game_size * TILE_SIZE - paddle_width;
-        }
+    case GDK_KEY_Right:            // 오른쪽 화살표 키
+        paddle.x += paddle_speed;  // 패들을 오른쪽으로 이동
         break;
     }
-    gtk_widget_queue_draw(widget);
-    return TRUE;
+
+    return FALSE;  // GTK가 추가적으로 처리하도록 FALSE 반환
 }
 
-// 주기적    이동 및 화면 갱신
-gboolean on_timer(gpointer data) {
-    move_ball();
-    gtk_widget_queue_draw(drawing_area);
-    return is_game_running;
+void set_drawing_area_size(GtkWidget* drawing_area) {
+    gtk_widget_set_size_request(drawing_area, WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
 // 게임 화면 생성 함수
 GtkWidget* create_breakout_screen(GtkStack* stack) {
+    // 세로로 위젯을 정렬할 컨테이너 생성
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
+    // 점수 표시 라벨 생성 및 컨테이너에 추가
     score_label = GTK_LABEL(gtk_label_new("Score: 0"));
     gtk_box_pack_start(GTK_BOX(vbox), GTK_WIDGET(score_label), FALSE, FALSE, 0);
 
+    // 게임 화면을 그릴 영역 생성
     drawing_area = gtk_drawing_area_new();
-    set_drawing_area_size(drawing_area);  // 창 크기 설정
+    set_drawing_area_size(drawing_area);  // 화면 크기 설정 함수 호출
     gtk_box_pack_start(GTK_BOX(vbox), drawing_area, TRUE, TRUE, 0);
 
+    // 그리기 이벤트 핸들러 등록
     g_signal_connect(drawing_area, "draw", G_CALLBACK(event_draw), NULL);
+
+    // 키보드 입력 이벤트 핸들러 등록
     g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(on_key), NULL);
 
+    // drawing_area가 포커스를 받을 수 있도록 설정
     gtk_widget_set_can_focus(drawing_area, TRUE);
-    gtk_widget_grab_focus(drawing_area);
+    gtk_widget_grab_focus(drawing_area);  // 프로그램 시작 시 drawing_area에 포커스 설정
 
+    // 게임 초기화 (공, 벽돌, 패들 상태 초기 설정)
     init_game(game_size);
+
+    // 16ms마다 on_timer 함수 호출 (60FPS로 게임 상태 갱신)
     g_timeout_add(16, on_timer, NULL);
 
-    // 메인 메뉴로 돌아가는 버튼 추가
+    // 메인 메뉴로 돌아가는 버튼 생성 및 추가
     GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
     gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 0);
+
+    // 버튼 클릭 시 메인 메뉴 화면으로 전환
     g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
 
+    // 구성된 화면 반환
     return vbox;
 }
 
 // 게임 시작 함수
 void start_breakout_game(GtkWidget* widget, gpointer data) {
+    // GtkStack을 통해 여러 화면 관리
     GtkStack* stack = GTK_STACK(data);
 
-    score = 0;                                                   // 점수 초기화
-    show_score();                                                // 점수 레이블 업데이트
-    is_game_running = TRUE;                                      // 게임 상태 설정
-    free_game(game_size);                                        // 게임 메모리 해제 (초기화)
-    init_game(game_size);                                        // 게임 초기화
+    // "breakout_screen" 이름의 게임 화면 표시
     gtk_stack_set_visible_child_name(stack, "breakout_screen");  // 게임 화면 표시
 }
