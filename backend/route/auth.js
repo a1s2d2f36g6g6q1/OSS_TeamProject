@@ -43,14 +43,23 @@ router.post('/save-score', async (req, res) => {
     }
 
     try {
-        const query = `
-            INSERT INTO scores (user_id, username, game, high_score)
-            VALUES (
-                (SELECT id FROM users WHERE username = ?),
-                ?, ?, ?
-            )
-            ON DUPLICATE KEY UPDATE high_score = GREATEST(high_score, ?);
-        `;
+        const query = game === 'mine'
+            ? `
+                INSERT INTO scores (user_id, username, game, high_score)
+                VALUES (
+                    (SELECT id FROM users WHERE username = ?),
+                    ?, ?, ?
+                )
+                ON DUPLICATE KEY UPDATE high_score = LEAST(high_score, ?);
+              `
+            : `
+                INSERT INTO scores (user_id, username, game, high_score)
+                VALUES (
+                    (SELECT id FROM users WHERE username = ?),
+                    ?, ?, ?
+                )
+                ON DUPLICATE KEY UPDATE high_score = GREATEST(high_score, ?);
+              `;
 
         const params = [username, username, game, score, score];
 
