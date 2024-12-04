@@ -174,12 +174,16 @@ int main(int argc, char* argv[]) {
     GtkWidget* screen_2048 = create_2048_screen(stack);
     GtkWidget* minesweeper_screen = create_minesweeper_screen(stack);
     GtkWidget* breakout_screen = create_breakout_screen(stack);
+    GtkWidget* scoreboard_screen = create_scoreboard_screen(stack);
+    GtkWidget* setting_screen = create_setting_screen(stack);
 
     gtk_stack_add_named(stack, login_screen, "login_screen");
     gtk_stack_add_named(stack, main_menu, "main_menu");
     gtk_stack_add_named(stack, minesweeper_screen, "minesweeper_screen");
     gtk_stack_add_named(stack, screen_2048, "2048_screen");
 	gtk_stack_add_named(stack, breakout_screen, "breakout_screen");
+	gtk_stack_add_named(stack, scoreboard_screen, "scoreboard_screen");
+	gtk_stack_add_named(stack, setting_screen, "setting_screen");
 
     gtk_stack_set_visible_child_name(stack, "login_screen");
 
