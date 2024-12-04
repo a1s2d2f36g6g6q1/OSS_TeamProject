@@ -35,6 +35,7 @@ GtkWidget* create_setting_screen(GtkStack* stack) {
     GtkWidget* effect_label = gtk_label_new("Effect Volume:");
     GtkWidget* effect_scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
     gtk_range_set_value(GTK_RANGE(effect_scale), effect_volume); // 초기 값 설정
+    gtk_widget_set_size_request(effect_scale, 300, -1); // 슬라이더 크기 확장
     g_signal_connect(effect_scale, "value-changed", G_CALLBACK(on_effect_volume_changed), NULL);
     gtk_box_pack_start(GTK_BOX(effect_box), effect_label, FALSE, FALSE, 5);
     gtk_box_pack_end(GTK_BOX(effect_box), effect_scale, TRUE, TRUE, 5);
@@ -45,6 +46,7 @@ GtkWidget* create_setting_screen(GtkStack* stack) {
     GtkWidget* bgm_label = gtk_label_new("BGM Volume:");
     GtkWidget* bgm_scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
     gtk_range_set_value(GTK_RANGE(bgm_scale), bgm_volume); // 초기 값 설정
+    gtk_widget_set_size_request(bgm_scale, 300, -1); // 슬라이더 크기 확장
     g_signal_connect(bgm_scale, "value-changed", G_CALLBACK(on_bgm_volume_changed), NULL);
     gtk_box_pack_start(GTK_BOX(bgm_box), bgm_label, FALSE, FALSE, 5);
     gtk_box_pack_end(GTK_BOX(bgm_box), bgm_scale, TRUE, TRUE, 5);
