@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include "games.h"
 
 // Mock: 현재 소리 설정 값 (실제로는 설정 파일에 저장하거나 불러와야 함)
 int effect_volume = 50; // 효과음 초기 값
@@ -19,7 +20,7 @@ void on_bgm_volume_changed(GtkRange* range, gpointer data) {
 }
 
 // 설정 페이지 생성 함수
-GtkWidget* create_settings_page(GtkStack* stack) {
+GtkWidget* create_setting_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
