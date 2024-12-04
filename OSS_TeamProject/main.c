@@ -104,7 +104,7 @@ GtkWidget* create_main_menu(GtkStack* stack) {
 void send_game_score(const char* username, const char* game, int score) {
     if (is_guest_mode) {
         printf("Guest mode: Score not sent to server. Username: %s, Game: %s, Score: %d\n", username, game, score);
-        return;  //
+        return;  
     }
 
     CURL* curl;
