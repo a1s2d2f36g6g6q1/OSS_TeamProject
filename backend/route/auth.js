@@ -75,7 +75,6 @@ router.post('/save-score', async (req, res) => {
 
 
 router.get('/get-all-scores', async (req, res) => {
-    console.log('GET /auth/get-all-scores called'); // 요청 디버깅
     try {
         const query = `
             WITH RankedScores AS (
@@ -83,7 +82,13 @@ router.get('/get-all-scores', async (req, res) => {
                     game,
                     username,
                     high_score,
-                    RANK() OVER (PARTITION BY game ORDER BY high_score DESC) AS \`rank\`
+                    RANK() OVER (
+                        PARTITION BY game 
+                        ORDER BY 
+                            CASE WHEN game = 'mine' THEN high_score
+                                 ELSE -high_score
+                            END ASC
+                    ) AS \`rank\`
                 FROM scores
             )
             SELECT 
@@ -95,15 +100,12 @@ router.get('/get-all-scores', async (req, res) => {
             WHERE \`rank\` <= 10
             ORDER BY game, \`rank\`;
         `;
-        console.log('Executing query:', query); // 쿼리 디버깅
-
-        // 쿼리 실행
         const [rows, fields] = await db.execute(query);
 
         console.log('Query result:', rows); // 결과 디버깅
         res.status(200).json({ gameScores: rows });
     } catch (err) {
-        console.error('Database query error:', err); // 에러 디버깅
+        console.error('Database query error:', err);
         res.status(500).json({ error: 'Failed to fetch scores from database' });
     }
 });
