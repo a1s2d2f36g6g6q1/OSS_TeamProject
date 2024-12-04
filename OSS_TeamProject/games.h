@@ -7,7 +7,7 @@
 
 void start_2048_game(GtkWidget* widget, gpointer data);
 void start_tetris_game();
-void start_breakout_game_BP();
+void start_breakout_game(GtkWidget* widget, gpointer data);
 void start_minesweeper_game(GtkWidget* widget, gpointer data);  // 함수 시그니처 수정
 
 void switch_to_main_menu(GtkWidget* widget, gpointer data);
@@ -15,6 +15,7 @@ void switch_to_login(GtkWidget* widget, gpointer data);
 GtkWidget* create_minesweeper_screen(GtkStack* stack);
 GtkWidget* create_login_screen(GtkStack* stack);
 GtkWidget* create_2048_screen(GtkStack* stack);
+GtkWidget* create_breakout_screen(GtkStack* stack);
 GtkWidget* create_scoreboard_screen(GtkStack* stack);
 GtkWidget* create_setting_screen(GtkStack* stack);
 
