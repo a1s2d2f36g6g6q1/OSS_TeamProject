@@ -74,6 +74,7 @@ router.post('/save-score', async (req, res) => {
 });
 
 
+
 router.get('/get-all-scores', async (req, res) => {
     try {
         const query = `
@@ -107,6 +108,32 @@ router.get('/get-all-scores', async (req, res) => {
     } catch (err) {
         console.error('Database query error:', err);
         res.status(500).json({ error: 'Failed to fetch scores from database' });
+    }
+});
+
+router.get('/get-user-scores', async (req, res) => {
+    const { username } = req.query;
+
+    if (!username) {
+        return res.status(400).json({ success: false, message: 'Username required' });
+    }
+
+    try {
+        const query = `
+            SELECT 
+                game, 
+                high_score
+            FROM scores
+            WHERE username = ?
+            ORDER BY game;
+        `;
+
+        const [rows] = await db.execute(query, [username]);
+
+        res.status(200).json({ success: true, userScores: rows });
+    } catch (err) {
+        console.error('Database query error:', err);
+        res.status(500).json({ success: false, message: 'Failed to fetch user scores' });
     }
 });
 
