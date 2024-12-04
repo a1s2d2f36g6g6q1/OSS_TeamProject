@@ -19,14 +19,13 @@
 #include <time.h>
 #include "games.h"
 
-void switch_to_mult(GtkWidget* widget, gpointer data) {
-    GtkStack* stack = GTK_STACK(data);
-    gtk_stack_set_visible_child_name(stack, "multi");
-}
-
 void switch_to_main_menu(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
     gtk_stack_set_visible_child_name(stack, "main_menu");
+}
+void switch_to_scoreboard(GtkWidget* widget, gpointer data) {
+    GtkStack* stack = GTK_STACK(data);
+    gtk_stack_set_visible_child_name(stack, "scoreboard_screen");
 }
 
 GtkWidget* create_main_menu(GtkStack* stack) {
@@ -62,8 +61,8 @@ GtkWidget* create_main_menu(GtkStack* stack) {
         {"2048", "images/2048.png", G_CALLBACK(start_2048_game)},
         {"Break out", "images/breakout.png", G_CALLBACK(start_breakout_game_BP)},
         {"Minesweeper", "images/minesweeper.png", G_CALLBACK(start_minesweeper_game)},
-        {"Ranking", "images/ranking.png", NULL},
-        {"Setting", "images/setting.png", G_CALLBACK(switch_to_mult)}};
+        {"Ranking", "images/ranking.png", G_CALLBACK(switch_to_scoreboard)},
+        {"Setting", "images/setting.png", NULL}};
 
     for (int i = 0; i < 6; i++) {
         GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
@@ -169,11 +168,13 @@ int main(int argc, char* argv[]) {
     GtkWidget* main_menu = create_main_menu(stack);
     GtkWidget* screen_2048 = create_2048_screen(stack);
     GtkWidget* minesweeper_screen = create_minesweeper_screen(stack);
+    GtkWidget* scoreboard_screen = create_scoreboard_screen(stack);
 
     gtk_stack_add_named(stack, login_screen, "login_screen");
     gtk_stack_add_named(stack, main_menu, "main_menu");
     gtk_stack_add_named(stack, minesweeper_screen, "minesweeper_screen");
     gtk_stack_add_named(stack, screen_2048, "2048_screen");
+    gtk_stack_add_named(stack, scoreboard_screen, "scoreboard_screen");
 
     gtk_stack_set_visible_child_name(stack, "login_screen");
 
