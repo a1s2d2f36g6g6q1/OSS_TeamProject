@@ -151,20 +151,49 @@ static gboolean update_game(gpointer data) {
         double brick_start_x = (WINDOW_WIDTH - ((BRICK_WIDTH + BRICK_PADDING) * BRICK_COLS + BRICK_PADDING)) / 2;
         double brick_start_y = 50;
 
-        for (int i = 0; i < BRICK_ROWS; i++) {
-            for (int j = 0; j < BRICK_COLS; j++) {
-                if (game_state.bricks[i][j] == 1) {
+        bool collision_detected = false;
+
+        for (int i = 0; i < BRICK_ROWS && !collision_detected; i++) {
+            for (int j = 0; j < BRICK_COLS && !collision_detected; j++) {
+                if (game_state.bricks[i][j] > 0) {
                     double brick_x = brick_start_x + j * (BRICK_WIDTH + BRICK_PADDING) + BRICK_PADDING;
                     double brick_y = brick_start_y + i * (BRICK_HEIGHT + BRICK_PADDING) + BRICK_PADDING;
 
-                    if (ball->x >= brick_x && ball->x <= brick_x + BRICK_WIDTH &&
-                        ball->y >= brick_y && ball->y <= brick_y + BRICK_HEIGHT) {
-                        game_state.bricks[i][j] = 0;
-                        game_state.score += 10;
-                        ball->dy = -ball->dy;
+                    // 공의 중심과 벽돌 각 모서리 사이의 거리 계산
+                    double closest_x = fmax(brick_x, fmin(ball->x, brick_x + BRICK_WIDTH));
+                    double closest_y = fmax(brick_y, fmin(ball->y, brick_y + BRICK_HEIGHT));
 
-                        // 아이템 생성
-                        spawn_item(brick_x + BRICK_WIDTH / 2, brick_y + BRICK_HEIGHT / 2);
+                    // 공의 중심과 가장 가까운 벽돌 지점 사이의 거리
+                    double distance_x = ball->x - closest_x;
+                    double distance_y = ball->y - closest_y;
+                    double distance = sqrt(distance_x * distance_x + distance_y * distance_y);
+
+                    // 공의 반지름(BALL_SIZE/2)보다 거리가 작으면 충돌
+                    if (distance < BALL_SIZE / 2) {
+                        int original_durability = game_state.bricks[i][j];
+                        game_state.bricks[i][j]--;
+
+                        // 벽돌이 완전히 부서졌을 때
+                        if (game_state.bricks[i][j] == 0) {
+                            game_state.score += original_durability * 10;
+                        } else {
+                            game_state.score += 5;
+                        }
+
+                        // 모든 벽돌 타격 시 30% 확률로 아이템 생성 (파괴 및 타격 포함)
+                        if (rand() % 100 < 30) {
+                            spawn_item(brick_x + BRICK_WIDTH / 2, brick_y + BRICK_HEIGHT / 2);
+                        }
+
+                        // 충돌 방향에 따른 반사 처리
+                        if (fabs(distance_x) > fabs(distance_y)) {
+                            ball->dx = -ball->dx;  // 좌우 충돌
+                        } else {
+                            ball->dy = -ball->dy;  // 상하 충돌
+                        }
+
+                        collision_detected = true;
+                        break;
                     }
                 }
             }
@@ -308,7 +337,7 @@ void apply_css(void) {
 // spawn_item 함수 구현 추가
 static void spawn_item(double x, double y) {
     if (game_state.active_items >= 20) return;
-    if (rand() % 100 < 30) {  // 30% 확률로 아이템 생��
+    if (rand() % 100 < 30) {  // 30% 확률로 아이템 생성
         for (int i = 0; i < 20; i++) {
             if (!game_state.items[i].active) {
                 game_state.items[i].active = true;
@@ -350,10 +379,12 @@ static void init_game(void) {
     game_state.active_items = 0;
     game_state.paddle_extend_time = 0;
 
-    // 벽돌 초기화
+    // 벽돌 초기화 수정 - 랜덤하게 다양한 내구도의 벽돌 배치
     for (int i = 0; i < BRICK_ROWS; i++) {
         for (int j = 0; j < BRICK_COLS; j++) {
-            game_state.bricks[i][j] = 1;
+            // 1~5 사이의 내구도를 가진 벽돌 생성
+            int durability = rand() % 5 + 1;
+            game_state.bricks[i][j] = durability;
         }
     }
 
@@ -421,14 +452,32 @@ static gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
         }
     }
 
-    // 벽돌 그리기
+    // 벽돌 그리기 수정
     double brick_start_x = (WINDOW_WIDTH - TOTAL_BRICK_WIDTH) / 2;
     double brick_start_y = 50;
 
-    cairo_set_source_rgb(cr, 0.4, 0.6, 1.0);  // 파스텔 블루 색상
     for (int i = 0; i < BRICK_ROWS; i++) {
         for (int j = 0; j < BRICK_COLS; j++) {
-            if (game_state.bricks[i][j] == 1) {
+            if (game_state.bricks[i][j] > 0) {
+                // 내구도에 따른 색상 설정
+                switch (game_state.bricks[i][j]) {
+                    case 1:                                       // 가장 약한 벽돌
+                        cairo_set_source_rgb(cr, 0.4, 0.6, 1.0);  // 파스텔 블루
+                        break;
+                    case 2:
+                        cairo_set_source_rgb(cr, 0.4, 1.0, 0.4);  // 파스텔 그린
+                        break;
+                    case 3:
+                        cairo_set_source_rgb(cr, 1.0, 1.0, 0.4);  // 파스텔 옐로우
+                        break;
+                    case 4:
+                        cairo_set_source_rgb(cr, 1.0, 0.6, 0.4);  // 파스텔 오렌지
+                        break;
+                    case 5:                                       // 가장 강한 벽돌
+                        cairo_set_source_rgb(cr, 1.0, 0.4, 0.4);  // 파스텔 레드
+                        break;
+                }
+
                 cairo_rectangle(cr,
                                 brick_start_x + j * (BRICK_WIDTH + BRICK_PADDING) + BRICK_PADDING,
                                 brick_start_y + i * (BRICK_HEIGHT + BRICK_PADDING) + BRICK_PADDING,
