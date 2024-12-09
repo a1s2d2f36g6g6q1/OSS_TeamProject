@@ -1,0 +1,45 @@
+{
+	"kind" : "toolchains",
+	"toolchains" : 
+	[
+		{
+			"compiler" : 
+			{
+				"id" : "AppleClang",
+				"implicit" : 
+				{
+					"includeDirectories" : 
+					[
+						"/usr/include",
+						"/Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include"
+					],
+					"linkDirectories" : 
+					[
+						"/opt/homebrew/Cellar/curl/8.11.0_1/lib",
+						"/Users/M1A/_Mac/Study/OSS_TeamProject",
+						"/Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/lib",
+						"/Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/lib/swift"
+					],
+					"linkFrameworkDirectories" : 
+					[
+						"/Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/System/Library/Frameworks"
+					],
+					"linkLibraries" : []
+				},
+				"path" : "/Library/Developer/CommandLineTools/usr/bin/cc",
+				"version" : "16.0.0.16000026"
+			},
+			"language" : "C",
+			"sourceFileExtensions" : 
+			[
+				"c",
+				"m"
+			]
+		}
+	],
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}

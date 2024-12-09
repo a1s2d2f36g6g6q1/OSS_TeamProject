@@ -19,6 +19,7 @@ GtkWidget* create_breakout_screen(GtkStack* stack);
 GtkWidget* create_scoreboard_screen(GtkStack* stack);
 GtkWidget* create_setting_screen(GtkStack* stack);
 GtkWidget* create_signup_screen(GtkStack* stack);
+GtkWidget* create_tetris_screen(GtkStack* stack);
 
 extern bool is_guest_mode;
 extern char username[50];

@@ -23,14 +23,14 @@ void handle_login_success(GtkStack* stack) {
 void on_guest_button_clicked(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
 
-    // °Ô½ºÆ® ¸ðµå È°¼ºÈ­
+    // ï¿½Ô½ï¿½Æ® ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­
     is_guest_mode = true;
-    strncpy(username, "Guest", sizeof(username) - 1); // °Ô½ºÆ® À¯Àú ÀÌ¸§ ¼³Á¤
+    strncpy(username, "Guest", sizeof(username) - 1); // ï¿½Ô½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
     username[sizeof(username) - 1] = '\0'; // Null-terminate
 
     printf("Guest mode activated. Username: %s\n", username);
 
-    // ¸ÞÀÎ ¸Þ´º·Î ÀüÈ¯
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     gtk_stack_set_visible_child_name(stack, "main_menu");
 }
 
@@ -65,17 +65,17 @@ void send_login_request(const char* input_username, const char* password, GtkWid
 
     curl = curl_easy_init();
     if (curl) {
-        // JSON µ¥ÀÌÅÍ »ý¼º
+        // JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         struct json_object* json_data = json_object_new_object();
         json_object_object_add(json_data, "username", json_object_new_string(input_username));
         json_object_object_add(json_data, "password", json_object_new_string(password));
         const char* json_string = json_object_to_json_string(json_data);
 
-        printf("JSON Sent: %s\n", json_string); // µð¹ö±ë: Àü¼ÛµÇ´Â JSON Ãâ·Â
+        printf("JSON Sent: %s\n", json_string); // ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ÛµÇ´ï¿½ JSON ï¿½ï¿½ï¿½
 
         headers = curl_slist_append(headers, "Content-Type: application/json");
         curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:5000/auth/login");
-        // °æ·Î È®ÀÎ
+        // ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_string);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);  
@@ -86,7 +86,7 @@ void send_login_request(const char* input_username, const char* password, GtkWid
             gtk_label_set_text(GTK_LABEL(result_label), "Network error!");
         }
         else {
-            printf("Server Response: %s\n", chunk.response); // µð¹ö±ë: ¼­¹ö ÀÀ´ä Ãâ·Â
+            printf("Server Response: %s\n", chunk.response); // ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
             struct json_object* parsed_json = json_tokener_parse(chunk.response);
             struct json_object* success;
@@ -97,7 +97,7 @@ void send_login_request(const char* input_username, const char* password, GtkWid
                 gtk_label_set_text(GTK_LABEL(result_label), "Login successful!");
                 //is_guest_mode = false;
 
-                // À¯Àú³×ÀÓÀ» Àü¿ª º¯¼ö¿¡ ÀúÀå
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 strncpy(username, input_username, sizeof(username) - 1);
                 username[sizeof(username) - 1] = '\0'; // Null-terminate
                 printf("Logged in username: %s\n", username);
@@ -127,7 +127,7 @@ void on_login_button_clicked(GtkWidget* widget, gpointer data) {
     GtkLabel* result_label = GTK_LABEL(widgets[2]);
     GtkStack* stack = GTK_STACK(widgets[3]);
 
-    char* username = gtk_entry_get_text(username_entry);
+    const char* username = gtk_entry_get_text(username_entry);
     const char* password = gtk_entry_get_text(password_entry);
 
     if (strlen(username) == 0 || strlen(password) == 0) {
@@ -175,7 +175,7 @@ GtkWidget* create_login_screen(GtkStack* stack) {
     widgets[0] = username_entry;
     widgets[1] = password_entry;
     widgets[2] = result_label;
-    widgets[3] = stack;
+    widgets[3] = GTK_WIDGET(stack);
 
     g_signal_connect(login_button, "clicked", G_CALLBACK(on_login_button_clicked), widgets);
     g_signal_connect(guest_button, "clicked", G_CALLBACK(on_guest_button_clicked), stack);

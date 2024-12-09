@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include "games.h"
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
@@ -324,25 +325,31 @@ void clear_lines()
     }
 }
 
-// 게임 시작
-void start_tetris_game()
-{
-    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Tetris Game");
-    gtk_window_set_default_size(GTK_WINDOW(window), 300, 600);
 
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), NULL);
+GtkWidget* create_tetris_screen(GtkStack* stack) {
+    GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
 
-    GtkWidget *drawing_area = gtk_drawing_area_new();
+    GtkWidget* score_label = gtk_label_new("Score: 0");
+    gtk_box_pack_start(GTK_BOX(vbox), score_label, FALSE, FALSE, 5);
+
+    GtkWidget* drawing_area = gtk_drawing_area_new();
     gtk_widget_set_size_request(drawing_area, 300, 600);
+    gtk_box_pack_start(GTK_BOX(vbox), drawing_area, TRUE, TRUE, 5);
+
+    GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
+    gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 5);
+    g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
 
     g_signal_connect(drawing_area, "draw", G_CALLBACK(draw_game_board), NULL);
+    g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(on_key_press), NULL);
     g_timeout_add(game_speed, (GSourceFunc)game_loop, drawing_area);
 
-    gtk_container_add(GTK_CONTAINER(window), drawing_area);
-    gtk_widget_show_all(window);
+    return vbox;
+}
 
-    spawn_new_tetromino();
-    gtk_main();
+void start_tetris_game(GtkWidget* widget, gpointer data) {
+    GtkStack* stack = GTK_STACK(data);
+    gtk_stack_set_visible_child_name(stack, "tetris_screen");
 }
