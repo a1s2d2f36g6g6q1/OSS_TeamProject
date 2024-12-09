@@ -3,11 +3,15 @@
 #define _USE_MATH_DEFINES
 #define _CRT_SECURE_NO_WARNINGS
 
+#include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
+
+// 함수 선언 추가 (파일 상단의 다른 함수 선언들과 함께)
+static void restart_game(GtkWidget* widget, gpointer data);
 
 // 상수 정의
 #define WINDOW_WIDTH 1000
@@ -61,9 +65,10 @@ typedef struct {
     int active_items;
     double paddle_width;
     int paddle_extend_time;
+    int level;  // 레벨 추가
 } GameState;
 
-// 전역 게임 상태 변수
+// 전역 게임 태 변수
 static GameState game_state;
 
 // 함수 선언
@@ -110,7 +115,7 @@ static gboolean update_game(gpointer data) {
         ball->x += ball->dx;
         ball->y += ball->dy;
 
-        // 벽 충돌
+        // 벽 돌
         if (ball->x <= 0 || ball->x >= WINDOW_WIDTH) ball->dx = -ball->dx;
         if (ball->y <= 0) ball->dy = -ball->dy;
 
@@ -134,13 +139,16 @@ static gboolean update_game(gpointer data) {
                     game_state.game_running = FALSE;
                     send_game_score(g_username, "Breakout", game_state.score);
                 } else {
-                    // 새로운 공만 생성
+                    // 새로운 공 생성 - 현재 레벨에 맞는 속도로
                     game_state.balls[0].x = WINDOW_WIDTH / 2;
                     game_state.balls[0].y = WINDOW_HEIGHT - 50;
 
+                    double speed_multiplier = 1.0 + (game_state.level - 1) * 0.2;
+                    if (speed_multiplier > 2.0) speed_multiplier = 2.0;
+
                     double angle = M_PI / 2 + (rand() % 40 - 20) * M_PI / 180.0;
-                    game_state.balls[0].dx = BALL_SPEED * cos(angle);
-                    game_state.balls[0].dy = -BALL_SPEED * sin(angle);
+                    game_state.balls[0].dx = BALL_SPEED * speed_multiplier * cos(angle);
+                    game_state.balls[0].dy = -BALL_SPEED * speed_multiplier * sin(angle);
                     game_state.balls[0].active = true;
                     game_state.active_balls = 1;
                 }
@@ -163,7 +171,7 @@ static gboolean update_game(gpointer data) {
                     double closest_x = fmax(brick_x, fmin(ball->x, brick_x + BRICK_WIDTH));
                     double closest_y = fmax(brick_y, fmin(ball->y, brick_y + BRICK_HEIGHT));
 
-                    // 공의 중심과 가장 가까운 벽돌 지점 사이의 거리
+                    // 공의 중심과 가장 가까운 벽돌 점 사이의 거리
                     double distance_x = ball->x - closest_x;
                     double distance_y = ball->y - closest_y;
                     double distance = sqrt(distance_x * distance_x + distance_y * distance_y);
@@ -222,14 +230,32 @@ static gboolean update_game(gpointer data) {
         }
     }
 
+    // 모든 벽돌이 파괴되었는지 확인
+    bool all_bricks_destroyed = true;
+    for (int i = 0; i < BRICK_ROWS && all_bricks_destroyed; i++) {
+        for (int j = 0; j < BRICK_COLS; j++) {
+            if (game_state.bricks[i][j] > 0) {
+                all_bricks_destroyed = false;
+                break;
+            }
+        }
+    }
+
+    // 모든 벽돌이 파괴되면 다음 레벨로
+    if (all_bricks_destroyed) {
+        game_state.level++;
+        init_game();  // 다음 레벨 초기화
+    }
+
     // 점수 표시 업데이트
     GtkWidget* vbox = gtk_widget_get_parent(game_state.drawing_area);
     vbox = gtk_widget_get_parent(vbox);
     GList* children = gtk_container_get_children(GTK_CONTAINER(vbox));
     GtkWidget* score_label = GTK_WIDGET(children->data);
 
-    char score_text[32];
-    sprintf(score_text, "Score: %d    Lives: %d", game_state.score, game_state.lives);
+    char score_text[50];
+    sprintf(score_text, "Score: %d    Lives: %d    Level: %d",
+            game_state.score, game_state.lives, game_state.level);
     gtk_label_set_text(GTK_LABEL(score_label), score_text);
 
     g_list_free(children);
@@ -251,15 +277,38 @@ static gboolean on_motion_notify(GtkWidget* widget, GdkEventMotion* event,
     return TRUE;
 }
 
-// 게임 화면 생성 함수
+// 키 이벤트 핸들러 함수 수정
+static gboolean on_key_press(GtkWidget* widget, GdkEventKey* event, gpointer data) {
+    if (event->keyval == GDK_KEY_k || event->keyval == GDK_KEY_K) {  // 대소문자 모두 처리
+        if (game_state.game_running) {                               // 게임이 실행 중일 때만 처리
+            game_state.level++;
+            init_game();
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+// restart_game 함수 수정
+static void restart_game(GtkWidget* widget, gpointer data) {
+    game_state.level = 0;            // 레벨을 0으로 설정
+    game_state.game_running = true;  // 게임 상태를 실행 중으로 설정
+    init_game();
+
+    // drawing_area에 다시 포커스 설정
+    gtk_widget_grab_focus(game_state.drawing_area);
+}
+
+// create_breakout_screen 함수 (기존과 동일)
 GtkWidget* create_breakout_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
     // 점수와 생명 표시를 위한 레이블
-    char initial_text[32];
-    sprintf(initial_text, "Score: 0    Lives: 3");
+    char initial_text[50];
+    sprintf(initial_text, "Score: 0    Lives: 3    Level: 1");
     GtkWidget* score_label = gtk_label_new(initial_text);
     gtk_widget_set_name(score_label, "score_label");
+    gtk_widget_set_halign(score_label, GTK_ALIGN_CENTER);  // 중앙 정렬 추가
     gtk_box_pack_start(GTK_BOX(vbox), score_label, FALSE, FALSE, 10);
 
     // 게임 영역을 중앙에 배치하기 위한 컨테이너
@@ -285,14 +334,23 @@ GtkWidget* create_breakout_screen(GtkStack* stack) {
 
     // 재시작 버튼
     GtkWidget* restart_button = gtk_button_new_with_label("Restart Game");
-    g_signal_connect(restart_button, "clicked", G_CALLBACK(init_game), NULL);
+    g_signal_connect(restart_button, "clicked", G_CALLBACK(restart_game), NULL);
     gtk_box_pack_start(GTK_BOX(button_box), restart_button, FALSE, FALSE, 5);
 
     // 이벤트 연결
     g_signal_connect(game_state.drawing_area, "draw", G_CALLBACK(on_draw), NULL);
-    gtk_widget_add_events(game_state.drawing_area, GDK_POINTER_MOTION_MASK);
+    gtk_widget_add_events(game_state.drawing_area,
+                          GDK_POINTER_MOTION_MASK |
+                              GDK_KEY_PRESS_MASK |
+                              GDK_FOCUS_CHANGE_MASK);  // 포커스 변경 이벤트 추가
     g_signal_connect(game_state.drawing_area, "motion-notify-event",
                      G_CALLBACK(on_motion_notify), NULL);
+    g_signal_connect(game_state.drawing_area, "key-press-event",
+                     G_CALLBACK(on_key_press), NULL);
+
+    // drawing_area가 키 이벤트를 받을 수 있도록 설정
+    gtk_widget_set_can_focus(game_state.drawing_area, TRUE);
+    gtk_widget_grab_focus(game_state.drawing_area);
 
     return vbox;
 }
@@ -302,7 +360,8 @@ void start_breakout_game(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
     gtk_stack_set_visible_child_name(stack, "breakout_screen");
 
-    // 게임 상태 초기화
+    // 게임 처음 시작할 때는 레벨을 0으로 설정하여 init_game에서 1로 초기화되도록 함
+    game_state.level = 0;
     init_game();
 
     // 이전 타이머가 있다면 제거
@@ -362,29 +421,49 @@ static void init_game(void) {
     game_state.balls[0].x = WINDOW_WIDTH / 2;
     game_state.balls[0].y = WINDOW_HEIGHT - 50;
 
-    double angle = M_PI / 2 + (rand() % 40 - 20) * M_PI / 180.0;
-    game_state.balls[0].dx = BALL_SPEED * cos(angle);
-    game_state.balls[0].dy = -BALL_SPEED * sin(angle);
-    game_state.balls[0].active = true;
-    game_state.active_balls = 1;
-
     game_state.paddle_x = (WINDOW_WIDTH - PADDLE_WIDTH) / 2;
     game_state.score = 0;
     game_state.game_running = true;
     game_state.lives = 3;
 
+    // 게임이 처음 시작될 때만 레벨을 1로 초기화
+    if (game_state.level <= 0) {
+        game_state.level = 1;
+    }
+
     game_state.paddle_width = PADDLE_WIDTH;
     game_state.active_items = 0;
     game_state.paddle_extend_time = 0;
 
-    // 벽돌 초기화 수정 - 랜덤하게 다양한 내구도의 벽돌 배치
+    // 벽돌 초기화 수정 - 레벨에 따른 내구도 설정
     for (int i = 0; i < BRICK_ROWS; i++) {
         for (int j = 0; j < BRICK_COLS; j++) {
-            // 1~5 사이의 내구도를 가진 벽돌 생성
-            int durability = rand() % 5 + 1;
-            game_state.bricks[i][j] = durability;
+            if (game_state.level == 1) {
+                // 벨 1에서는 90%의 확률로 내구도 1, 10%의 확률로 내구도 2
+                game_state.bricks[i][j] = (rand() % 100 < 90) ? 1 : 2;
+            } else {
+                // 레벨 2부터는 기존 로직 유지
+                int max_durability = game_state.level + 1;  // 최대 내구도 조정
+                if (max_durability > 5) max_durability = 5;
+
+                int min_durability = (game_state.level) / 2;  // 최소 내구도 조정
+                if (min_durability < 1) min_durability = 1;
+                if (min_durability > 3) min_durability = 3;
+
+                game_state.bricks[i][j] = min_durability + (rand() % (max_durability - min_durability + 1));
+            }
         }
     }
+
+    // 공 속도 설정 - 레벨에 따라 증가
+    double speed_multiplier = 1.0 + (game_state.level - 1) * 0.2;  // 레벨당 20% 증가
+    if (speed_multiplier > 2.0) speed_multiplier = 2.0;            // 최대 2배로 제한
+
+    double angle = M_PI / 2 + (rand() % 40 - 20) * M_PI / 180.0;
+    game_state.balls[0].dx = BALL_SPEED * speed_multiplier * cos(angle);
+    game_state.balls[0].dy = -BALL_SPEED * speed_multiplier * sin(angle);
+    game_state.balls[0].active = true;
+    game_state.active_balls = 1;
 
     // 나머지 공들 비활성화
     for (int i = 1; i < 10; i++) {
@@ -403,7 +482,7 @@ static void add_new_ball(void) {
 
     for (int i = 0; i < 10; i++) {
         if (!game_state.balls[i].active) {
-            // 현재 활성화된 첫 번째 공의 위치에서 새 공 생성
+            // 현재 활성화된 첫 번째 공의 위치에서 새 ��� 생성
             Ball* first_ball = NULL;
             for (int j = 0; j < 10; j++) {
                 if (game_state.balls[j].active) {
@@ -416,10 +495,14 @@ static void add_new_ball(void) {
                 game_state.balls[i].x = first_ball->x;
                 game_state.balls[i].y = first_ball->y;
 
+                // 현재 레벨에 맞는 속도 계산
+                double speed_multiplier = 1.0 + (game_state.level - 1) * 0.2;
+                if (speed_multiplier > 2.0) speed_multiplier = 2.0;
+
                 // 약간 다른 각도로 발사
                 double angle = M_PI / 2 + (rand() % 40 - 20) * M_PI / 180.0;
-                game_state.balls[i].dx = BALL_SPEED * cos(angle);
-                game_state.balls[i].dy = -BALL_SPEED * sin(angle);
+                game_state.balls[i].dx = BALL_SPEED * speed_multiplier * cos(angle);
+                game_state.balls[i].dy = -BALL_SPEED * speed_multiplier * sin(angle);
                 game_state.balls[i].active = true;
                 game_state.active_balls++;
                 break;
