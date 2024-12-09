@@ -5,6 +5,7 @@
 
 #include <gtk/gtk.h>
 #include <math.h>
+#include <stdbool.h>  // bool 타입을 위해 추가
 #include <stdlib.h>
 #include <time.h>
 
@@ -20,8 +21,8 @@ extern void switch_to_main_menu(GtkWidget* widget, gpointer data);
 #define PADDLE_HEIGHT 10
 #define BALL_SIZE 15
 #define BRICK_ROWS 7
-#define BRICK_COLS 9
-#define BRICK_WIDTH 90
+#define BRICK_COLS 10
+#define BRICK_WIDTH 80
 #define BRICK_HEIGHT 30
 #define BRICK_PADDING 5
 #define BALL_SPEED 8.0
@@ -30,17 +31,40 @@ extern void switch_to_main_menu(GtkWidget* widget, gpointer data);
 #define TOTAL_BRICK_WIDTH ((BRICK_WIDTH + BRICK_PADDING) * BRICK_COLS + BRICK_PADDING)
 #define TOTAL_BRICK_HEIGHT ((BRICK_HEIGHT + BRICK_PADDING) * BRICK_ROWS + BRICK_PADDING)
 
+// 아이템 타입 정의
+typedef enum {
+    ITEM_PADDLE_EXTEND,  // 패들 크기 증가
+    ITEM_SLOW_BALL,      // 공 속도 감소
+    ITEM_EXTRA_LIFE,     // 추가 생명
+    ITEM_TYPES_COUNT     // 아이템 종류 수
+} ItemType;
+
+// 아이템 구조체
+typedef struct {
+    double x, y;
+    ItemType type;
+    bool active;
+} Item;
+
+// 게임 상태 구조체
 typedef struct {
     double x, y;    // 공의 위치
     double dx, dy;  // 공의 이동 방향
     GtkWidget* drawing_area;
     double paddle_x;                     // 패들 위치
     int score;                           // 점수
-    gboolean game_running;               // 게임 상태
+    bool game_running;                   // 게임 상태
     int bricks[BRICK_ROWS][BRICK_COLS];  // 벽돌 상태 배열
     int lives;                           // 생명 추가
+    Item items[20];                      // 최대 20개의 아이템
+    int active_items;                    // 현재 활성화된 아이템 수
+    double paddle_width;                 // 현재 패들 너비
+    double ball_speed;                   // 현재 공 속도
+    int paddle_extend_time;              // 패들 확장 지속 시간
+    int slow_ball_time;                  // 공 감속 지속 시간
 } GameState;
 
+// 전역 게임 상태 변수
 static GameState game_state;
 
 // 게임 초기화 함수
@@ -63,6 +87,51 @@ static void init_game() {
         for (int j = 0; j < BRICK_COLS; j++) {
             game_state.bricks[i][j] = 1;
         }
+    }
+
+    game_state.paddle_width = PADDLE_WIDTH;
+    game_state.ball_speed = BALL_SPEED;
+    game_state.active_items = 0;
+    game_state.paddle_extend_time = 0;
+    game_state.slow_ball_time = 0;
+
+    // 아이템 초기화
+    for (int i = 0; i < 20; i++) {
+        game_state.items[i].active = false;
+    }
+}
+
+// 아이템 생성 함수
+static void spawn_item(double x, double y) {
+    if (game_state.active_items >= 20) return;
+    if (rand() % 100 < 30) {  // 30% 확률로 아이템 생성
+        for (int i = 0; i < 20; i++) {
+            if (!game_state.items[i].active) {
+                game_state.items[i].active = true;
+                game_state.items[i].x = x;
+                game_state.items[i].y = y;
+                game_state.items[i].type = rand() % ITEM_TYPES_COUNT;
+                game_state.active_items++;
+                break;
+            }
+        }
+    }
+}
+
+// 아이템 효과 적용 함수
+static void apply_item_effect(ItemType type) {
+    switch (type) {
+        case ITEM_PADDLE_EXTEND:
+            game_state.paddle_width = PADDLE_WIDTH * 1.5;
+            game_state.paddle_extend_time = 600;  // 약 10초
+            break;
+        case ITEM_SLOW_BALL:
+            game_state.ball_speed = BALL_SPEED * 0.7;
+            game_state.slow_ball_time = 600;  // 약 10초
+            break;
+        case ITEM_EXTRA_LIFE:
+            game_state.lives++;
+            break;
     }
 }
 
@@ -99,12 +168,68 @@ static gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
         }
     }
 
+    // 아이템 그리기
+    for (int i = 0; i < 20; i++) {
+        if (game_state.items[i].active) {
+            switch (game_state.items[i].type) {
+                case ITEM_PADDLE_EXTEND:
+                    cairo_set_source_rgb(cr, 1.0, 0.8, 0.0);  // 노란색
+                    break;
+                case ITEM_SLOW_BALL:
+                    cairo_set_source_rgb(cr, 0.0, 1.0, 0.0);  // 초록색
+                    break;
+                case ITEM_EXTRA_LIFE:
+                    cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);  // 빨간색
+                    break;
+            }
+            cairo_rectangle(cr, game_state.items[i].x, game_state.items[i].y, 15, 15);
+            cairo_fill(cr);
+        }
+    }
+
     return FALSE;
 }
 
 // 충돌 감지 및 게임 업데이트
 static gboolean update_game(gpointer data) {
     if (!game_state.game_running) return TRUE;
+
+    // 아이템 효과 시간 감소
+    if (game_state.paddle_extend_time > 0) {
+        game_state.paddle_extend_time--;
+        if (game_state.paddle_extend_time == 0) {
+            game_state.paddle_width = PADDLE_WIDTH;
+        }
+    }
+
+    if (game_state.slow_ball_time > 0) {
+        game_state.slow_ball_time--;
+        if (game_state.slow_ball_time == 0) {
+            game_state.ball_speed = BALL_SPEED;
+        }
+    }
+
+    // 아이템 이동 및 충돌 검사
+    for (int i = 0; i < 20; i++) {
+        if (game_state.items[i].active) {
+            game_state.items[i].y += 2;  // 아이템 낙하 속도
+
+            // 패들과 충돌 검사
+            if (game_state.items[i].y >= WINDOW_HEIGHT - 20 &&
+                game_state.items[i].x >= game_state.paddle_x &&
+                game_state.items[i].x <= game_state.paddle_x + game_state.paddle_width) {
+                apply_item_effect(game_state.items[i].type);
+                game_state.items[i].active = false;
+                game_state.active_items--;
+            }
+
+            // 화면 밖으로 나갔는지 검사
+            if (game_state.items[i].y >= WINDOW_HEIGHT) {
+                game_state.items[i].active = false;
+                game_state.active_items--;
+            }
+        }
+    }
 
     // 공 이동
     game_state.x += game_state.dx;
@@ -172,6 +297,7 @@ static gboolean update_game(gpointer data) {
                     // 벽돌 제거 및 점수 추가
                     game_state.bricks[i][j] = 0;
                     game_state.score += 10;
+                    spawn_item(brick_x + BRICK_WIDTH / 2, brick_y + BRICK_HEIGHT / 2);
 
                     // 충돌 후 즉시 루프 탈출
                     goto collision_handled;
