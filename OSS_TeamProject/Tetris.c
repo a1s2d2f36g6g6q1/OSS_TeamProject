@@ -48,6 +48,10 @@ bool check_collision(int new_x, int new_y, int new_tetromino[4][4]);  // 충돌 
 
 
 
+// Realize 이벤트 핸들러
+void on_next_block_realize(GtkWidget* widget, gpointer data) {
+    g_message("next_block_area is now realized.");
+}
 
 
 // 충돌 검사
@@ -114,10 +118,11 @@ void spawn_new_tetromino() {
         return;
     }
 
-    if (GTK_IS_WIDGET(next_block_area)) {
+    // Realize 여부를 확인한 뒤 호출
+    if (GTK_IS_WIDGET(next_block_area) && gtk_widget_get_realized(next_block_area)) {
         gtk_widget_queue_draw(next_block_area); // 다음 블록 갱신
     } else {
-        g_warning("spawn_new_tetromino: next_block_area가 유효하지 않습니다.");
+        g_warning("spawn_new_tetromino: next_block_area not realized yet.");
     }
 }
 
@@ -366,21 +371,22 @@ void on_start_button_clicked(GtkWidget* widget, gpointer data) {
         game_loop_id = 0;
     }
 
-    // 전역 변수 tetris_score_label을 사용
+    g_message("on_start_button_clicked: tetris_score_label=%p, next_block_area=%p, realized=%d",
+        tetris_score_label,
+        next_block_area,
+        next_block_area ? gtk_widget_get_realized(next_block_area) : 0);
+
     if (!GTK_IS_LABEL(tetris_score_label)) {
-        g_warning("on_start_button_clicked: tetris_score_label이 유효하지 않습니다!");
+        g_warning("on_start_button_clicked: tetris_score_label is invalid!");
         return;
     }
 
-    // UI 초기화
     initialize_tetris_ui(GTK_WIDGET(tetris_score_label), next_block_area);
 
-    // 게임 상태 초기화
     memset(grid, 0, sizeof(grid));
     score_Tetris = 0;
     game_over_Tetris = false;
 
-    // 새 도형 생성 및 게임 루프 시작
     spawn_new_tetromino();
     game_loop_id = g_timeout_add(game_speed, (GSourceFunc)game_loop, NULL);
 }
@@ -419,6 +425,9 @@ GtkWidget* create_tetris_screen(GtkStack* stack) {
     next_block_area = gtk_drawing_area_new();
     gtk_widget_set_size_request(next_block_area, 100, 100);
     gtk_box_pack_start(GTK_BOX(vbox), next_block_area, FALSE, FALSE, 5);
+
+    // Realize 이벤트 핸들러 추가
+    g_signal_connect(next_block_area, "realize", G_CALLBACK(on_next_block_realize), NULL);
     g_signal_connect(next_block_area, "draw", G_CALLBACK(draw_next_tetromino), NULL);
 
     // Start 버튼
@@ -437,7 +446,9 @@ GtkWidget* create_tetris_screen(GtkStack* stack) {
     return vbox;
 }
 
+
 void start_tetris_game(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
     gtk_stack_set_visible_child_name(stack, "tetris_screen");
 }
+
