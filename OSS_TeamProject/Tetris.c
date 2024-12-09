@@ -17,6 +17,11 @@ int score_Tetris = 0;                    // 점수
 bool game_over_Tetris = false;           // 게임 오버 상태
 void clear_lines();                      // 꽉 찬 줄 제거
 
+static guint game_loop_id = 0;
+GtkWidget* next_block_area = NULL;
+
+
+int next_tetromino[4][4]; // 다음 블록 저장
 int tetrominos[7][4][4] = {
     // I 블록
     {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}},
@@ -83,23 +88,26 @@ void rotate_tetromino()
 }
 
 // 새로운 도형 생성
-void spawn_new_tetromino()
-{
+
+void spawn_new_tetromino() {
+    // 현재 블록을 다음 블록으로 대체
+    memcpy(current_tetromino, next_tetromino, sizeof(current_tetromino));
+
+    // 다음 블록 생성
     int random_index = rand() % 7;
-    for (int y = 0; y < 4; y++)
-    {
-        for (int x = 0; x < 4; x++)
-        {
-            current_tetromino[y][x] = tetrominos[random_index][y][x];
-        }
-    }
+    memcpy(next_tetromino, tetrominos[random_index], sizeof(next_tetromino));
+
     current_x = GRID_WIDTH / 2 - 2;
     current_y = 0;
 
     // 게임 오버 확인
-    if (check_collision(current_x, current_y, current_tetromino))
-    {
+    if (check_collision(current_x, current_y, current_tetromino)) {
         game_over_Tetris = true;
+    }
+
+    // 다음 블록 그리기 갱신
+    if (GTK_IS_WIDGET(next_block_area)) {
+        gtk_widget_queue_draw(next_block_area);
     }
 }
 
@@ -230,7 +238,7 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data)
         break;
 
     case GDK_KEY_Down:                                                        // 아래로 빠르게 이동
-        while (!check_collision(current_x, current_y + 1, current_tetromino)) // 바닥에 도달할 때까지
+        if (!check_collision(current_x, current_y + 1, current_tetromino)) // 바닥에 도달할 때까지
         {
             current_y++;
         }
@@ -325,26 +333,90 @@ void clear_lines()
     }
 }
 
+gboolean draw_next_tetromino(GtkWidget* widget, cairo_t* cr, gpointer data) {
+    double cell_size = 20;
+
+    // 배경색
+    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+    cairo_paint(cr);
+
+    // 다음 블록 그리기
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            if (next_tetromino[y][x] == 1) {
+                cairo_set_source_rgb(cr, 0.5, 0.8, 1.0); // 하늘색
+                cairo_rectangle(cr, x * cell_size, y * cell_size, cell_size - 1, cell_size - 1);
+                cairo_fill(cr);
+            }
+        }
+    }
+
+    return FALSE;
+}
+
+void on_start_button_clicked(GtkWidget* widget, gpointer data) {
+    GtkWidget* drawing_area = GTK_WIDGET(data);
+
+    // 기존 타이머 제거
+    if (game_loop_id != 0) {
+        g_source_remove(game_loop_id);
+        game_loop_id = 0;
+    }
+
+    // 게임 초기화
+    memset(grid, 0, sizeof(grid)); // 그리드 초기화
+    score_Tetris = 0;             // 점수 초기화
+    game_over_Tetris = false;     // 게임 오버 상태 초기화
+    spawn_new_tetromino();        // 새로운 테트로미노 생성
+
+    // 화면 갱신
+    gtk_widget_queue_draw(drawing_area);
+
+    // 새로운 게임 루프 시작
+    game_loop_id = g_timeout_add(game_speed, (GSourceFunc)game_loop, drawing_area);
+}
 
 GtkWidget* create_tetris_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
 
+    // 점수 표시
     GtkWidget* score_label = gtk_label_new("Score: 0");
     gtk_box_pack_start(GTK_BOX(vbox), score_label, FALSE, FALSE, 5);
 
+    // 게임 영역
     GtkWidget* drawing_area = gtk_drawing_area_new();
     gtk_widget_set_size_request(drawing_area, 300, 600);
     gtk_box_pack_start(GTK_BOX(vbox), drawing_area, TRUE, TRUE, 5);
 
+    // 포커스 활성화
+    gtk_widget_set_can_focus(drawing_area, TRUE);
+    gtk_widget_grab_focus(drawing_area);
+
+    // 버튼 컨테이너
+    GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+    gtk_box_pack_start(GTK_BOX(vbox), button_box, FALSE, FALSE, 5);
+
+    // 시작/재시작 버튼
+    GtkWidget* start_button = gtk_button_new_with_label("Start");
+    gtk_box_pack_start(GTK_BOX(button_box), start_button, FALSE, FALSE, 5);
+    g_signal_connect(start_button, "clicked", G_CALLBACK(on_start_button_clicked), drawing_area);
+
+    // 뒤로가기 버튼
     GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
-    gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(button_box), back_button, FALSE, FALSE, 5);
     g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
 
+    // 다음 블록 표시 영역
+    next_block_area = gtk_drawing_area_new();
+    gtk_widget_set_size_request(next_block_area, 100, 100);
+    gtk_box_pack_start(GTK_BOX(vbox), next_block_area, FALSE, FALSE, 5);
+    g_signal_connect(next_block_area, "draw", G_CALLBACK(draw_next_tetromino), NULL);
+
+    // 이벤트 핸들러 연결
     g_signal_connect(drawing_area, "draw", G_CALLBACK(draw_game_board), NULL);
     g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(on_key_press), NULL);
-    g_timeout_add(game_speed, (GSourceFunc)game_loop, drawing_area);
 
     return vbox;
 }

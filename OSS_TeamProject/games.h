@@ -6,7 +6,7 @@
 
 
 void start_2048_game(GtkWidget* widget, gpointer data);
-void start_tetris_game();
+void start_tetris_game(GtkWidget* widget, gpointer data);
 void start_breakout_game(GtkWidget* widget, gpointer data);
 void start_minesweeper_game(GtkWidget* widget, gpointer data);  // 함수 시그니처 수정
 
