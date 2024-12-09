@@ -1,14 +1,14 @@
-#include <gtk/gtk.h>
+ï»¿#include <gtk/gtk.h>
 #include "games.h"
 
-// È¸¿ø°¡ÀÔ ¹öÆ° Å¬¸¯ ÇÚµé·¯
+// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½Úµé·¯
 void on_register_button_clicked(GtkWidget* widget, gpointer data) {
     GtkWidget** entries = (GtkWidget**)data;
     const char* username = gtk_entry_get_text(GTK_ENTRY(entries[0]));
     const char* password = gtk_entry_get_text(GTK_ENTRY(entries[1]));
     const char* confirm_password = gtk_entry_get_text(GTK_ENTRY(entries[2]));
 
-    // ÀÔ·Â °ËÁõ
+    // ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
     if (strlen(username) == 0) {
         g_print("Error: Username cannot be empty.\n");
         return;
@@ -22,23 +22,23 @@ void on_register_button_clicked(GtkWidget* widget, gpointer data) {
         return;
     }
 
-    // È¸¿ø°¡ÀÔ ¼º°ø Ã³¸® (¿¹: »ç¿ëÀÚ µ¥ÀÌÅÍ ÀúÀå)
+    // È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ (ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     g_print("Registration Successful! Username: %s\n", username);
-    // ½ÇÁ¦·Î´Â µ¥ÀÌÅÍº£ÀÌ½º ÀúÀå ·ÎÁ÷ Ãß°¡
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
 }
 
-// È¸¿ø°¡ÀÔ ÆäÀÌÁö »ý¼º ÇÔ¼ö
+// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 GtkWidget* create_signup_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
 
-    // ÆäÀÌÁö Á¦¸ñ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     GtkWidget* title_label = gtk_label_new("Register");
     gtk_widget_set_margin_bottom(title_label, 20);
     gtk_box_pack_start(GTK_BOX(vbox), title_label, FALSE, FALSE, 5);
 
-    // »ç¿ëÀÚ ÀÌ¸§ ÀÔ·Â¶õ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½Ô·Â¶ï¿½
     GtkWidget* username_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     GtkWidget* username_label = gtk_label_new("Username:");
     GtkWidget* username_entry = gtk_entry_new();
@@ -47,37 +47,37 @@ GtkWidget* create_signup_screen(GtkStack* stack) {
     gtk_box_pack_end(GTK_BOX(username_box), username_entry, TRUE, TRUE, 5);
     gtk_box_pack_start(GTK_BOX(vbox), username_box, FALSE, FALSE, 5);
 
-    // ºñ¹Ð¹øÈ£ ÀÔ·Â¶õ
+    // ï¿½ï¿½Ð¹ï¿½È£ ï¿½Ô·Â¶ï¿½
     GtkWidget* password_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     GtkWidget* password_label = gtk_label_new("Password:");
     GtkWidget* password_entry = gtk_entry_new();
-    gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE); // ºñ¹Ð¹øÈ£ ¼û±è
+    gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE); // ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½
     gtk_entry_set_placeholder_text(GTK_ENTRY(password_entry), "Enter your password");
     gtk_box_pack_start(GTK_BOX(password_box), password_label, FALSE, FALSE, 5);
     gtk_box_pack_end(GTK_BOX(password_box), password_entry, TRUE, TRUE, 5);
     gtk_box_pack_start(GTK_BOX(vbox), password_box, FALSE, FALSE, 5);
 
-    // ºñ¹Ð¹øÈ£ È®ÀÎ ÀÔ·Â¶õ
+    // ï¿½ï¿½Ð¹ï¿½È£ È®ï¿½ï¿½ ï¿½Ô·Â¶ï¿½
     GtkWidget* confirm_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     GtkWidget* confirm_label = gtk_label_new("Confirm Password:");
     GtkWidget* confirm_entry = gtk_entry_new();
-    gtk_entry_set_visibility(GTK_ENTRY(confirm_entry), FALSE); // ºñ¹Ð¹øÈ£ ¼û±è
+    gtk_entry_set_visibility(GTK_ENTRY(confirm_entry), FALSE); // ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½
     gtk_entry_set_placeholder_text(GTK_ENTRY(confirm_entry), "Re-enter your password");
     gtk_box_pack_start(GTK_BOX(confirm_box), confirm_label, FALSE, FALSE, 5);
     gtk_box_pack_end(GTK_BOX(confirm_box), confirm_entry, TRUE, TRUE, 5);
     gtk_box_pack_start(GTK_BOX(vbox), confirm_box, FALSE, FALSE, 5);
 
-    // ¹öÆ° ¹Ú½º
+    // ï¿½ï¿½Æ° ï¿½Ú½ï¿½
     GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     gtk_widget_set_halign(button_box, GTK_ALIGN_CENTER);
 
-    // È¸¿ø°¡ÀÔ ¹öÆ°
+    // È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
     GtkWidget* register_button = gtk_button_new_with_label("Register");
     GtkWidget* entries[3] = { username_entry, password_entry, confirm_entry };
     g_signal_connect(register_button, "clicked", G_CALLBACK(on_register_button_clicked), entries);
     gtk_box_pack_start(GTK_BOX(button_box), register_button, FALSE, FALSE, 5);
 
-    // ¸ÞÀÎ ¸Þ´º·Î µ¹¾Æ°¡±â ¹öÆ°
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
     GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
     g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
     gtk_box_pack_start(GTK_BOX(button_box), back_button, FALSE, FALSE, 5);

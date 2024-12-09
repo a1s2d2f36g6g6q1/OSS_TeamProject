@@ -1,22 +1,22 @@
-#include <gtk/gtk.h>
+ï»¿#include <gtk/gtk.h>
 #include <curl.h>
 #include <json.h>
 #include "games.h"
 
-// ¼­¹ö ÀÀ´ä µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ ±¸Á¶Ã¼
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼
 struct MemoryStruct {
     char* memory;
     size_t size;
 };
 
-// ¼­¹ö ÀÀ´äÀ» ÀúÀåÇÏ±â À§ÇÑ ÄÝ¹é ÇÔ¼ö
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¹ï¿½ ï¿½Ô¼ï¿½
 static size_t WriteMemoryCallback(void* contents, size_t size, size_t nmemb, void* userp) {
     size_t realsize = size * nmemb;
     struct MemoryStruct* mem = (struct MemoryStruct*)userp;
 
     mem->memory = realloc(mem->memory, mem->size + realsize + 1);
     if (mem->memory == NULL) {
-        // ¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ
+        // ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½
         fprintf(stderr, "Not enough memory (realloc returned NULL)\n");
         return 0;
     }
@@ -33,12 +33,12 @@ void update_score_table(GtkWidget* grid) {
     CURLcode res;
     struct MemoryStruct chunk;
 
-    chunk.memory = malloc(1);  // ÃÊ±â ¸Þ¸ð¸® ÇÒ´ç
+    chunk.memory = malloc(1);  // ï¿½Ê±ï¿½ ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½
     chunk.size = 0;
 
     curl = curl_easy_init();
     if (curl) {
-        // 1µîºÎÅÍ 10µî±îÁöÀÇ Á¡¼ö °¡Á®¿À±â
+        // 1ï¿½ï¿½ï¿½ï¿½ï¿½ 10ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         const char* server_url = "http://localhost:5000/auth/get-all-scores";
         curl_easy_setopt(curl, CURLOPT_URL, server_url);
         curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
@@ -59,7 +59,7 @@ void update_score_table(GtkWidget* grid) {
             if (json_object_object_get_ex(parsed_json, "gameScores", &game_scores)) {
                 int num_scores = json_object_array_length(game_scores);
 
-                // °¢ Á¡¼ö µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+                // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 for (int i = 0; i < num_scores; i++) {
                     struct json_object* score_entry = json_object_array_get_idx(game_scores, i);
                     struct json_object* game;
@@ -91,8 +91,8 @@ void update_score_table(GtkWidget* grid) {
                             game_column = 12;
                         }
 
-                        // ¾ÈÀüÇÏ°Ô GtkLabel ¾÷µ¥ÀÌÆ®
-                        int row_index = rank_value + 2; // ¼øÀ§ µ¥ÀÌÅÍ°¡ 3¹øÂ° ÁÙºÎÅÍ ½ÃÀÛÇÏ¹Ç·Î ÀÎµ¦½º º¸Á¤
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ GtkLabel ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+                        int row_index = rank_value + 2; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ 3ï¿½ï¿½Â° ï¿½Ùºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¹Ç·ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                         GtkWidget* rank_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column, row_index);
                         GtkWidget* username_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column + 1, row_index);
                         GtkWidget* score_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column + 2, row_index);
@@ -122,12 +122,12 @@ void update_score_table(GtkWidget* grid) {
             fprintf(stderr, "Failed to fetch scores: %s\n", curl_easy_strerror(res));
         }
 
-        // »ç¿ëÀÚ ÀÚ½ÅÀÇ ÃÖ°í Á¡¼ö °¡Á®¿À±â
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         char user_url[256];
         snprintf(user_url, sizeof(user_url), "http://localhost:5000/auth/get-user-scores?username=%s", username);
         printf("Requesting user scores with URL: %s\n", user_url);
 
-        chunk.memory = malloc(1);  // ¸Þ¸ð¸® ÀçÇÒ´ç
+        chunk.memory = malloc(1);  // ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½Ò´ï¿½
         chunk.size = 0;
 
         curl_easy_setopt(curl, CURLOPT_URL, user_url);
@@ -145,7 +145,7 @@ void update_score_table(GtkWidget* grid) {
             if (json_object_object_get_ex(parsed_json, "userScores", &user_scores)) {
                 int num_games = json_object_array_length(user_scores);
 
-                // »ç¿ëÀÚ ÀÚ½ÅÀÇ ÃÖ°í Á¡¼ö ¾÷µ¥ÀÌÆ®
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 for (int i = 0; i < num_games; i++) {
                     struct json_object* score_entry = json_object_array_get_idx(user_scores, i);
                     struct json_object* game;
@@ -194,7 +194,7 @@ void update_score_table(GtkWidget* grid) {
     }
 }
 
-// »õ·Î°íÄ§ ¹öÆ° ÇÚµé·¯
+// ï¿½ï¿½ï¿½Î°ï¿½Ä§ ï¿½ï¿½Æ° ï¿½Úµé·¯
 void on_refresh_button_clicked(GtkWidget* widget, gpointer grid) {
     update_score_table(GTK_WIDGET(grid));
 }
@@ -204,7 +204,7 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
     gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
 
-    // Å¸ÀÌÆ² Ãß°¡
+    // Å¸ï¿½ï¿½Æ² ï¿½ß°ï¿½
     GtkWidget* title_label = gtk_label_new("Game Leaderboards");
     PangoAttrList* attr_list = pango_attr_list_new();
     pango_attr_list_insert(attr_list, pango_attr_weight_new(PANGO_WEIGHT_BOLD));
@@ -227,18 +227,18 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
     };
 
     for (int g = 0; g < 4; g++) {
-        // °ÔÀÓ ÀÌ¹ÌÁö Ãß°¡ (ÀÌ¹ÌÁö Å©±â Àý¹ÝÀ¸·Î ÁÙÀÓ)
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ (ï¿½Ì¹ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         GtkWidget* image = gtk_image_new_from_file(game_images[g]);
-        gtk_widget_set_size_request(image, 80, 80);  // ÀÌ¹ÌÁö Å©±â Á¶Á¤
+        gtk_widget_set_size_request(image, 80, 80);  // ï¿½Ì¹ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         gtk_grid_attach(GTK_GRID(grid), image, g * 4, 0, 3, 1);
 
-        // °ÔÀÓ ÀÌ¸§ Ãß°¡
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ß°ï¿½
         GtkWidget* game_label = gtk_label_new(game_names[g]);
         gtk_widget_set_margin_top(game_label, 5);
         gtk_widget_set_halign(game_label, GTK_ALIGN_CENTER);
         gtk_grid_attach(GTK_GRID(grid), game_label, g * 4, 1, 3, 1);
 
-        // ¿­ Á¦¸ñ Ãß°¡
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
         GtkWidget* rank_label = gtk_label_new("Rank");
         GtkWidget* username_label = gtk_label_new("Username");
         GtkWidget* score_label = gtk_label_new("Score");
@@ -246,7 +246,7 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
         gtk_grid_attach(GTK_GRID(grid), username_label, g * 4 + 1, 2, 1, 1);
         gtk_grid_attach(GTK_GRID(grid), score_label, g * 4 + 2, 2, 1, 1);
 
-        // ¼øÀ§ µ¥ÀÌÅÍ ÃÊ±âÈ­
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         for (int i = 0; i < 10; i++) {
             char rank_text[4];
             snprintf(rank_text, sizeof(rank_text), "%d", i + 1);
@@ -260,7 +260,7 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
             gtk_grid_attach(GTK_GRID(grid), score, g * 4 + 2, i + 3, 1, 1);
         }
 
-        // »ç¿ëÀÚ Á¡¼ö ¼½¼Ç
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         GtkWidget* separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
         gtk_grid_attach(GTK_GRID(grid), separator, g * 4, 13, 3, 1);
 
@@ -272,7 +272,7 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
         gtk_widget_set_margin_top(best_score_value, 10);
         gtk_grid_attach(GTK_GRID(grid), best_score_value, g * 4 + 2, 14, 1, 1);
 
-        // ¼¼·Î ±¸ºÐ¼± Ãß°¡ (¸¶Áö¸· ¿­Àº Á¦¿Ü)
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ð¼ï¿½ ï¿½ß°ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         if (g < 3) {
             GtkWidget* vertical_separator = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
             gtk_grid_attach(GTK_GRID(grid), vertical_separator, g * 4 + 3, 0, 1, 15);
@@ -281,7 +281,7 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
 
     gtk_box_pack_start(GTK_BOX(vbox), grid, TRUE, TRUE, 10);
 
-    // ¹öÆ° ¹Ú½º
+    // ï¿½ï¿½Æ° ï¿½Ú½ï¿½
     GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 20);
     gtk_widget_set_halign(button_box, GTK_ALIGN_CENTER);
 

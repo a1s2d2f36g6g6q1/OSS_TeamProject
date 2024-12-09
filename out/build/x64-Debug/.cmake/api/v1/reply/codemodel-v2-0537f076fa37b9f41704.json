@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "MyCExecutable::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-MyCExecutable-Debug-42c28522ed2e6cd9d105.json",
+					"jsonFile" : "target-MyCExecutable-Debug-59b76f22afb4d9f65a68.json",
 					"name" : "MyCExecutable",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/jungc/OSS_TeamProject/out/build/x64-Debug",
-		"source" : "C:/Users/jungc/OSS_TeamProject"
+		"build" : "C:/Users/idmoh/Documents/OSS_TeamProject/out/build/x64-Debug",
+		"source" : "C:/Users/idmoh/Documents/OSS_TeamProject"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 6
+		"minor" : 7
 	}
 }

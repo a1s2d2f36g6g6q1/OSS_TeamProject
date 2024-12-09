@@ -17,7 +17,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
 #include "games.h"
+
+// 전역 변수 선언
+char* g_username = NULL;  // 사용자 이름을 저장할 전역 변수
 
 void switch_to_main_menu(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
@@ -34,7 +38,6 @@ void switch_to_setting(GtkWidget* widget, gpointer data) {
 }
 
 GtkWidget* create_main_menu(GtkStack* stack) {
-
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
     gtk_widget_set_margin_start(vbox, 40);
     gtk_widget_set_margin_end(vbox, 40);
@@ -104,7 +107,7 @@ GtkWidget* create_main_menu(GtkStack* stack) {
 void send_game_score(const char* username, const char* game, int score) {
     if (is_guest_mode) {
         printf("Guest mode: Score not sent to server. Username: %s, Game: %s, Score: %d\n", username, game, score);
-        return;  
+        return;
     }
 
     CURL* curl;
@@ -179,17 +182,15 @@ int main(int argc, char* argv[]) {
     GtkWidget* signup_screen = create_signup_screen(stack);
     GtkWidget* tetris_screen = create_tetris_screen(stack);
 
-
     gtk_stack_add_named(stack, login_screen, "login_screen");
     gtk_stack_add_named(stack, main_menu, "main_menu");
     gtk_stack_add_named(stack, minesweeper_screen, "minesweeper_screen");
     gtk_stack_add_named(stack, screen_2048, "2048_screen");
     gtk_stack_add_named(stack, tetris_screen, "tetris_screen");
-	gtk_stack_add_named(stack, breakout_screen, "breakout_screen");
-	gtk_stack_add_named(stack, scoreboard_screen, "scoreboard_screen");
-	gtk_stack_add_named(stack, setting_screen, "setting_screen");
-	gtk_stack_add_named(stack, signup_screen, "signup_screen");
-
+    gtk_stack_add_named(stack, breakout_screen, "breakout_screen");
+    gtk_stack_add_named(stack, scoreboard_screen, "scoreboard_screen");
+    gtk_stack_add_named(stack, setting_screen, "setting_screen");
+    gtk_stack_add_named(stack, signup_screen, "signup_screen");
 
     gtk_stack_set_visible_child_name(stack, "login_screen");
 
