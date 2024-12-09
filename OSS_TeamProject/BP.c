@@ -337,16 +337,14 @@ void apply_css(void) {
 // spawn_item 함수 구현 추가
 static void spawn_item(double x, double y) {
     if (game_state.active_items >= 20) return;
-    if (rand() % 100 < 30) {  // 30% 확률로 아이템 생성
-        for (int i = 0; i < 20; i++) {
-            if (!game_state.items[i].active) {
-                game_state.items[i].active = true;
-                game_state.items[i].x = x;
-                game_state.items[i].y = y;
-                game_state.items[i].type = rand() % ITEM_TYPES_COUNT;
-                game_state.active_items++;
-                break;
-            }
+    for (int i = 0; i < 20; i++) {
+        if (!game_state.items[i].active) {
+            game_state.items[i].active = true;
+            game_state.items[i].x = x;
+            game_state.items[i].y = y;
+            game_state.items[i].type = rand() % ITEM_TYPES_COUNT;
+            game_state.active_items++;
+            break;
         }
     }
 }
