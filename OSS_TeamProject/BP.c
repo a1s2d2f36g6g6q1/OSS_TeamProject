@@ -119,11 +119,23 @@ static gboolean update_game(gpointer data) {
         if (ball->x <= 0 || ball->x >= WINDOW_WIDTH) ball->dx = -ball->dx;
         if (ball->y <= 0) ball->dy = -ball->dy;
 
-        // 패들 충돌
+        // 패들 충돌 수정
         if (ball->y >= WINDOW_HEIGHT - 20 &&
             ball->x >= game_state.paddle_x &&
             ball->x <= game_state.paddle_x + game_state.paddle_width) {
-            ball->dy = -ball->dy;
+            // 패들의 중앙을 기준으로 충돌 위치의 상대적 위치 계산 (-1.0 ~ 1.0)
+            double relative_intersect_x = (ball->x - (game_state.paddle_x + game_state.paddle_width / 2)) / (game_state.paddle_width / 2);
+
+            // 반사각 계산 (최대 75도)
+            double max_angle = 75.0 * M_PI / 180.0;
+            double bounce_angle = relative_intersect_x * max_angle;
+
+            // 현재 속도 계산
+            double current_speed = sqrt(ball->dx * ball->dx + ball->dy * ball->dy);
+
+            // 새로운 방향 설정
+            ball->dx = current_speed * sin(bounce_angle);
+            ball->dy = -current_speed * cos(bounce_angle);
         }
 
         // 바닥에 닿았을 때
@@ -342,7 +354,7 @@ GtkWidget* create_breakout_screen(GtkStack* stack) {
     gtk_widget_add_events(game_state.drawing_area,
                           GDK_POINTER_MOTION_MASK |
                               GDK_KEY_PRESS_MASK |
-                              GDK_FOCUS_CHANGE_MASK);  // 포커스 변경 이벤트 추가
+                              GDK_FOCUS_CHANGE_MASK);  // 포커스 변경 이벤트 ���가
     g_signal_connect(game_state.drawing_area, "motion-notify-event",
                      G_CALLBACK(on_motion_notify), NULL);
     g_signal_connect(game_state.drawing_area, "key-press-event",
@@ -435,7 +447,7 @@ static void init_game(void) {
     game_state.active_items = 0;
     game_state.paddle_extend_time = 0;
 
-    // 벽돌 초기화 수정 - 레벨에 따른 내구도 설정
+    // 벽돌 초��화 수정 - 레벨에 따른 내구도 설정
     for (int i = 0; i < BRICK_ROWS; i++) {
         for (int j = 0; j < BRICK_COLS; j++) {
             if (game_state.level == 1) {
@@ -482,7 +494,7 @@ static void add_new_ball(void) {
 
     for (int i = 0; i < 10; i++) {
         if (!game_state.balls[i].active) {
-            // 현재 활성화된 첫 번째 공의 위치에서 새 ��� 생성
+            // 현재 활성화된 첫 번째 공의 위치에서 새 공 생성
             Ball* first_ball = NULL;
             for (int j = 0; j < 10; j++) {
                 if (game_state.balls[j].active) {
