@@ -15,7 +15,7 @@ int current_y = 0;                       // 도형의 Y 위치
 int game_speed = 500;                    // 게임 속도 (ms)
 int score_Tetris = 0;                    // 점수
 bool game_over_Tetris = false;           // 게임 오버 상태
-void clear_lines();                      // 꽉 찬 줄 제거
+void clear_lines(GtkWidget* score_label);                      // 꽉 찬 줄 제거
 
 static guint game_loop_id = 0;
 GtkWidget* next_block_area = NULL;
@@ -190,100 +190,86 @@ gboolean draw_game_board(GtkWidget *widget, cairo_t *cr, gpointer data)
 }
 
 // game_loop 수정
-gboolean game_loop(GtkWidget *widget)
-{
+gboolean game_loop(GtkWidget* widget, gpointer data) {
+    GtkWidget* score_label = GTK_WIDGET(data); // 전달된 score_label 가져오기
+
     if (game_over_Tetris)
         return FALSE; // 게임 루프 종료
 
-    if (!check_collision(current_x, current_y + 1, current_tetromino))
-    {
+    if (!check_collision(current_x, current_y + 1, current_tetromino)) {
         current_y++;
-    }
-    else
-    {
-        // 고정
-        for (int y = 0; y < 4; y++)
-        {
-            for (int x = 0; x < 4; x++)
-            {
-                if (current_tetromino[y][x] == 1)
-                {
+    } else {
+        // 도형 고정
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 4; x++) {
+                if (current_tetromino[y][x] == 1) {
                     grid[current_y + y][current_x + x] = 1;
                 }
             }
         }
-        clear_lines();
+
+        // 줄 삭제 및 점수 업데이트
+        clear_lines(score_label); // score_label 전달
 
         // 게임 오버 체크
-        for (int x = 0; x < GRID_WIDTH; x++)
-        {
-            if (grid[0][x] != 0)
-            {
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            if (grid[0][x] != 0) {
                 game_over_Tetris = true;
                 break;
             }
         }
-        if (!game_over_Tetris)
-        {
-            spawn_new_tetromino(); // 게임 오버가 아닐 경우에만 새 도형 생성
+
+        if (!game_over_Tetris) {
+            spawn_new_tetromino(); // 새 도형 생성
         }
     }
 
-    gtk_widget_queue_draw(widget);
+    gtk_widget_queue_draw(widget); // 화면 갱신
     return TRUE;
 }
 
-gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data)
-{
-    switch (event->keyval)
-    {
+gboolean on_key_press(GtkWidget* widget, GdkEventKey* event, gpointer data) {
+    GtkWidget* score_label = GTK_WIDGET(data); // 전달된 score_label 가져오기
+
+    switch (event->keyval) {
     case GDK_KEY_Left: // 왼쪽 이동
-        if (!check_collision(current_x - 1, current_y, current_tetromino))
-        {
+        if (!check_collision(current_x - 1, current_y, current_tetromino)) {
             current_x--;
         }
         break;
 
     case GDK_KEY_Right: // 오른쪽 이동
-        if (!check_collision(current_x + 1, current_y, current_tetromino))
-        {
+        if (!check_collision(current_x + 1, current_y, current_tetromino)) {
             current_x++;
         }
         break;
 
-    case GDK_KEY_Down:                                                        // 아래로 빠르게 이동
-        if (!check_collision(current_x, current_y + 1, current_tetromino)) // 바닥에 도달할 때까지
-        {
+    case GDK_KEY_Down: // 아래로 빠르게 이동
+        if (!check_collision(current_x, current_y + 1, current_tetromino)) {
             current_y++;
         }
 
         // 도형을 고정하고 줄 삭제
-        for (int y = 0; y < 4; y++)
-        {
-            for (int x = 0; x < 4; x++)
-            {
-                if (current_tetromino[y][x] == 1)
-                {
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 4; x++) {
+                if (current_tetromino[y][x] == 1) {
                     grid[current_y + y][current_x + x] = 1;
                 }
             }
         }
 
-        clear_lines(); // 줄 삭제 호출
+        clear_lines(score_label); // 줄 삭제 호출
 
         // 게임 오버 확인
-        for (int x = 0; x < GRID_WIDTH; x++)
-        {
-            if (grid[0][x] != 0)
-            {
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            if (grid[0][x] != 0) {
                 game_over_Tetris = true;
                 break;
             }
         }
 
         // 새 도형 생성
-        if (!game_over_Tetris)
-        {
+        if (!game_over_Tetris) {
             spawn_new_tetromino();
         }
         break;
@@ -317,7 +303,6 @@ void clear_lines(GtkWidget* score_label) {
                     grid[ny][nx] = grid[ny - 1][nx];
                 }
             }
-
             for (int nx = 0; nx < GRID_WIDTH; nx++) {
                 grid[0][nx] = 0;
             }
@@ -326,9 +311,12 @@ void clear_lines(GtkWidget* score_label) {
         }
     }
 
+    // 점수 계산 및 UI 업데이트
     if (cleared_lines > 0) {
-        score_Tetris += cleared_lines * 100;
-        update_tetris_score(score_Tetris, score_label); // 점수 UI 갱신
+        score_Tetris += cleared_lines * 100;  // 1줄 삭제당 100점
+        char score_text[16];
+        snprintf(score_text, sizeof(score_text), "Score: %d", score_Tetris);
+        gtk_label_set_text(GTK_LABEL(score_label), score_text);  // UI 점수 갱신
     }
 }
 
@@ -361,39 +349,49 @@ void on_start_button_clicked(GtkWidget* widget, gpointer data) {
         game_loop_id = 0;
     }
 
-    memset(grid, 0, sizeof(grid));
+    memset(grid, 0, sizeof(grid)); // 그리드 초기화
     score_Tetris = 0;
     game_over_Tetris = false;
 
-    // UI 점수 갱신
-    update_tetris_score(score_Tetris, main_score_label);
+    GtkWidget* score_label = g_object_get_data(G_OBJECT(drawing_area), "score_label");
+    gtk_label_set_text(GTK_LABEL(score_label), "Score: 0");
 
     spawn_new_tetromino();
     gtk_widget_queue_draw(drawing_area);
 
-    game_loop_id = g_timeout_add(game_speed, (GSourceFunc)game_loop, drawing_area);
+    game_loop_id = g_timeout_add(game_speed, (GSourceFunc)game_loop, score_label); // game_loop에 score_label 전달
 }
 
-GtkWidget* create_tetris_screen(GtkStack* stack, GtkWidget* score_label) {
+GtkWidget* create_tetris_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
 
+    // Score Label 추가
+    GtkWidget* score_label = gtk_label_new("Score: 0");
+    gtk_box_pack_start(GTK_BOX(vbox), score_label, FALSE, FALSE, 5);
+
+    // 게임 보드
     GtkWidget* drawing_area = gtk_drawing_area_new();
     gtk_widget_set_size_request(drawing_area, 300, 600);
     gtk_box_pack_start(GTK_BOX(vbox), drawing_area, TRUE, TRUE, 5);
 
+    // Drawing Area에 Score Label 저장
+    g_object_set_data(G_OBJECT(drawing_area), "score_label", score_label);
+
+    // Start 버튼
     GtkWidget* start_button = gtk_button_new_with_label("Start");
     gtk_box_pack_start(GTK_BOX(vbox), start_button, FALSE, FALSE, 5);
     g_signal_connect(start_button, "clicked", G_CALLBACK(on_start_button_clicked), drawing_area);
 
+    // Back to Main Menu 버튼
     GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
     gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 5);
     g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
 
-    // 이벤트 핸들러 연결
+    // Signal 연결
     g_signal_connect(drawing_area, "draw", G_CALLBACK(draw_game_board), NULL);
-    g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(on_key_press), NULL);
+    g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(on_key_press), score_label);
 
     return vbox;
 }
