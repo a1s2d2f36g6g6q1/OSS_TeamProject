@@ -354,7 +354,7 @@ GtkWidget* create_breakout_screen(GtkStack* stack) {
     gtk_widget_add_events(game_state.drawing_area,
                           GDK_POINTER_MOTION_MASK |
                               GDK_KEY_PRESS_MASK |
-                              GDK_FOCUS_CHANGE_MASK);  // 포커스 변경 이벤트 ���가
+                              GDK_FOCUS_CHANGE_MASK);  // 포커스 변경 이벤트 추가
     g_signal_connect(game_state.drawing_area, "motion-notify-event",
                      G_CALLBACK(on_motion_notify), NULL);
     g_signal_connect(game_state.drawing_area, "key-press-event",
@@ -434,20 +434,20 @@ static void init_game(void) {
     game_state.balls[0].y = WINDOW_HEIGHT - 50;
 
     game_state.paddle_x = (WINDOW_WIDTH - PADDLE_WIDTH) / 2;
-    game_state.score = 0;
-    game_state.game_running = true;
-    game_state.lives = 3;
 
-    // 게임이 처음 시작될 때만 레벨을 1로 초기화
+    // 게임이 처음 시작될 때만 점수와 레벨을 초기화
     if (game_state.level <= 0) {
+        game_state.score = 0;
         game_state.level = 1;
     }
 
+    game_state.game_running = true;
+    game_state.lives = 3;
     game_state.paddle_width = PADDLE_WIDTH;
     game_state.active_items = 0;
     game_state.paddle_extend_time = 0;
 
-    // 벽돌 초��화 수정 - 레벨에 따른 내구도 설정
+    // 벽돌 초기화 수정 - 레벨에 따른 내구도 설정
     for (int i = 0; i < BRICK_ROWS; i++) {
         for (int j = 0; j < BRICK_COLS; j++) {
             if (game_state.level == 1) {
@@ -552,9 +552,13 @@ static gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
     for (int i = 0; i < BRICK_ROWS; i++) {
         for (int j = 0; j < BRICK_COLS; j++) {
             if (game_state.bricks[i][j] > 0) {
+                // 벽돌 위치 계산
+                double brick_x = brick_start_x + j * (BRICK_WIDTH + BRICK_PADDING) + BRICK_PADDING;
+                double brick_y = brick_start_y + i * (BRICK_HEIGHT + BRICK_PADDING) + BRICK_PADDING;
+
                 // 내구도에 따른 색상 설정
                 switch (game_state.bricks[i][j]) {
-                    case 1:                                       // 가장 약한 벽돌
+                    case 1:
                         cairo_set_source_rgb(cr, 0.4, 0.6, 1.0);  // 파스텔 블루
                         break;
                     case 2:
@@ -566,16 +570,32 @@ static gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
                     case 4:
                         cairo_set_source_rgb(cr, 1.0, 0.6, 0.4);  // 파스텔 오렌지
                         break;
-                    case 5:                                       // 가장 강한 벽돌
+                    case 5:
                         cairo_set_source_rgb(cr, 1.0, 0.4, 0.4);  // 파스텔 레드
                         break;
                 }
 
-                cairo_rectangle(cr,
-                                brick_start_x + j * (BRICK_WIDTH + BRICK_PADDING) + BRICK_PADDING,
-                                brick_start_y + i * (BRICK_HEIGHT + BRICK_PADDING) + BRICK_PADDING,
-                                BRICK_WIDTH, BRICK_HEIGHT);
+                // 벽돌 그리기
+                cairo_rectangle(cr, brick_x, brick_y, BRICK_WIDTH, BRICK_HEIGHT);
                 cairo_fill(cr);
+
+                // 내구도 텍스트 표시
+                cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);  // 검정색
+                cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+                cairo_set_font_size(cr, 20.0);
+
+                // 텍스트 중앙 정렬을 위한 계산
+                char durability_text[2];
+                sprintf(durability_text, "%d", game_state.bricks[i][j]);
+
+                cairo_text_extents_t extents;
+                cairo_text_extents(cr, durability_text, &extents);
+
+                double text_x = brick_x + (BRICK_WIDTH - extents.width) / 2;
+                double text_y = brick_y + (BRICK_HEIGHT + extents.height) / 2;
+
+                cairo_move_to(cr, text_x, text_y);
+                cairo_show_text(cr, durability_text);
             }
         }
     }
