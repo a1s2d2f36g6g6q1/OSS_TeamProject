@@ -1,0 +1,3 @@
+/Users/M1A/_Mac/Study/OSS_TeamProject/cmake-build-debug/CMakeFiles/MyCExecutable.dir
+/Users/M1A/_Mac/Study/OSS_TeamProject/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/M1A/_Mac/Study/OSS_TeamProject/cmake-build-debug/CMakeFiles/rebuild_cache.dir

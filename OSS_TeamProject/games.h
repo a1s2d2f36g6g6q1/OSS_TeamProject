@@ -6,7 +6,7 @@
 
 
 void start_2048_game(GtkWidget* widget, gpointer data);
-void start_tetris_game();
+void start_tetris_game(GtkWidget* widget, gpointer data);
 void start_breakout_game(GtkWidget* widget, gpointer data);
 void start_minesweeper_game(GtkWidget* widget, gpointer data);  // 함수 시그니처 수정
 
@@ -18,6 +18,8 @@ GtkWidget* create_2048_screen(GtkStack* stack);
 GtkWidget* create_breakout_screen(GtkStack* stack);
 GtkWidget* create_scoreboard_screen(GtkStack* stack);
 GtkWidget* create_setting_screen(GtkStack* stack);
+GtkWidget* create_signup_screen(GtkStack* stack);
+GtkWidget* create_tetris_screen(GtkStack* stack);
 
 extern bool is_guest_mode;
 extern char username[50];

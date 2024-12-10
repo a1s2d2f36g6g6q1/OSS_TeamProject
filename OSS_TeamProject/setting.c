@@ -1,58 +1,58 @@
-#include <gtk/gtk.h>
+ï»¿#include <gtk/gtk.h>
 #include "games.h"
 
-// Mock: ÇöÀç ¼Ò¸® ¼³Á¤ °ª (½ÇÁ¦·Î´Â ¼³Á¤ ÆÄÀÏ¿¡ ÀúÀåÇÏ°Å³ª ºÒ·¯¿Í¾ß ÇÔ)
-int effect_volume = 50; // È¿°úÀ½ ÃÊ±â °ª
-int bgm_volume = 50;    // ¹è°æÀ½¾Ç ÃÊ±â °ª
+// Mock: ï¿½ï¿½ï¿½ï¿½ ï¿½Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°Å³ï¿½ ï¿½Ò·ï¿½ï¿½Í¾ï¿½ ï¿½ï¿½)
+int effect_volume = 50; // È¿ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½
+int bgm_volume = 50;    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½
 
-// ½½¶óÀÌ´õ °ª º¯°æ ÇÚµé·¯ (È¿°úÀ½)
+// ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµé·¯ (È¿ï¿½ï¿½ï¿½ï¿½)
 void on_effect_volume_changed(GtkRange* range, gpointer data) {
     effect_volume = gtk_range_get_value(range);
     g_print("Effect Volume: %d\n", effect_volume);
-    // ½ÇÁ¦·Î´Â È¿°úÀ½ º¼·ý º¯°æ ·ÎÁ÷ Ãß°¡
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
 }
 
-// ½½¶óÀÌ´õ °ª º¯°æ ÇÚµé·¯ (¹è°æÀ½¾Ç)
+// ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµé·¯ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 void on_bgm_volume_changed(GtkRange* range, gpointer data) {
     bgm_volume = gtk_range_get_value(range);
     g_print("BGM Volume: %d\n", bgm_volume);
-    // ½ÇÁ¦·Î´Â ¹è°æÀ½¾Ç º¼·ý º¯°æ ·ÎÁ÷ Ãß°¡
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
 }
 
-// ¼³Á¤ ÆäÀÌÁö »ý¼º ÇÔ¼ö
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 GtkWidget* create_setting_screen(GtkStack* stack) {
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
 
-    // ÆäÀÌÁö Á¦¸ñ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     GtkWidget* title_label = gtk_label_new("Settings");
     gtk_widget_set_margin_bottom(title_label, 20);
     gtk_box_pack_start(GTK_BOX(vbox), title_label, FALSE, FALSE, 5);
 
-    // È¿°úÀ½ Å©±â ¼³Á¤
+    // È¿ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     GtkWidget* effect_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     GtkWidget* effect_label = gtk_label_new("Effect Volume:");
     GtkWidget* effect_scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
-    gtk_range_set_value(GTK_RANGE(effect_scale), effect_volume); // ÃÊ±â °ª ¼³Á¤
-    gtk_widget_set_size_request(effect_scale, 300, -1); // ½½¶óÀÌ´õ Å©±â È®Àå
+    gtk_range_set_value(GTK_RANGE(effect_scale), effect_volume); // ï¿½Ê±ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    gtk_widget_set_size_request(effect_scale, 300, -1); // ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ Å©ï¿½ï¿½ È®ï¿½ï¿½
     g_signal_connect(effect_scale, "value-changed", G_CALLBACK(on_effect_volume_changed), NULL);
     gtk_box_pack_start(GTK_BOX(effect_box), effect_label, FALSE, FALSE, 5);
     gtk_box_pack_end(GTK_BOX(effect_box), effect_scale, TRUE, TRUE, 5);
     gtk_box_pack_start(GTK_BOX(vbox), effect_box, FALSE, FALSE, 5);
 
-    // ¹è°æÀ½¾Ç Å©±â ¼³Á¤
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     GtkWidget* bgm_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     GtkWidget* bgm_label = gtk_label_new("BGM Volume:");
     GtkWidget* bgm_scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
-    gtk_range_set_value(GTK_RANGE(bgm_scale), bgm_volume); // ÃÊ±â °ª ¼³Á¤
-    gtk_widget_set_size_request(bgm_scale, 300, -1); // ½½¶óÀÌ´õ Å©±â È®Àå
+    gtk_range_set_value(GTK_RANGE(bgm_scale), bgm_volume); // ï¿½Ê±ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    gtk_widget_set_size_request(bgm_scale, 300, -1); // ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ Å©ï¿½ï¿½ È®ï¿½ï¿½
     g_signal_connect(bgm_scale, "value-changed", G_CALLBACK(on_bgm_volume_changed), NULL);
     gtk_box_pack_start(GTK_BOX(bgm_box), bgm_label, FALSE, FALSE, 5);
     gtk_box_pack_end(GTK_BOX(bgm_box), bgm_scale, TRUE, TRUE, 5);
     gtk_box_pack_start(GTK_BOX(vbox), bgm_box, FALSE, FALSE, 5);
 
-    // ¸ÞÀÎ ¸Þ´º·Î µ¹¾Æ°¡±â ¹öÆ°
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
     GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
     gtk_widget_set_margin_top(back_button, 20);
     gtk_widget_set_halign(back_button, GTK_ALIGN_CENTER);

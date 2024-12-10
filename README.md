@@ -15,7 +15,10 @@ gcc -o OSS_TeamProject_executable \
 ./OSS_TeamProject/login.c \
 ./OSS_TeamProject/main.c \
 ./OSS_TeamProject/mine.c \
-./OSS_TeamProject/multi.c \
+./OSS_TeamProject/ScoreBoard.c \
+./OSS_TeamProject/setting.c \
+./OSS_TeamProject/sign_up.c \
+-I./OSS_TeamProject \
 -I/opt/homebrew/Cellar/curl/8.11.0_1/include/curl \
 -L/opt/homebrew/Cellar/curl/8.11.0_1/lib \
 -lcurl \
