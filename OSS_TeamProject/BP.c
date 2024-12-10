@@ -24,7 +24,7 @@ static void restart_game(GtkWidget* widget, gpointer data);
 #define BRICK_WIDTH 80
 #define BRICK_HEIGHT 30
 #define BRICK_PADDING 5
-#define BALL_SPEED 8.0
+#define BALL_SPEED 7.0
 #define ITEM_FALL_SPEED 3.5  // 아이템 떨어지는 속도 증가
 #define TOTAL_BRICK_WIDTH ((BRICK_WIDTH + BRICK_PADDING) * BRICK_COLS + BRICK_PADDING)
 #define TOTAL_BRICK_HEIGHT ((BRICK_HEIGHT + BRICK_PADDING) * BRICK_ROWS + BRICK_PADDING)
@@ -96,7 +96,10 @@ static void apply_item_effect(ItemType type) {
             break;
 
         case ITEM_EXTRA_LIFE:
-            game_state.lives++;
+            // 최대 생명 수를 5개로 제한
+            if (game_state.lives < 5) {
+                game_state.lives++;
+            }
             break;
     }
 }
@@ -266,7 +269,7 @@ static gboolean update_game(gpointer data) {
     GtkWidget* score_label = GTK_WIDGET(children->data);
 
     char score_text[50];
-    sprintf(score_text, "Score: %d    Lives: %d    Level: %d",
+    sprintf(score_text, "Score: %d    Lives: (%d/5)    Level: %d",
             game_state.score, game_state.lives, game_state.level);
     gtk_label_set_text(GTK_LABEL(score_label), score_text);
 
@@ -468,7 +471,7 @@ static void init_game(void) {
     }
 
     // 공 속도 설정 - 레벨에 따라 증가
-    double speed_multiplier = 1.0 + (game_state.level - 1) * 0.2;  // 레벨당 20% 증가
+    double speed_multiplier = 1.0 + (game_state.level - 1) * 0.1;  // 레벨당 10% 증가
     if (speed_multiplier > 2.0) speed_multiplier = 2.0;            // 최대 2배로 제한
 
     double angle = M_PI / 2 + (rand() % 40 - 20) * M_PI / 180.0;
@@ -508,7 +511,7 @@ static void add_new_ball(void) {
                 game_state.balls[i].y = first_ball->y;
 
                 // 현재 레벨에 맞는 속도 계산
-                double speed_multiplier = 1.0 + (game_state.level - 1) * 0.2;
+                double speed_multiplier = 1.0 + (game_state.level - 1) * 0.1;
                 if (speed_multiplier > 2.0) speed_multiplier = 2.0;
 
                 // 약간 다른 각도로 발사
