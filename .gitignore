@@ -8,5 +8,4 @@
 *.recipe
 /OSS_TeamProject/x64/Debug
 *.exe
-/OSS_TeamProject/OSS_TeamProject.vcxproj
 /OSS_TeamProject/OSS_TeamProject.vcxproj.filters
