@@ -10,9 +10,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-// 함수 선언 추가 (파일 상단의 다른 함수 선언들과 함께)
-static void restart_game(GtkWidget* widget, gpointer data);
-
 // 상수 정의
 #define WINDOW_WIDTH 1000
 #define WINDOW_HEIGHT 800
@@ -25,7 +22,7 @@ static void restart_game(GtkWidget* widget, gpointer data);
 #define BRICK_HEIGHT 30
 #define BRICK_PADDING 5
 #define BALL_SPEED 7.0
-#define ITEM_FALL_SPEED 3.5  // 아이템 떨어지는 속도 증가
+#define ITEM_FALL_SPEED 3.5
 #define TOTAL_BRICK_WIDTH ((BRICK_WIDTH + BRICK_PADDING) * BRICK_COLS + BRICK_PADDING)
 #define TOTAL_BRICK_HEIGHT ((BRICK_HEIGHT + BRICK_PADDING) * BRICK_ROWS + BRICK_PADDING)
 
@@ -65,10 +62,10 @@ typedef struct {
     int active_items;
     double paddle_width;
     int paddle_extend_time;
-    int level;  // 레벨 추가
+    int level;
 } GameState;
 
-// 전역 게임 태 변수
+// 전역 게임 상태 변수
 static GameState game_state;
 
 // 함수 선언
@@ -78,6 +75,7 @@ static void switch_to_main_menu(GtkWidget* widget, gpointer data);
 static void spawn_item(double x, double y);
 static void add_new_ball(void);
 static gboolean update_game(gpointer data);
+static void restart_game(GtkWidget* widget, gpointer data);
 
 // 외부 함수 선언
 extern void send_game_score(const char* username, const char* game, int score);
@@ -279,7 +277,7 @@ static gboolean update_game(gpointer data) {
     return TRUE;
 }
 
-// 마우스 이동 리
+// 마우스 이동
 static gboolean on_motion_notify(GtkWidget* widget, GdkEventMotion* event,
                                  gpointer data) {
     game_state.paddle_x = event->x - PADDLE_WIDTH / 2;
@@ -454,8 +452,8 @@ static void init_game(void) {
     for (int i = 0; i < BRICK_ROWS; i++) {
         for (int j = 0; j < BRICK_COLS; j++) {
             if (game_state.level == 1) {
-                // 벨 1에서는 90%의 확률로 내구도 1, 10%의 확률로 내구도 2
-                game_state.bricks[i][j] = (rand() % 100 < 90) ? 1 : 2;
+                // 레벨 1에서는 95%의 확률로 내구도 1, 5%의 확률로 내구도 2
+                game_state.bricks[i][j] = (rand() % 100 < 95) ? 1 : 2;
             } else {
                 // 레벨 2부터는 기존 로직 유지
                 int max_durability = game_state.level + 1;  // 최대 내구도 조정
