@@ -10,18 +10,22 @@ int bgm_volume = 50;    // Default BGM volume
 void on_effect_volume_changed(GtkRange* range, gpointer data) {
     effect_volume = gtk_range_get_value(range);
     g_print("Effect Volume: %d\n", effect_volume);
-    // Additional effect volume change handling can be added here
 }
 
 // Callback for BGM volume change
 void on_bgm_volume_changed(GtkRange* range, gpointer data) {
     bgm_volume = gtk_range_get_value(range);
     g_print("BGM Volume: %d\n", bgm_volume);
-    // Additional BGM volume change handling can be added here
+}
+
+// Function to switch to the login screen
+void switch_to_login_screen(GtkStack* stack) {
+    gtk_stack_set_visible_child_name(stack, "login_screen");
 }
 
 // Callback for delete account button
 void on_delete_account_clicked(GtkButton* button, gpointer data) {
+    GtkStack* stack = GTK_STACK(data);
     CURL* curl = curl_easy_init();
     if (curl) {
         CURLcode res;
@@ -37,8 +41,8 @@ void on_delete_account_clicked(GtkButton* button, gpointer data) {
         }
         else {
             g_print("Account deleted successfully.\n");
-            // Optional: Redirect to login screen or exit the app
-            exit(0);
+            // Switch to login screen after successful deletion
+            switch_to_login_screen(stack);
         }
         curl_easy_cleanup(curl);
     }
@@ -81,7 +85,7 @@ GtkWidget* create_setting_screen(GtkStack* stack) {
     GtkWidget* delete_button = gtk_button_new_with_label("Delete Account");
     gtk_widget_set_margin_top(delete_button, 20);
     gtk_widget_set_halign(delete_button, GTK_ALIGN_CENTER);
-    g_signal_connect(delete_button, "clicked", G_CALLBACK(on_delete_account_clicked), NULL);
+    g_signal_connect(delete_button, "clicked", G_CALLBACK(on_delete_account_clicked), stack);
     gtk_box_pack_start(GTK_BOX(vbox), delete_button, FALSE, FALSE, 5);
 
     // Back to Main Menu button
