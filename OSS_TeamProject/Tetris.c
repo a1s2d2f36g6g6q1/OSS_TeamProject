@@ -17,7 +17,7 @@ int current_y = 0;                       // 도형의 Y 위치
 int game_speed = 500;                    // 게임 속도 (ms)
 int score_Tetris = 0;                    // 점수
 bool game_over_Tetris = false;           // 게임 오버 상태
-
+int level_Tetris = 1;                    // 레벨
 
 static guint game_loop_id = 0;
 GtkWidget* next_block_area = NULL;
@@ -45,6 +45,8 @@ void clear_lines();                      // 꽉 찬 줄 제거
 void update_tetris_score(int score);     // 점수 갱신
 void spawn_new_tetromino();              // 새로운 도형 생성
 bool check_collision(int new_x, int new_y, int new_tetromino[4][4]);  // 충돌 검사
+void update_level_and_speed();           // 레벨 및 속도 업데이트
+gboolean game_loop(GtkWidget* widget, gpointer data);  // 게임 루프
 
 
 
@@ -52,7 +54,6 @@ bool check_collision(int new_x, int new_y, int new_tetromino[4][4]);  // 충돌 
 void on_next_block_realize(GtkWidget* widget, gpointer data) {
     g_message("next_block_area is now realized.");
 }
-
 
 // 충돌 검사
 bool check_collision(int new_x, int new_y, int new_tetromino[4][4]) {
@@ -126,7 +127,6 @@ void spawn_new_tetromino() {
     }
 }
 
-// draw_game_board 수정
 gboolean draw_game_board(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
     double cell_size = 30;
@@ -173,7 +173,6 @@ gboolean draw_game_board(GtkWidget *widget, cairo_t *cr, gpointer data)
 
     return FALSE;
 }
-
 
 gboolean on_key_press(GtkWidget* widget, GdkEventKey* event, gpointer data) {
     switch (event->keyval) {
@@ -241,7 +240,6 @@ gboolean on_key_press(GtkWidget* widget, GdkEventKey* event, gpointer data) {
     return TRUE;
 }
 
-
 void update_tetris_score(int score) {
     // tetris_score_label 유효성 검사
     if (!GTK_IS_LABEL(tetris_score_label)) {
@@ -253,6 +251,9 @@ void update_tetris_score(int score) {
     char score_text[16];
     snprintf(score_text, sizeof(score_text), "Score: %d", score);
     gtk_label_set_text(GTK_LABEL(tetris_score_label), score_text);
+
+    // 레벨 및 속도 업데이트
+    update_level_and_speed();
 
     // 메인 메뉴의 스코어 라벨 동기화
     GtkWidget* main_menu_score_label = gtk_widget_get_parent(GTK_WIDGET(tetris_score_label));
@@ -270,8 +271,6 @@ void update_tetris_score(int score) {
         g_message("점수 동기화 생략 (게스트 모드 활성화)");
     }
 }
-
-
 
 void clear_lines() {
     int cleared_lines = 0;
@@ -328,9 +327,6 @@ gboolean draw_next_tetromino(GtkWidget* widget, cairo_t* cr, gpointer data) {
     return FALSE;
 }
 
-
-
-
 void initialize_tetris_ui(GtkWidget* score_label_widget, GtkWidget* next_block_widget) {
     if (!GTK_IS_LABEL(score_label_widget)) {
         g_warning("initialize_tetris_ui: score_label_widget이 유효하지 않습니다!");
@@ -345,7 +341,23 @@ void initialize_tetris_ui(GtkWidget* score_label_widget, GtkWidget* next_block_w
     gtk_widget_queue_draw(next_block_widget);
 }
 
+void update_level_and_speed() {
+    int new_level = score_Tetris / 500 + 1;
+    if (new_level > level_Tetris) {
+        level_Tetris = new_level;
+        game_speed = 500 - (level_Tetris - 1) * 50;
+        if (game_speed < 100) {
+            game_speed = 100;
+        }
 
+        if (game_loop_id > 0) {
+            g_source_remove(game_loop_id);
+        }
+        game_loop_id = g_timeout_add(game_speed, (GSourceFunc)game_loop, NULL);
+
+        g_message("레벨 상승! 현재 레벨: %d, 속도: %dms", level_Tetris, game_speed);
+    }
+}
 
 
 

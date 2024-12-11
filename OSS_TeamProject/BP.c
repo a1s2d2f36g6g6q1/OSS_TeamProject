@@ -72,7 +72,7 @@ static GameState game_state;
 // 함수 선언
 static void init_game(void);
 static gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data);
-static void switch_to_main_menu(GtkWidget* widget, gpointer data);
+void switch_to_main_menu(GtkWidget* widget, gpointer data);
 static void spawn_item(double x, double y);
 static void add_new_ball(void);
 static gboolean update_game(gpointer data);
@@ -95,6 +95,8 @@ static void apply_item_effect(ItemType type) {
             if (game_state.lives < 5) {
                 game_state.lives++;
             }
+            break;
+        default:
             break;
     }
 }
