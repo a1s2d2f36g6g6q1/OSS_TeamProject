@@ -3,20 +3,17 @@
 #include <json.h>
 #include "games.h"
 
-// ���� ���� �����͸� ������ ����ü
 struct MemoryStruct {
     char* memory;
     size_t size;
 };
 
-// ���� ������ �����ϱ� ���� �ݹ� �Լ�
 static size_t WriteMemoryCallback(void* contents, size_t size, size_t nmemb, void* userp) {
     size_t realsize = size * nmemb;
     struct MemoryStruct* mem = (struct MemoryStruct*)userp;
 
     mem->memory = realloc(mem->memory, mem->size + realsize + 1);
     if (mem->memory == NULL) {
-        // �޸� �Ҵ� ����
         fprintf(stderr, "Not enough memory (realloc returned NULL)\n");
         return 0;
     }
@@ -33,12 +30,11 @@ void update_score_table(GtkWidget* grid) {
     CURLcode res;
     struct MemoryStruct chunk;
 
-    chunk.memory = malloc(1);  // �ʱ� �޸� �Ҵ�
+    chunk.memory = malloc(1);
     chunk.size = 0;
 
     curl = curl_easy_init();
     if (curl) {
-        // 1����� 10������� ���� ��������
         const char* server_url = "http://localhost:5000/auth/get-all-scores";
         curl_easy_setopt(curl, CURLOPT_URL, server_url);
         curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
@@ -59,7 +55,6 @@ void update_score_table(GtkWidget* grid) {
             if (json_object_object_get_ex(parsed_json, "gameScores", &game_scores)) {
                 int num_scores = json_object_array_length(game_scores);
 
-                // �� ���� ������ ������Ʈ
                 for (int i = 0; i < num_scores; i++) {
                     struct json_object* score_entry = json_object_array_get_idx(game_scores, i);
                     struct json_object* game;
@@ -91,8 +86,7 @@ void update_score_table(GtkWidget* grid) {
                             game_column = 12;
                         }
 
-                        // �����ϰ� GtkLabel ������Ʈ
-                        int row_index = rank_value + 2; // ���� �����Ͱ� 3��° �ٺ��� �����ϹǷ� �ε��� ����
+                        int row_index = rank_value + 2;
                         GtkWidget* rank_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column, row_index);
                         GtkWidget* username_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column + 1, row_index);
                         GtkWidget* score_label = gtk_grid_get_child_at(GTK_GRID(grid), game_column + 2, row_index);
@@ -122,12 +116,11 @@ void update_score_table(GtkWidget* grid) {
             fprintf(stderr, "Failed to fetch scores: %s\n", curl_easy_strerror(res));
         }
 
-        // ����� �ڽ��� �ְ� ���� ��������
         char user_url[256];
         snprintf(user_url, sizeof(user_url), "http://localhost:5000/auth/get-user-scores?username=%s", username);
         printf("Requesting user scores with URL: %s\n", user_url);
 
-        chunk.memory = malloc(1);  // �޸� ���Ҵ�
+        chunk.memory = malloc(1);
         chunk.size = 0;
 
         curl_easy_setopt(curl, CURLOPT_URL, user_url);
@@ -145,7 +138,6 @@ void update_score_table(GtkWidget* grid) {
             if (json_object_object_get_ex(parsed_json, "userScores", &user_scores)) {
                 int num_games = json_object_array_length(user_scores);
 
-                // ����� �ڽ��� �ְ� ���� ������Ʈ
                 for (int i = 0; i < num_games; i++) {
                     struct json_object* score_entry = json_object_array_get_idx(user_scores, i);
                     struct json_object* game;
@@ -194,7 +186,6 @@ void update_score_table(GtkWidget* grid) {
     }
 }
 
-// ���ΰ�ħ ��ư �ڵ鷯
 void on_refresh_button_clicked(GtkWidget* widget, gpointer grid) {
     update_score_table(GTK_WIDGET(grid));
 }
@@ -204,7 +195,6 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
     gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
 
-    // Ÿ��Ʋ �߰�
     GtkWidget* title_label = gtk_label_new("Game Leaderboards");
     PangoAttrList* attr_list = pango_attr_list_new();
     pango_attr_list_insert(attr_list, pango_attr_weight_new(PANGO_WEIGHT_BOLD));
@@ -227,18 +217,15 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
     };
 
     for (int g = 0; g < 4; g++) {
-        // ���� �̹��� �߰� (�̹��� ũ�� �������� ����)
         GtkWidget* image = gtk_image_new_from_file(game_images[g]);
-        gtk_widget_set_size_request(image, 80, 80);  // �̹��� ũ�� ����
+        gtk_widget_set_size_request(image, 80, 80);
         gtk_grid_attach(GTK_GRID(grid), image, g * 4, 0, 3, 1);
 
-        // ���� �̸� �߰�
         GtkWidget* game_label = gtk_label_new(game_names[g]);
         gtk_widget_set_margin_top(game_label, 5);
         gtk_widget_set_halign(game_label, GTK_ALIGN_CENTER);
         gtk_grid_attach(GTK_GRID(grid), game_label, g * 4, 1, 3, 1);
 
-        // �� ���� �߰�
         GtkWidget* rank_label = gtk_label_new("Rank");
         GtkWidget* username_label = gtk_label_new("Username");
         GtkWidget* score_label = gtk_label_new("Score");
@@ -246,7 +233,6 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
         gtk_grid_attach(GTK_GRID(grid), username_label, g * 4 + 1, 2, 1, 1);
         gtk_grid_attach(GTK_GRID(grid), score_label, g * 4 + 2, 2, 1, 1);
 
-        // ���� ������ �ʱ�ȭ
         for (int i = 0; i < 10; i++) {
             char rank_text[4];
             snprintf(rank_text, sizeof(rank_text), "%d", i + 1);
@@ -260,7 +246,6 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
             gtk_grid_attach(GTK_GRID(grid), score, g * 4 + 2, i + 3, 1, 1);
         }
 
-        // ����� ���� ����
         GtkWidget* separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
         gtk_grid_attach(GTK_GRID(grid), separator, g * 4, 13, 3, 1);
 
@@ -272,7 +257,6 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
         gtk_widget_set_margin_top(best_score_value, 10);
         gtk_grid_attach(GTK_GRID(grid), best_score_value, g * 4 + 2, 14, 1, 1);
 
-        // ���� ���м� �߰� (������ ���� ����)
         if (g < 3) {
             GtkWidget* vertical_separator = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
             gtk_grid_attach(GTK_GRID(grid), vertical_separator, g * 4 + 3, 0, 1, 15);
@@ -281,7 +265,6 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
 
     gtk_box_pack_start(GTK_BOX(vbox), grid, TRUE, TRUE, 10);
 
-    // ��ư �ڽ�
     GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 20);
     gtk_widget_set_halign(button_box, GTK_ALIGN_CENTER);
 
