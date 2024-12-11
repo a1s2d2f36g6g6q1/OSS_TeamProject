@@ -75,7 +75,28 @@ void send_register_request(const char* input_username, const char* password, Gtk
 
 
 void on_register_button_clicked(GtkWidget* widget, gpointer data) {
+    GtkWidget** widgets = (GtkWidget**)data;
+    GtkEntry* username_entry = GTK_ENTRY(widgets[0]);
+    GtkEntry* password_entry = GTK_ENTRY(widgets[1]);
+    GtkEntry* confirm_entry = GTK_ENTRY(widgets[2]);
+    GtkLabel* result_label = GTK_LABEL(widgets[3]);
+    GtkStack* stack = GTK_STACK(widgets[4]);
 
+    const char* username = gtk_entry_get_text(username_entry);
+    const char* password = gtk_entry_get_text(password_entry);
+    const char* confirm_password = gtk_entry_get_text(confirm_entry);
+
+    if (strlen(username) == 0 || strlen(password) == 0 || strlen(confirm_password) == 0) {
+        gtk_label_set_text(result_label, "All fields are required!");
+        return;
+    }
+
+    if (strcmp(password, confirm_password) != 0) {
+        gtk_label_set_text(result_label, "Passwords do not match!");
+        return;
+    }
+
+    send_register_request(username, password, GTK_WIDGET(result_label), stack);
 }
 
 
