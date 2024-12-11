@@ -25,7 +25,6 @@ void update_score() {
     }
 }
 
-
 // 위젯 and 데이터구조설계
 GtkWidget* drawing_area;
 int** grid;
@@ -128,8 +127,8 @@ gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
     cairo_set_source_rgb(cr, 0.1, 0.1, 0.1);  // 외곽선 색 (검정색)
     cairo_set_line_width(cr, 5);
     cairo_rectangle(cr, TILE_MARGIN, TILE_MARGIN,
-        grid_size * TILE_SIZE + (grid_size - 1) * TILE_MARGIN,
-        grid_size * TILE_SIZE + (grid_size - 1) * TILE_MARGIN);
+                    grid_size * TILE_SIZE + (grid_size - 1) * TILE_MARGIN,
+                    grid_size * TILE_SIZE + (grid_size - 1) * TILE_MARGIN);
     cairo_stroke(cr);
 
     // 타일 그리기
@@ -139,22 +138,21 @@ gboolean on_draw(GtkWidget* widget, cairo_t* cr, gpointer data) {
             set_tile_color(cr, value);
 
             cairo_rectangle(cr, TILE_MARGIN + j * (TILE_SIZE + TILE_MARGIN),
-                TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN),
-                TILE_SIZE, TILE_SIZE);
+                            TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN),
+                            TILE_SIZE, TILE_SIZE);
             cairo_fill(cr);
 
             if (value != 0) {
                 cairo_set_source_rgb(cr, 0, 0, 0);  // 글자 색상 (검정색)
                 cairo_set_font_size(cr, 24);
                 cairo_move_to(cr, TILE_MARGIN + j * (TILE_SIZE + TILE_MARGIN) + TILE_SIZE / 3,
-                    TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN) + TILE_SIZE / 1.5);
+                              TILE_MARGIN + i * (TILE_SIZE + TILE_MARGIN) + TILE_SIZE / 1.5);
                 cairo_show_text(cr, g_strdup_printf("%d", value));
             }
         }
     }
     return FALSE;
 }
-
 
 // 타일 이동 및 합치기 함수
 int move_tiles(int dx, int dy) {
@@ -213,18 +211,18 @@ gboolean on_key_press1(GtkWidget* widget, GdkEventKey* event, gpointer data) {
     int moved = 0;
 
     switch (event->keyval) {
-    case GDK_KEY_Left:
-        moved = move_tiles(0, -1);
-        break;
-    case GDK_KEY_Right:
-        moved = move_tiles(0, 1);
-        break;
-    case GDK_KEY_Up:
-        moved = move_tiles(-1, 0);
-        break;
-    case GDK_KEY_Down:
-        moved = move_tiles(1, 0);
-        break;
+        case GDK_KEY_Left:
+            moved = move_tiles(0, -1);
+            break;
+        case GDK_KEY_Right:
+            moved = move_tiles(0, 1);
+            break;
+        case GDK_KEY_Up:
+            moved = move_tiles(-1, 0);
+            break;
+        case GDK_KEY_Down:
+            moved = move_tiles(1, 0);
+            break;
     }
 
     if (moved) {
@@ -246,8 +244,7 @@ gboolean on_key_press1(GtkWidget* widget, GdkEventKey* event, gpointer data) {
             // 메시지 박스 표시
             GtkWidget* dialog = gtk_message_dialog_new(
                 NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
-                "Game Over!\nFinal Score: %d", score
-            );
+                "Game Over!\nFinal Score: %d", score);
             gtk_dialog_run(GTK_DIALOG(dialog));
             gtk_widget_destroy(dialog);
 
@@ -259,8 +256,6 @@ gboolean on_key_press1(GtkWidget* widget, GdkEventKey* event, gpointer data) {
 
     return TRUE;
 }
-
-
 
 // 게임 오버 상태 체크 함수
 
@@ -279,7 +274,7 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
     // 2048 게임 보드 (DrawingArea)
     drawing_area = gtk_drawing_area_new();
     gtk_widget_set_size_request(drawing_area, grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN,
-        grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN);
+                                grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN);
     gtk_box_pack_start(GTK_BOX(vbox), drawing_area, TRUE, TRUE, 0);
 
     // 포커스를 받을 수 있도록 설정하고 이벤트 마스크 추가
@@ -306,7 +301,6 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
 
     return vbox;
 }
-
 
 void start_2048_game(GtkWidget* widget, gpointer data) {
     GtkStack* stack = GTK_STACK(data);
