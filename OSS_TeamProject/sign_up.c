@@ -1,88 +1,130 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <gtk/gtk.h>
 #include "games.h"
+#include <json.h>
+#include <curl.h>
 
-// 회원가입 버튼 클릭 핸들러
-void on_register_button_clicked(GtkWidget* widget, gpointer data) {
-    GtkWidget** entries = (GtkWidget**)data;
-    const char* username = gtk_entry_get_text(GTK_ENTRY(entries[0]));
-    const char* password = gtk_entry_get_text(GTK_ENTRY(entries[1]));
-    const char* confirm_password = gtk_entry_get_text(GTK_ENTRY(entries[2]));
+// 서버 응답 처리 함수
+size_t write_response(void* ptr, size_t size, size_t nmemb, void* userdata) {
+    size_t total_size = size * nmemb;
+    if (strlen(userdata) + total_size >= 1024) {
+        g_print("Error: Response buffer overflow.\n");
+        return 0;
+    }
+    strcat(userdata, (char*)ptr);
+    return total_size;
+}
 
-    // 입력 검증
+// 닉네임 중복 확인 버튼 클릭 핸들러
+void on_check_username_button_clicked(GtkWidget* widget, gpointer data) {
+    const char* username = gtk_entry_get_text(GTK_ENTRY(data));
+
     if (strlen(username) == 0) {
         g_print("Error: Username cannot be empty.\n");
         return;
     }
-    if (strlen(password) == 0) {
-        g_print("Error: Password cannot be empty.\n");
-        return;
-    }
-    if (strcmp(password, confirm_password) != 0) {
-        g_print("Error: Passwords do not match.\n");
-        return;
-    }
 
-    // 회원가입 성공 처리 (예: 사용자 데이터 저장)
-    g_print("Registration Successful! Username: %s\n", username);
-    // 실제로는 데이터베이스 저장 로직 추가
+    CURL* curl = curl_easy_init();
+    if (curl) {
+        char url[256];
+        sprintf(url, "http://localhost:5000/auth/check-username?username=%s", username);
+
+        char response[1024] = "";
+
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_response);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, response);
+
+        g_print("Sending request to: %s\n", url);
+
+        CURLcode res = curl_easy_perform(curl);
+        if (res != CURLE_OK) {
+            g_print("Error: Failed to check username. CURLcode: %d\n", res);
+        }
+        else {
+            g_print("Server response: %s\n", response);
+            struct json_object* parsed_json = json_tokener_parse(response);
+            struct json_object* success;
+            struct json_object* message;
+
+            if (parsed_json != NULL) {
+                json_object_object_get_ex(parsed_json, "success", &success);
+                json_object_object_get_ex(parsed_json, "message", &message);
+
+                if (json_object_get_boolean(success)) {
+                    g_print("%s\n", json_object_get_string(message));
+                }
+                else {
+                    g_print("%s\n", json_object_get_string(message));
+                }
+
+                json_object_put(parsed_json);
+            }
+            else {
+                g_print("Error: Failed to parse server response.\n");
+            }
+        }
+
+        curl_easy_cleanup(curl);
+    }
 }
 
-// 회원가입 페이지 생성 함수
-GtkWidget* create_signup_screen(GtkStack* stack) {
-    GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_widget_set_halign(vbox, GTK_ALIGN_CENTER);
-    gtk_widget_set_valign(vbox, GTK_ALIGN_CENTER);
+void send_register_request(const char* input_username, const char* password, GtkWidget* result_label, GtkStack* stack) {
 
-    // 페이지 제목
-    GtkWidget* title_label = gtk_label_new("Register");
-    gtk_widget_set_margin_bottom(title_label, 20);
+}
+
+
+void on_register_button_clicked(GtkWidget* widget, gpointer data) {
+
+}
+
+
+
+GtkWidget* create_signup_screen(GtkStack* stack) {
+    GtkWidget* outer_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_widget_set_halign(outer_box, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(outer_box, GTK_ALIGN_CENTER);
+
+    GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    gtk_box_set_spacing(GTK_BOX(vbox), 10);
+    gtk_box_pack_start(GTK_BOX(outer_box), vbox, FALSE, FALSE, 0);
+
+    GtkWidget* title_label = gtk_label_new("REGISTER");
+    gtk_widget_set_halign(title_label, GTK_ALIGN_START);
     gtk_box_pack_start(GTK_BOX(vbox), title_label, FALSE, FALSE, 5);
 
-    // 사용자 이름 입력란
-    GtkWidget* username_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-    GtkWidget* username_label = gtk_label_new("Username:");
     GtkWidget* username_entry = gtk_entry_new();
-    gtk_entry_set_placeholder_text(GTK_ENTRY(username_entry), "Enter your username");
-    gtk_box_pack_start(GTK_BOX(username_box), username_label, FALSE, FALSE, 5);
-    gtk_box_pack_end(GTK_BOX(username_box), username_entry, TRUE, TRUE, 5);
-    gtk_box_pack_start(GTK_BOX(vbox), username_box, FALSE, FALSE, 5);
+    gtk_entry_set_placeholder_text(GTK_ENTRY(username_entry), "Username");
+    gtk_box_pack_start(GTK_BOX(vbox), username_entry, FALSE, FALSE, 5);
 
-    // 비밀번호 입력란
-    GtkWidget* password_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-    GtkWidget* password_label = gtk_label_new("Password:");
     GtkWidget* password_entry = gtk_entry_new();
-    gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE); // 비밀번호 숨김
-    gtk_entry_set_placeholder_text(GTK_ENTRY(password_entry), "Enter your password");
-    gtk_box_pack_start(GTK_BOX(password_box), password_label, FALSE, FALSE, 5);
-    gtk_box_pack_end(GTK_BOX(password_box), password_entry, TRUE, TRUE, 5);
-    gtk_box_pack_start(GTK_BOX(vbox), password_box, FALSE, FALSE, 5);
+    gtk_entry_set_placeholder_text(GTK_ENTRY(password_entry), "Password");
+    gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE);
+    gtk_box_pack_start(GTK_BOX(vbox), password_entry, FALSE, FALSE, 5);
 
-    // 비밀번호 확인 입력란
-    GtkWidget* confirm_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-    GtkWidget* confirm_label = gtk_label_new("Confirm Password:");
     GtkWidget* confirm_entry = gtk_entry_new();
-    gtk_entry_set_visibility(GTK_ENTRY(confirm_entry), FALSE); // 비밀번호 숨김
-    gtk_entry_set_placeholder_text(GTK_ENTRY(confirm_entry), "Re-enter your password");
-    gtk_box_pack_start(GTK_BOX(confirm_box), confirm_label, FALSE, FALSE, 5);
-    gtk_box_pack_end(GTK_BOX(confirm_box), confirm_entry, TRUE, TRUE, 5);
-    gtk_box_pack_start(GTK_BOX(vbox), confirm_box, FALSE, FALSE, 5);
+    gtk_entry_set_placeholder_text(GTK_ENTRY(confirm_entry), "Confirm Password");
+    gtk_entry_set_visibility(GTK_ENTRY(confirm_entry), FALSE);
+    gtk_box_pack_start(GTK_BOX(vbox), confirm_entry, FALSE, FALSE, 5);
 
-    // 버튼 박스
-    GtkWidget* button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-    gtk_widget_set_halign(button_box, GTK_ALIGN_CENTER);
+    GtkWidget* register_button = gtk_button_new_with_label("Sign up");
+    gtk_box_pack_start(GTK_BOX(vbox), register_button, FALSE, FALSE, 5);
 
-    // 회원가입 버튼
-    GtkWidget* register_button = gtk_button_new_with_label("Register");
-    GtkWidget* entries[3] = { username_entry, password_entry, confirm_entry };
-    g_signal_connect(register_button, "clicked", G_CALLBACK(on_register_button_clicked), entries);
-    gtk_box_pack_start(GTK_BOX(button_box), register_button, FALSE, FALSE, 5);
+    GtkWidget* back_button = gtk_button_new_with_label("Back to Login");
+    gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 5);
 
-    // 메인 메뉴로 돌아가기 버튼
-    GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
-    g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
-    gtk_box_pack_start(GTK_BOX(button_box), back_button, FALSE, FALSE, 5);
+    GtkWidget* result_label = gtk_label_new("");
+    gtk_box_pack_start(GTK_BOX(vbox), result_label, FALSE, FALSE, 5);
 
-    gtk_box_pack_start(GTK_BOX(vbox), button_box, FALSE, FALSE, 10);
+    GtkWidget** widgets = g_new(GtkWidget*, 5);
+    widgets[0] = username_entry;
+    widgets[1] = password_entry;
+    widgets[2] = confirm_entry;
+    widgets[3] = result_label;
+    widgets[4] = GTK_WIDGET(stack);
 
-    return vbox;
+    g_signal_connect(register_button, "clicked", G_CALLBACK(on_register_button_clicked), widgets);
+    g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_login), stack);
+
+    return outer_box;
 }
