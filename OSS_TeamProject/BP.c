@@ -471,7 +471,7 @@ static void init_game(void) {
     }
 
     // 공 속도 설정 - 레벨에 따라 증가
-    double speed_multiplier = 1.0 + (game_state.level - 1) * 0.1;  // 레벨당 10% 증가
+    double speed_multiplier = 1.0 + (game_state.level - 1) * 0.05;  // 레벨당 5% 증가
     if (speed_multiplier > 2.0) speed_multiplier = 2.0;            // 최대 2배로 제한
 
     double angle = M_PI / 2 + (rand() % 40 - 20) * M_PI / 180.0;
@@ -511,7 +511,7 @@ static void add_new_ball(void) {
                 game_state.balls[i].y = first_ball->y;
 
                 // 현재 레벨에 맞는 속도 계산
-                double speed_multiplier = 1.0 + (game_state.level - 1) * 0.1;
+                double speed_multiplier = 1.0 + (game_state.level - 1) * 0.05;
                 if (speed_multiplier > 2.0) speed_multiplier = 2.0;
 
                 // 약간 다른 각도로 발사
