@@ -44,12 +44,24 @@ GtkWidget* create_main_menu(GtkStack* stack) {
     gtk_widget_set_margin_top(vbox, 20);
     gtk_widget_set_margin_bottom(vbox, 20);
 
+    GtkWidget* hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+
+    GtkWidget* left_line = gtk_label_new("");
+    GtkWidget* right_line = gtk_label_new("");
+    gtk_widget_set_name(left_line, "title-line");
+    gtk_widget_set_name(right_line, "title-line");
+
     GtkWidget* title = gtk_label_new("Retro Game");
     PangoAttrList* attr_list = pango_attr_list_new();
     pango_attr_list_insert(attr_list, pango_attr_weight_new(PANGO_WEIGHT_BOLD));
     pango_attr_list_insert(attr_list, pango_attr_scale_new(2.0));
     gtk_label_set_attributes(GTK_LABEL(title), attr_list);
-    gtk_box_pack_start(GTK_BOX(vbox), title, FALSE, FALSE, 10);
+
+    gtk_box_pack_start(GTK_BOX(hbox), left_line, TRUE, TRUE, 5);
+    gtk_box_pack_start(GTK_BOX(hbox), title, FALSE, FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(hbox), right_line, TRUE, TRUE, 5);
+
+    gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 10);
 
     GtkWidget* grid_center = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     GtkWidget* grid = gtk_grid_new();
@@ -157,6 +169,10 @@ int main(int argc, char* argv[]) {
                                     "}"
                                     ".game-button:hover {"
                                     "    background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);"
+                                    "}"
+                                    "#title-line {"
+                                    "    border-bottom: 1px solid rgba(0, 0, 0, 0.3);"
+                                    "    margin-bottom: 20px;"
                                     "}",
                                     -1, NULL);
 
