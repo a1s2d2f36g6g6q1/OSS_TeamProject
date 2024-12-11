@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
+#include "games.h"
 
 // 상수 정의
 #define WINDOW_WIDTH 1000
@@ -76,10 +77,6 @@ static void spawn_item(double x, double y);
 static void add_new_ball(void);
 static gboolean update_game(gpointer data);
 static void restart_game(GtkWidget* widget, gpointer data);
-
-// 외부 함수 선언
-extern void send_game_score(const char* username, const char* game, int score);
-extern const char* g_username;
 
 // 아이템 효과 적용 함수
 static void apply_item_effect(ItemType type) {
@@ -150,7 +147,7 @@ static gboolean update_game(gpointer data) {
 
                 if (game_state.lives <= 0) {
                     game_state.game_running = FALSE;
-                    send_game_score(g_username, "Breakout", game_state.score);
+                    send_game_score(username, "bp", game_state.score);
                 } else {
                     // 새로운 공 생성 - 현재 레벨에 맞는 속도로
                     game_state.balls[0].x = WINDOW_WIDTH / 2;
