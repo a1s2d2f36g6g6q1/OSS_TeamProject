@@ -159,6 +159,27 @@ router.get('/check-username', async (req, res) => {
     }
 });
 
+router.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ success: false, message: 'Username and password are required' });
+    }
+
+    try {
+        const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
+        await db.execute(query, [username, password]);
+
+        res.status(201).json({ success: true, message: 'User registered successfully' });
+    } catch (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ success: false, message: 'Username already exists' });
+        }
+        console.error('Database query error:', err);
+        res.status(500).json({ success: false, message: 'Database error' });
+    }
+});
+
 
 
 // 라우터 객체 내보내기
