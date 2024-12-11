@@ -5,7 +5,6 @@
 
 #include "games.h"
 
-// ���� ���� ó�� �Լ�
 size_t write_response(void* ptr, size_t size, size_t nmemb, void* userdata) {
     size_t total_size = size * nmemb;
     if (strlen(userdata) + total_size >= 1024) {
@@ -16,7 +15,6 @@ size_t write_response(void* ptr, size_t size, size_t nmemb, void* userdata) {
     return total_size;
 }
 
-// �г��� �ߺ� Ȯ�� ��ư Ŭ�� �ڵ鷯
 void on_check_username_button_clicked(GtkWidget* widget, gpointer data) {
     const char* username = gtk_entry_get_text(GTK_ENTRY(data));
 
@@ -75,13 +73,12 @@ void send_register_request(const char* input_username, const char* password, Gtk
 
     curl = curl_easy_init();
     if (curl) {
-        // JSON ������ ����
         struct json_object* json_data = json_object_new_object();
         json_object_object_add(json_data, "username", json_object_new_string(input_username));
         json_object_object_add(json_data, "password", json_object_new_string(password));
         const char* json_string = json_object_to_json_string(json_data);
 
-        printf("JSON Sent: %s\n", json_string);  // �����: ���۵Ǵ� JSON ������
+        printf("JSON Sent: %s\n", json_string);
 
         headers = curl_slist_append(headers, "Content-Type: application/json");
         curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:5000/auth/register");
@@ -94,7 +91,7 @@ void send_register_request(const char* input_username, const char* password, Gtk
         if (res != CURLE_OK) {
             gtk_label_set_text(GTK_LABEL(result_label), "Network error!");
         } else {
-            printf("Server Response: %s\n", chunk.response);  // �����: ���� ���� ���
+            printf("Server Response: %s\n", chunk.response);
 
             struct json_object* parsed_json = json_tokener_parse(chunk.response);
             struct json_object* success;
@@ -230,7 +227,7 @@ GtkWidget* create_signup_screen(GtkStack* stack) {
     const gchar* css_data =
         ".error-message { "
         "   color: #ff0000; "
-        "   font-size: 14px; "
+        "   font-size: 18px; "
         "}"
         "button { "
         "   border-radius: 8px; "
