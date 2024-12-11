@@ -51,7 +51,7 @@ router.post('/save-score', async (req, res) => {
                     ?, ?, ?
                 )
                 ON DUPLICATE KEY UPDATE high_score = LEAST(high_score, ?);
-              `
+            `
             : `
                 INSERT INTO scores (user_id, username, game, high_score)
                 VALUES (
@@ -59,7 +59,7 @@ router.post('/save-score', async (req, res) => {
                     ?, ?, ?
                 )
                 ON DUPLICATE KEY UPDATE high_score = GREATEST(high_score, ?);
-              `;
+            `;
 
         const params = [username, username, game, score, score];
 
@@ -73,8 +73,6 @@ router.post('/save-score', async (req, res) => {
     }
 });
 
-
-
 router.get('/get-all-scores', async (req, res) => {
     try {
         const query = `
@@ -86,11 +84,13 @@ router.get('/get-all-scores', async (req, res) => {
                     RANK() OVER (
                         PARTITION BY game 
                         ORDER BY 
-                            CASE WHEN game = 'mine' THEN high_score
-                                 ELSE -high_score
+                            CASE 
+                                WHEN game = 'mine' THEN high_score
+                                ELSE -high_score
                             END ASC
                     ) AS \`rank\`
                 FROM scores
+                WHERE high_score > 0
             )
             SELECT 
                 game, 
@@ -101,7 +101,8 @@ router.get('/get-all-scores', async (req, res) => {
             WHERE \`rank\` <= 10
             ORDER BY game, \`rank\`;
         `;
-        const [rows, fields] = await db.execute(query);
+
+        const [rows] = await db.execute(query);
 
         console.log('Query result:', rows); // 결과 디버깅
         res.status(200).json({ gameScores: rows });
@@ -110,6 +111,7 @@ router.get('/get-all-scores', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch scores from database' });
     }
 });
+
 
 router.get('/get-user-scores', async (req, res) => {
     const { username } = req.query;
@@ -124,7 +126,7 @@ router.get('/get-user-scores', async (req, res) => {
                 game, 
                 high_score
             FROM scores
-            WHERE username = ?
+            WHERE username = ? AND high_score > 0
             ORDER BY game;
         `;
 
@@ -137,6 +139,8 @@ router.get('/get-user-scores', async (req, res) => {
     }
 });
 
+
+// 닉네임 중복 확인 엔드포인트
 router.get('/check-username', async (req, res) => {
     const { username } = req.query;
 
@@ -159,6 +163,7 @@ router.get('/check-username', async (req, res) => {
     }
 });
 
+// 계정 생성 엔드포인트
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
 
@@ -166,43 +171,60 @@ router.post('/register', async (req, res) => {
         return res.status(400).json({ success: false, message: 'Username and password are required' });
     }
 
+    const connection = await db.getConnection(); // 트랜잭션 시작을 위해 커넥션 가져오기
     try {
-        const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
-        await db.execute(query, [username, password]);
+        await connection.beginTransaction(); // 트랜잭션 시작
+
+        const insertUserQuery = 'INSERT INTO users (username, password) VALUES (?, ?)';
+        const [userResult] = await connection.execute(insertUserQuery, [username, password]);
+
+        const userId = userResult.insertId; // 새로 생성된 사용자 ID 가져오기
+
+        const insertScoresQuery = `
+            INSERT INTO scores (user_id, username, game, high_score)
+            VALUES (?, ?, '2048', 0), (?, ?, 'mine', 0), (?, ?, 'breakout', 0);
+        `;
+        await connection.execute(insertScoresQuery, [userId, username, userId, username, userId, username]);
+
+        await connection.commit(); // 트랜잭션 커밋
 
         res.status(201).json({ success: true, message: 'User registered successfully' });
     } catch (err) {
+        await connection.rollback(); // 오류 발생 시 트랜잭션 롤백
+
         if (err.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({ success: false, message: 'Username already exists' });
         }
         console.error('Database query error:', err);
         res.status(500).json({ success: false, message: 'Database error' });
+    } finally {
+        connection.release(); // 연결 반환
     }
 });
 
+
+// Delete Account Endpoint
 router.delete('/delete-account', async (req, res) => {
-    const username = req.query.username;
+const username = req.query.username;
 
-    if (!username) {
-        return res.status(400).json({ success: false, message: 'Username is required' });
-    }
+if (!username) {
+    return res.status(400).json({ success: false, message: 'Username is required' });
+}
 
-    try {
-        // Delete user and related scores
-        const deleteScoresQuery = 'DELETE FROM scores WHERE username = ?';
-        const deleteUserQuery = 'DELETE FROM users WHERE username = ?';
+try {
+    // Delete user and related scores
+    const deleteScoresQuery = 'DELETE FROM scores WHERE username = ?';
+    const deleteUserQuery = 'DELETE FROM users WHERE username = ?';
 
-        await db.execute(deleteScoresQuery, [username]);
-        await db.execute(deleteUserQuery, [username]);
+    await db.execute(deleteScoresQuery, [username]);
+    await db.execute(deleteUserQuery, [username]);
 
-        res.status(200).json({ success: true, message: 'Account deleted successfully' });
-    } catch (err) {
-        console.error('Database query error:', err);
-        res.status(500).json({ success: false, message: 'Failed to delete account' });
-    }
+    res.status(200).json({ success: true, message: 'Account deleted successfully' });
+} catch (err) {
+    console.error('Database query error:', err);
+    res.status(500).json({ success: false, message: 'Failed to delete account' });
+}
 });
 
 
-
-// 라우터 객체 내보내기
 module.exports = router;
