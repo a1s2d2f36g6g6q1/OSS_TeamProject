@@ -145,7 +145,7 @@ GtkWidget* create_login_screen(GtkStack* stack) {
     GtkWidget* title_label = gtk_label_new(NULL);
     const char* markup = "<span font_desc='18' weight='bold'>LOGIN</span>";
     gtk_label_set_markup(GTK_LABEL(title_label), markup);
-    gtk_widget_set_margin_bottom(title_label, 40);
+    gtk_widget_set_margin_bottom(title_label, 80);
 
     // 입력 필드들
     GtkWidget* username_entry = gtk_entry_new();
@@ -160,7 +160,7 @@ GtkWidget* create_login_screen(GtkStack* stack) {
     gtk_entry_set_placeholder_text(GTK_ENTRY(password_entry), "Password");
     gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE);
     gtk_widget_set_size_request(password_entry, -1, 40);
-    gtk_widget_set_margin_bottom(password_entry, 15);
+    gtk_widget_set_margin_bottom(password_entry, 40);
     // 입력 필드 좌우 여백 추가
     gtk_widget_set_margin_start(password_entry, 30);
     gtk_widget_set_margin_end(password_entry, 30);
@@ -191,6 +191,7 @@ GtkWidget* create_login_screen(GtkStack* stack) {
 
     // 결과 라벨
     GtkWidget* result_label = gtk_label_new("");
+    gtk_widget_set_margin_top(result_label, 15);
 
     // 위젯들을 컨테이너에 추가
     gtk_box_pack_start(GTK_BOX(white_container), title_label, FALSE, FALSE, 0);
@@ -210,7 +211,7 @@ GtkWidget* create_login_screen(GtkStack* stack) {
         "   border-radius: 8px; "
         "   background: white; "
         "   border: 1px solid #e0e0e0; "
-        "   font-size: 14px; "
+        "   font-size: 18px; "
         "   min-height: 45px; "
         "}"
         "button:hover { background: #f8f9fa; }"
@@ -237,7 +238,17 @@ GtkWidget* create_login_screen(GtkStack* stack) {
         "   background: white; "
         "   border-radius: 5px; "
         "   box-shadow: 0 2px 12px rgba(0,0,0,0.08); "
+        "   padding-top: 30px; "     // 위 여백 추가
+        "   padding-bottom: 30px; "  // 아래 여백 추가
+        "}"
+        ".error-message { "
+        "   color: #ff0000; "  // 빨간색으로 설정
         "}";
+
+    // 결과 라벨에 스타일 적용
+    GtkStyleContext* result_context = gtk_widget_get_style_context(result_label);
+    gtk_style_context_add_provider(result_context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+    gtk_style_context_add_class(result_context, "error-message");
 
     gtk_css_provider_load_from_data(provider, css_data, -1, &error);
 
