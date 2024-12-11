@@ -1,10 +1,11 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <gtk/gtk.h>
-#include "games.h"
-#include <json.h>
 #include <curl.h>
+#include <gtk/gtk.h>
+#include <json.h>
 
-// ¼­¹ö ÀÀ´ä Ã³¸® ÇÔ¼ö
+#include "games.h"
+
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ô¼ï¿½
 size_t write_response(void* ptr, size_t size, size_t nmemb, void* userdata) {
     size_t total_size = size * nmemb;
     if (strlen(userdata) + total_size >= 1024) {
@@ -15,7 +16,7 @@ size_t write_response(void* ptr, size_t size, size_t nmemb, void* userdata) {
     return total_size;
 }
 
-// ´Ğ³×ÀÓ Áßº¹ È®ÀÎ ¹öÆ° Å¬¸¯ ÇÚµé·¯
+// ï¿½Ğ³ï¿½ï¿½ï¿½ ï¿½ßºï¿½ È®ï¿½ï¿½ ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½Úµé·¯
 void on_check_username_button_clicked(GtkWidget* widget, gpointer data) {
     const char* username = gtk_entry_get_text(GTK_ENTRY(data));
 
@@ -40,8 +41,7 @@ void on_check_username_button_clicked(GtkWidget* widget, gpointer data) {
         CURLcode res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             g_print("Error: Failed to check username. CURLcode: %d\n", res);
-        }
-        else {
+        } else {
             g_print("Server response: %s\n", response);
             struct json_object* parsed_json = json_tokener_parse(response);
             struct json_object* success;
@@ -53,14 +53,12 @@ void on_check_username_button_clicked(GtkWidget* widget, gpointer data) {
 
                 if (json_object_get_boolean(success)) {
                     g_print("%s\n", json_object_get_string(message));
-                }
-                else {
+                } else {
                     g_print("%s\n", json_object_get_string(message));
                 }
 
                 json_object_put(parsed_json);
-            }
-            else {
+            } else {
                 g_print("Error: Failed to parse server response.\n");
             }
         }
@@ -73,17 +71,17 @@ void send_register_request(const char* input_username, const char* password, Gtk
     CURL* curl;
     CURLcode res;
     struct curl_slist* headers = NULL;
-    struct Memory chunk = { NULL, 0 };
+    struct Memory chunk = {NULL, 0};
 
     curl = curl_easy_init();
     if (curl) {
-        // JSON µ¥ÀÌÅÍ »ı¼º
+        // JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         struct json_object* json_data = json_object_new_object();
         json_object_object_add(json_data, "username", json_object_new_string(input_username));
         json_object_object_add(json_data, "password", json_object_new_string(password));
         const char* json_string = json_object_to_json_string(json_data);
 
-        printf("JSON Sent: %s\n", json_string); // µğ¹ö±×: Àü¼ÛµÇ´Â JSON µ¥ÀÌÅÍ
+        printf("JSON Sent: %s\n", json_string);  // ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ÛµÇ´ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
         headers = curl_slist_append(headers, "Content-Type: application/json");
         curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:5000/auth/register");
@@ -95,9 +93,8 @@ void send_register_request(const char* input_username, const char* password, Gtk
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             gtk_label_set_text(GTK_LABEL(result_label), "Network error!");
-        }
-        else {
-            printf("Server Response: %s\n", chunk.response); // µğ¹ö±×: ¼­¹ö ÀÀ´ä Ãâ·Â
+        } else {
+            printf("Server Response: %s\n", chunk.response);  // ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
             struct json_object* parsed_json = json_tokener_parse(chunk.response);
             struct json_object* success;
@@ -107,15 +104,13 @@ void send_register_request(const char* input_username, const char* password, Gtk
                 json_object_get_boolean(success)) {
                 gtk_label_set_text(GTK_LABEL(result_label), "Registration successful!");
                 strncpy(username, input_username, sizeof(username) - 1);
-                username[sizeof(username) - 1] = '\0'; // Null-terminate
+                username[sizeof(username) - 1] = '\0';  // Null-terminate
 
                 printf("Registered username: %s\n", username);
                 gtk_stack_set_visible_child_name(stack, "login_screen");
-            }
-            else if (json_object_object_get_ex(parsed_json, "message", &message)) {
+            } else if (json_object_object_get_ex(parsed_json, "message", &message)) {
                 gtk_label_set_text(GTK_LABEL(result_label), json_object_get_string(message));
-            }
-            else {
+            } else {
                 gtk_label_set_text(GTK_LABEL(result_label), "Invalid response from server!");
             }
             json_object_put(parsed_json);
@@ -127,7 +122,6 @@ void send_register_request(const char* input_username, const char* password, Gtk
         free(chunk.response);
     }
 }
-
 
 void on_register_button_clicked(GtkWidget* widget, gpointer data) {
     GtkWidget** widgets = (GtkWidget**)data;
@@ -154,44 +148,150 @@ void on_register_button_clicked(GtkWidget* widget, gpointer data) {
     send_register_request(username, password, GTK_WIDGET(result_label), stack);
 }
 
-
-
 GtkWidget* create_signup_screen(GtkStack* stack) {
     GtkWidget* outer_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_widget_set_halign(outer_box, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(outer_box, GTK_ALIGN_CENTER);
 
-    GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_spacing(GTK_BOX(vbox), 10);
-    gtk_box_pack_start(GTK_BOX(outer_box), vbox, FALSE, FALSE, 0);
+    // í°ìƒ‰ ë°°ê²½ì˜ ì»¨í…Œì´ë„ˆ ìƒì„±
+    GtkWidget* white_container = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_widget_set_size_request(white_container, 460, -1);
+    gtk_widget_set_margin_start(white_container, 30);
+    gtk_widget_set_margin_end(white_container, 30);
 
-    GtkWidget* title_label = gtk_label_new("REGISTER");
-    gtk_widget_set_halign(title_label, GTK_ALIGN_START);
-    gtk_box_pack_start(GTK_BOX(vbox), title_label, FALSE, FALSE, 5);
+    // REGISTER íƒ€ì´í‹€
+    GtkWidget* title_label = gtk_label_new(NULL);
+    const char* markup = "<span font_desc='18' weight='bold'>REGISTER</span>";
+    gtk_label_set_markup(GTK_LABEL(title_label), markup);
+    gtk_widget_set_margin_bottom(title_label, 80);
 
+    // ì…ë ¥ í•„ë“œë“¤ì„ ë‹´ì„ ë°•ìŠ¤
+    GtkWidget* entries_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_widget_set_margin_bottom(entries_box, 25);
+
+    // ì…ë ¥ í•„ë“œë“¤
     GtkWidget* username_entry = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(username_entry), "Username");
-    gtk_box_pack_start(GTK_BOX(vbox), username_entry, FALSE, FALSE, 5);
+    gtk_widget_set_size_request(username_entry, -1, 40);
+    gtk_widget_set_margin_bottom(username_entry, 15);
+    gtk_widget_set_margin_start(username_entry, 30);
+    gtk_widget_set_margin_end(username_entry, 30);
 
     GtkWidget* password_entry = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(password_entry), "Password");
     gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE);
-    gtk_box_pack_start(GTK_BOX(vbox), password_entry, FALSE, FALSE, 5);
+    gtk_widget_set_size_request(password_entry, -1, 40);
+    gtk_widget_set_margin_bottom(password_entry, 15);
+    gtk_widget_set_margin_start(password_entry, 30);
+    gtk_widget_set_margin_end(password_entry, 30);
 
     GtkWidget* confirm_entry = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(confirm_entry), "Confirm Password");
     gtk_entry_set_visibility(GTK_ENTRY(confirm_entry), FALSE);
-    gtk_box_pack_start(GTK_BOX(vbox), confirm_entry, FALSE, FALSE, 5);
+    gtk_widget_set_size_request(confirm_entry, -1, 40);
+    gtk_widget_set_margin_bottom(confirm_entry, 15);
+    gtk_widget_set_margin_start(confirm_entry, 30);
+    gtk_widget_set_margin_end(confirm_entry, 30);
 
+    // Sign up ë²„íŠ¼
     GtkWidget* register_button = gtk_button_new_with_label("Sign up");
-    gtk_box_pack_start(GTK_BOX(vbox), register_button, FALSE, FALSE, 5);
+    gtk_widget_set_size_request(register_button, -1, 45);
+    gtk_widget_set_margin_bottom(register_button, 10);
+    gtk_widget_set_margin_start(register_button, 30);
+    gtk_widget_set_margin_end(register_button, 30);
 
+    // Back to Login ë²„íŠ¼
     GtkWidget* back_button = gtk_button_new_with_label("Back to Login");
-    gtk_box_pack_start(GTK_BOX(vbox), back_button, FALSE, FALSE, 5);
+    gtk_widget_set_size_request(back_button, -1, 45);
+    gtk_widget_set_margin_start(back_button, 30);
+    gtk_widget_set_margin_end(back_button, 30);
 
+    // ê²°ê³¼ ë¼ë²¨
     GtkWidget* result_label = gtk_label_new("");
-    gtk_box_pack_start(GTK_BOX(vbox), result_label, FALSE, FALSE, 5);
+    gtk_widget_set_margin_top(result_label, 15);
 
+    // ì…ë ¥ í•„ë“œë“¤ì„ entries_boxì— ì¶”ê°€
+    gtk_box_pack_start(GTK_BOX(entries_box), username_entry, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(entries_box), password_entry, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(entries_box), confirm_entry, FALSE, FALSE, 0);
+
+    // ìœ„ì ¯ë“¤ì„ ì»¨í…Œì´ë„ˆì— ì¶”ê°€
+    gtk_box_pack_start(GTK_BOX(white_container), title_label, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(white_container), entries_box, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(white_container), register_button, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(white_container), back_button, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(white_container), result_label, FALSE, FALSE, 0);
+
+    gtk_box_pack_start(GTK_BOX(outer_box), white_container, FALSE, FALSE, 0);
+
+    // CSS ìŠ¤íƒ€ì¼ ì ìš©
+    GtkCssProvider* provider = gtk_css_provider_new();
+    GError* error = NULL;
+    const gchar* css_data =
+        ".error-message { "
+        "   color: #ff0000; "
+        "   font-size: 14px; "
+        "}"
+        "button { "
+        "   border-radius: 8px; "
+        "   background: white; "
+        "   border: 1px solid #e0e0e0; "
+        "   font-size: 18px; "
+        "   min-height: 45px; "
+        "}"
+        "button:hover { background: #f8f9fa; }"
+        "#register-button { "
+        "   background: #1a1a1a; "
+        "   color: white; "
+        "   border: none; "
+        "   font-weight: bold; "
+        "}"
+        "#register-button:hover { background: #333; }"
+        "entry { "
+        "   border-radius: 8px; "
+        "   border: 1px solid #e0e0e0; "
+        "   padding: 12px; "
+        "   font-size: 14px; "
+        "   min-height: 20px; "
+        "   margin: 5px 0; "
+        "}"
+        "entry:focus { "
+        "   border-color: #999; "
+        "   outline: none; "
+        "}"
+        ".white-container { "
+        "   background: white; "
+        "   border-radius: 5px; "
+        "   box-shadow: 0 1px 4px rgba(0,0,0,0.15); "  // ê·¸ë¦¼ì í¬ê¸°ì™€ íˆ¬ëª…ë„
+        "   padding-top: 30px; "                       // ìœ„ ì—¬ë°± ì¶”ê°€
+        "   padding-bottom: 30px; "                    // ì•„ë˜ ì—¬ë°± ì¶”ê°€
+        "}";
+
+    gtk_css_provider_load_from_data(provider, css_data, -1, &error);
+
+    if (error != NULL) {
+        g_warning("CSS ë¡œë”© ì‹¤íŒ¨: %s", error->message);
+        g_error_free(error);
+    }
+
+    // ìŠ¤íƒ€ì¼ ì ìš©
+    GtkStyleContext* context;
+    context = gtk_widget_get_style_context(white_container);
+    gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+    gtk_style_context_add_class(context, "white-container");
+
+    context = gtk_widget_get_style_context(register_button);
+    gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+    gtk_widget_set_name(register_button, "register-button");
+
+    // ê²°ê³¼ ë¼ë²¨ì— ìŠ¤íƒ€ì¼ ì ìš©
+    GtkStyleContext* result_context = gtk_widget_get_style_context(result_label);
+    gtk_style_context_add_provider(result_context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+    gtk_style_context_add_class(result_context, "error-message");
+
+    g_object_unref(provider);
+
+    // ì‹œê·¸ë„ ì—°ê²°
     GtkWidget** widgets = g_new(GtkWidget*, 5);
     widgets[0] = username_entry;
     widgets[1] = password_entry;

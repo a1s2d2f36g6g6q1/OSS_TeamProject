@@ -1,6 +1,7 @@
-﻿#include <gtk/gtk.h>
-#include <curl.h>
+﻿#include <curl.h>
+#include <gtk/gtk.h>
 #include <json.h>
+
 #include "games.h"
 
 struct MemoryStruct {
@@ -66,7 +67,6 @@ void update_score_table(GtkWidget* grid) {
                         json_object_object_get_ex(score_entry, "username", &username) &&
                         json_object_object_get_ex(score_entry, "high_score", &high_score) &&
                         json_object_object_get_ex(score_entry, "rank", &rank)) {
-
                         const char* game_name = json_object_get_string(game);
                         const char* user_name = json_object_get_string(username);
                         int score_value = json_object_get_int(high_score);
@@ -75,14 +75,11 @@ void update_score_table(GtkWidget* grid) {
                         int game_column = 0;
                         if (strcmp(game_name, "tetris") == 0) {
                             game_column = 0;
-                        }
-                        else if (strcmp(game_name, "2048") == 0) {
+                        } else if (strcmp(game_name, "2048") == 0) {
                             game_column = 4;
-                        }
-                        else if (strcmp(game_name, "bp") == 0) {
+                        } else if (strcmp(game_name, "bp") == 0) {
                             game_column = 8;
-                        }
-                        else if (strcmp(game_name, "mine") == 0) {
+                        } else if (strcmp(game_name, "mine") == 0) {
                             game_column = 12;
                         }
 
@@ -111,8 +108,7 @@ void update_score_table(GtkWidget* grid) {
             }
 
             json_object_put(parsed_json);
-        }
-        else {
+        } else {
             fprintf(stderr, "Failed to fetch scores: %s\n", curl_easy_strerror(res));
         }
 
@@ -145,21 +141,17 @@ void update_score_table(GtkWidget* grid) {
 
                     if (json_object_object_get_ex(score_entry, "game", &game) &&
                         json_object_object_get_ex(score_entry, "high_score", &high_score)) {
-
                         const char* game_name = json_object_get_string(game);
                         int score_value = json_object_get_int(high_score);
 
                         int game_column = 0;
                         if (strcmp(game_name, "tetris") == 0) {
                             game_column = 0;
-                        }
-                        else if (strcmp(game_name, "2048") == 0) {
+                        } else if (strcmp(game_name, "2048") == 0) {
                             game_column = 4;
-                        }
-                        else if (strcmp(game_name, "bp") == 0) {
+                        } else if (strcmp(game_name, "bp") == 0) {
                             game_column = 8;
-                        }
-                        else if (strcmp(game_name, "mine") == 0) {
+                        } else if (strcmp(game_name, "mine") == 0) {
                             game_column = 12;
                         }
 
@@ -174,8 +166,7 @@ void update_score_table(GtkWidget* grid) {
             }
 
             json_object_put(parsed_json);
-        }
-        else {
+        } else {
             fprintf(stderr, "Failed to fetch user scores: %s\n", curl_easy_strerror(res));
         }
 
@@ -208,13 +199,12 @@ GtkWidget* create_scoreboard_screen(GtkStack* stack) {
     gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
 
-    const char* game_names[] = { "Tetris", "2048", "Brick Break", "Minesweeper" };
+    const char* game_names[] = {"Tetris", "2048", "Brick Break", "Minesweeper"};
     const char* game_images[] = {
         "images/tetris.png",
         "images/2048.png",
         "images/breakout.png",
-        "images/minesweeper.png"
-    };
+        "images/minesweeper.png"};
 
     for (int g = 0; g < 4; g++) {
         GtkWidget* image = gtk_image_new_from_file(game_images[g]);

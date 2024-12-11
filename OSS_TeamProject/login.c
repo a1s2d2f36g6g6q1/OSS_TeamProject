@@ -243,6 +243,7 @@ GtkWidget* create_login_screen(GtkStack* stack) {
         "}"
         ".error-message { "
         "   color: #ff0000; "  // 빨간색으로 설정
+        "   font-size: 14px; "
         "}";
 
     // 결과 라벨에 스타일 적용
