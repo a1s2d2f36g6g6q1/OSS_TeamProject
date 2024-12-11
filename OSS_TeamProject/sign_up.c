@@ -161,7 +161,7 @@ GtkWidget* create_signup_screen(GtkStack* stack) {
 
     // REGISTER 타이틀
     GtkWidget* title_label = gtk_label_new(NULL);
-    const char* markup = "<span font_desc='18' weight='bold'>REGISTER</span>";
+    const char* markup = "<span font_desc='18' weight='bold'>Register</span>";
     gtk_label_set_markup(GTK_LABEL(title_label), markup);
     gtk_widget_set_margin_bottom(title_label, 80);
 
