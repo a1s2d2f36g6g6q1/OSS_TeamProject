@@ -137,6 +137,29 @@ router.get('/get-user-scores', async (req, res) => {
     }
 });
 
+router.get('/check-username', async (req, res) => {
+    const { username } = req.query;
+
+    if (!username) {
+        return res.status(400).json({ success: false, message: 'Username is required' });
+    }
+
+    try {
+        const query = 'SELECT COUNT(*) AS count FROM users WHERE username = ?';
+        const [results] = await db.execute(query, [username]);
+
+        if (results[0].count > 0) {
+            return res.status(200).json({ success: false, message: 'Username already exists' });
+        }
+
+        res.status(200).json({ success: true, message: 'Username is available' });
+    } catch (err) {
+        console.error('Database query error:', err);
+        res.status(500).json({ success: false, message: 'Database error' });
+    }
+});
+
+
 
 // 라우터 객체 내보내기
 module.exports = router;
