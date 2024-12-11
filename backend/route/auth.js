@@ -180,6 +180,28 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.delete('/delete-account', async (req, res) => {
+    const username = req.query.username;
+
+    if (!username) {
+        return res.status(400).json({ success: false, message: 'Username is required' });
+    }
+
+    try {
+        // Delete user and related scores
+        const deleteScoresQuery = 'DELETE FROM scores WHERE username = ?';
+        const deleteUserQuery = 'DELETE FROM users WHERE username = ?';
+
+        await db.execute(deleteScoresQuery, [username]);
+        await db.execute(deleteUserQuery, [username]);
+
+        res.status(200).json({ success: true, message: 'Account deleted successfully' });
+    } catch (err) {
+        console.error('Database query error:', err);
+        res.status(500).json({ success: false, message: 'Failed to delete account' });
+    }
+});
+
 
 
 // 라우터 객체 내보내기
