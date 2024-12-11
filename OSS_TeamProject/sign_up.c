@@ -70,7 +70,62 @@ void on_check_username_button_clicked(GtkWidget* widget, gpointer data) {
 }
 
 void send_register_request(const char* input_username, const char* password, GtkWidget* result_label, GtkStack* stack) {
+    CURL* curl;
+    CURLcode res;
+    struct curl_slist* headers = NULL;
+    struct Memory chunk = { NULL, 0 };
 
+    curl = curl_easy_init();
+    if (curl) {
+        // JSON 데이터 생성
+        struct json_object* json_data = json_object_new_object();
+        json_object_object_add(json_data, "username", json_object_new_string(input_username));
+        json_object_object_add(json_data, "password", json_object_new_string(password));
+        const char* json_string = json_object_to_json_string(json_data);
+
+        printf("JSON Sent: %s\n", json_string); // 디버그: 전송되는 JSON 데이터
+
+        headers = curl_slist_append(headers, "Content-Type: application/json");
+        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:5000/auth/register");
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_string);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &chunk);
+
+        res = curl_easy_perform(curl);
+        if (res != CURLE_OK) {
+            gtk_label_set_text(GTK_LABEL(result_label), "Network error!");
+        }
+        else {
+            printf("Server Response: %s\n", chunk.response); // 디버그: 서버 응답 출력
+
+            struct json_object* parsed_json = json_tokener_parse(chunk.response);
+            struct json_object* success;
+            struct json_object* message;
+
+            if (json_object_object_get_ex(parsed_json, "success", &success) &&
+                json_object_get_boolean(success)) {
+                gtk_label_set_text(GTK_LABEL(result_label), "Registration successful!");
+                strncpy(username, input_username, sizeof(username) - 1);
+                username[sizeof(username) - 1] = '\0'; // Null-terminate
+
+                printf("Registered username: %s\n", username);
+                gtk_stack_set_visible_child_name(stack, "login_screen");
+            }
+            else if (json_object_object_get_ex(parsed_json, "message", &message)) {
+                gtk_label_set_text(GTK_LABEL(result_label), json_object_get_string(message));
+            }
+            else {
+                gtk_label_set_text(GTK_LABEL(result_label), "Invalid response from server!");
+            }
+            json_object_put(parsed_json);
+        }
+
+        json_object_put(json_data);
+        curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
+        free(chunk.response);
+    }
 }
 
 
