@@ -237,9 +237,9 @@ GtkWidget* create_login_screen(GtkStack* stack) {
         ".white-container { "
         "   background: white; "
         "   border-radius: 5px; "
-        "   box-shadow: 0 2px 12px rgba(0,0,0,0.08); "
-        "   padding-top: 30px; "     // 위 여백 추가
-        "   padding-bottom: 30px; "  // 아래 여백 추가
+        "   box-shadow: 0 1px 4px rgba(0,0,0,0.15); "  // 그림자 크기와 투명도
+        "   padding-top: 30px; "                       // 위 여백 추가
+        "   padding-bottom: 30px; "                    // 아래 여백 추가
         "}"
         ".error-message { "
         "   color: #ff0000; "  // 빨간색으로 설정
