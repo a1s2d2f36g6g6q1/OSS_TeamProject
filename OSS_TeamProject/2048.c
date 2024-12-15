@@ -283,9 +283,14 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
     gtk_box_pack_start(GTK_BOX(score_container), GTK_WIDGET(score_label), TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), score_container, FALSE, FALSE, 0);
 
-     // 버튼 컨테이너
-     button_container = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-     gtk_widget_set_halign(button_container, GTK_ALIGN_CENTER);
+    // 버튼 컨테이너
+    button_container = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_widget_set_halign(button_container, GTK_ALIGN_CENTER);
+
+    // Swap 버튼
+    GtkWidget* swap_button = gtk_button_new_with_label("Swap Tiles");
+    gtk_box_pack_start(GTK_BOX(button_container), swap_button, TRUE, TRUE, 0);
+    g_signal_connect(swap_button, "clicked", G_CALLBACK(on_swap_button_clicked), NULL);
 
     // 2048 게임 보드 (DrawingArea)
     drawing_area = gtk_drawing_area_new();
