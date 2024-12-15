@@ -16,6 +16,13 @@
 GtkLabel* score_label;  // 점수 표시 라벨
 int score = 0;          // 전역 변수로 score 선언
 
+bool swap_mode = false; // 교환 모드 활성화 여부
+int selected_tiles[2][2] = { {-1, -1}, {-1, -1} }; // 선택된 두 타일의 좌표
+int selected_count = 0; // 선택된 타일 개수
+
+bool remove_mode = false; // 삭제 모드 활성화 여부
+GtkWidget* button_container; // 버튼 컨테이너를 전역 변수로 선언
+
 void update_score() {
     if (GTK_IS_LABEL(score_label)) {
         char score_text[50];
