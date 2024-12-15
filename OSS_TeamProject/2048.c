@@ -434,3 +434,26 @@ void on_remove_button_clicked(GtkWidget* widget, gpointer data) {
         printf("No more removals available!\n");
     }
 }
+
+void on_swap_button_clicked(GtkWidget* widget, gpointer data) {
+    if (swap_count > 0) {  // 남은 횟수 확인
+        if (!swap_mode) {
+            swap_mode = true;
+            selected_count = 0;
+            for (int i = 0; i < 2; i++) {
+                selected_tiles[i][0] = -1;
+                selected_tiles[i][1] = -1;
+            }
+            printf("Swap mode activated! Select two tiles.\n");
+        }
+        else {
+            swap_mode = false;
+            printf("Swap mode deactivated.\n");
+        }
+        swap_count--;  // 사용 횟수 감소
+        printf("Swap uses left: %d\n", swap_count);
+    }
+    else {
+        printf("No more swaps available!\n");
+    }
+}
