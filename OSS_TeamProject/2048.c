@@ -341,10 +341,6 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
     add_random_tile();
     add_random_tile();
 
-    // 도움 기능 사용 횟수 초기화
-    swap_count = 2;
-    remove_count = 1;
-
     return vbox;
 }
 
@@ -356,6 +352,10 @@ void start_2048_game(GtkWidget* widget, gpointer data) {
     initialize_grid(grid_size);
     add_random_tile();
     add_random_tile();
+
+        // 도움 기능 사용 횟수 초기화
+    swap_count = 2;
+    remove_count = 1;
 
     // 2048 화면으로 전환
     gtk_stack_set_visible_child_name(stack, "2048_screen");
