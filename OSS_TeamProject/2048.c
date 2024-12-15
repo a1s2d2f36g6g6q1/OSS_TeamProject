@@ -23,6 +23,11 @@ int selected_count = 0; // 선택된 타일 개수
 bool remove_mode = false; // 삭제 모드 활성화 여부
 GtkWidget* button_container; // 버튼 컨테이너를 전역 변수로 선언
 
+// 함수 프로토타입 추가
+void on_swap_button_clicked(GtkWidget* widget, gpointer data);
+gboolean on_tile_click(GtkWidget* widget, GdkEventButton* event, gpointer data);
+void on_remove_button_clicked(GtkWidget* widget, gpointer data); 
+
 void update_score() {
     if (GTK_IS_LABEL(score_label)) {
         char score_text[50];
