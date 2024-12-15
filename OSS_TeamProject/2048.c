@@ -306,6 +306,7 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
     // 포커스를 받을 수 있도록 설정하고 이벤트 마스크 추가
     gtk_widget_set_can_focus(drawing_area, TRUE);
     gtk_widget_add_events(drawing_area, GDK_KEY_PRESS_MASK);
+    gtk_widget_add_events(drawing_area, GDK_BUTTON_PRESS_MASK);
 
     // DrawingArea의 이벤트 연결
     g_signal_connect(drawing_area, "draw", G_CALLBACK(on_draw), NULL);
