@@ -367,3 +367,52 @@ void start_2048_game(GtkWidget* widget, gpointer data) {
         gtk_widget_queue_draw(drawing_area);
     }
 }
+gboolean on_tile_click(GtkWidget* widget, GdkEventButton* event, gpointer data) {
+    // 클릭한 위치를 계산
+    int x = (event->x - TILE_MARGIN) / (TILE_SIZE + TILE_MARGIN);
+    int y = (event->y - TILE_MARGIN) / (TILE_SIZE + TILE_MARGIN);
+
+    // 보드 범위 확인
+    if (x >= 0 && x < grid_size && y >= 0 && y < grid_size) {
+        if (remove_mode) {
+            // 삭제 모드일 때
+            if (grid[y][x] != 0) {
+                grid[y][x] = 0; // 타일 삭제
+                printf("Tile at (%d, %d) removed.\n", y, x);
+
+                // 보드 갱신
+                gtk_widget_queue_draw(drawing_area);
+
+                // 삭제 모드 종료
+                remove_mode = false;
+            }
+            else {
+                printf("Tile at (%d, %d) is already empty.\n", y, x);
+            }
+        }
+        else if (swap_mode) {
+            // 기존 교환 모드 로직 (그대로 유지)
+            selected_tiles[selected_count][0] = y;
+            selected_tiles[selected_count][1] = x;
+            selected_count++;
+
+            if (selected_count == 2) {
+                // 타일 값 교환
+                int temp = grid[selected_tiles[0][0]][selected_tiles[0][1]];
+                grid[selected_tiles[0][0]][selected_tiles[0][1]] = grid[selected_tiles[1][0]][selected_tiles[1][1]];
+                grid[selected_tiles[1][0]][selected_tiles[1][1]] = temp;
+
+                // 보드 갱신
+                gtk_widget_queue_draw(drawing_area);
+
+                // 초기화 및 모드 종료
+                swap_mode = false;
+                selected_count = 0;
+                printf("Tiles swapped: (%d, %d) <-> (%d, %d)\n",
+                    selected_tiles[0][0], selected_tiles[0][1],
+                    selected_tiles[1][0], selected_tiles[1][1]);
+            }
+        }
+    }
+    return FALSE;
+}
