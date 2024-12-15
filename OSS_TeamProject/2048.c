@@ -292,6 +292,11 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
     gtk_box_pack_start(GTK_BOX(button_container), swap_button, TRUE, TRUE, 0);
     g_signal_connect(swap_button, "clicked", G_CALLBACK(on_swap_button_clicked), NULL);
 
+    // Remove 버튼
+    GtkWidget* remove_button = gtk_button_new_with_label("Remove Tile");
+    gtk_box_pack_start(GTK_BOX(button_container), remove_button, TRUE, TRUE, 0);
+    g_signal_connect(remove_button, "clicked", G_CALLBACK(on_remove_button_clicked), NULL);
+
     // 2048 게임 보드 (DrawingArea)
     drawing_area = gtk_drawing_area_new();
     gtk_widget_set_size_request(drawing_area, grid_size * TILE_SIZE + (grid_size + 1) * TILE_MARGIN,
