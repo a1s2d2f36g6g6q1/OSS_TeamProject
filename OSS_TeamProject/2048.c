@@ -16,6 +16,9 @@
 GtkLabel* score_label;  // 점수 표시 라벨
 int score = 0;          // 전역 변수로 score 선언
 
+int swap_count = 2;    // 스왑 버튼 사용 가능 횟수
+int remove_count = 1;  // 삭제 버튼 사용 가능 횟수
+
 bool swap_mode = false; // 교환 모드 활성화 여부
 int selected_tiles[2][2] = { {-1, -1}, {-1, -1} }; // 선택된 두 타일의 좌표
 int selected_count = 0; // 선택된 타일 개수
