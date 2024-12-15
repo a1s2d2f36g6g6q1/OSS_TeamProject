@@ -314,11 +314,12 @@ GtkWidget* create_2048_screen(GtkStack* stack) {
 
     // 뒤로가기 버튼
     GtkWidget* back_button = gtk_button_new_with_label("Back to Main Menu");
-    GtkWidget* button_container = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_widget_set_halign(button_container, GTK_ALIGN_CENTER);  // 버튼을 가운데 정렬
-    gtk_box_pack_start(GTK_BOX(button_container), back_button, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), button_container, FALSE, FALSE, 0);
     g_signal_connect(back_button, "clicked", G_CALLBACK(switch_to_main_menu), stack);
+    gtk_box_pack_start(GTK_BOX(button_container), back_button, TRUE, TRUE, 0);
+
+    // 버튼 컨테이너 추가
+    gtk_box_pack_start(GTK_BOX(vbox), button_container, FALSE, FALSE, 0);
+
 
     // 2048 게임 초기화
     initialize_grid(grid_size);
