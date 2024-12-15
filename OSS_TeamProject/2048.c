@@ -416,3 +416,21 @@ gboolean on_tile_click(GtkWidget* widget, GdkEventButton* event, gpointer data) 
     }
     return FALSE;
 }
+
+void on_remove_button_clicked(GtkWidget* widget, gpointer data) {
+    if (remove_count > 0) {  // 남은 횟수 확인
+        if (!remove_mode) {
+            remove_mode = true;
+            printf("Remove mode activated! Click a tile to remove.\n");
+        }
+        else {
+            remove_mode = false;
+            printf("Remove mode deactivated.\n");
+        }
+        remove_count--;  // 사용 횟수 감소
+        printf("Remove uses left: %d\n", remove_count);
+    }
+    else {
+        printf("No more removals available!\n");
+    }
+}
